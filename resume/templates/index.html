@@ -1,0 +1,12 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>솔트로닉스 업무 Portal</h1>
+  <p>솔트로닉스 포털에 오신것을 환영합니다, 이 사이트는 <em>솔트로닉스 개발자들에의해 만들어졌습니다. </em>!</p>
+  <h2>Dynamic content</h2>
+  <p>현재 data 건수들</p>
+  <ul>
+    <li><strong>공통분류코드 개수:</strong> {{ num_divs }}</li>
+    <li><strong>공통코드 개수:</strong> {{ num_comm_codes }}</li>
+  </ul>
+{% endblock %}

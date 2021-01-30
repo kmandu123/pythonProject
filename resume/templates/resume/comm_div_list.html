@@ -1,0 +1,17 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>공통코드구분 List</h1>
+  {% if comm_div_list %}
+  <ul>
+    {% for r in comm_div_list %}
+      <li>
+          <a href="{{ r.get_absolute_url }}">{{ r.comm_div_name }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>공통코드가 없습니다..</p>
+  {% endif %}
+{% endblock %}
+

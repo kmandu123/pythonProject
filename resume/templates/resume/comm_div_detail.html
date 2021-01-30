@@ -1,0 +1,23 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>공통구분코드: {{ comm_div.comm_div_id }}</h1>
+
+<!--  <p><strong>Author:</strong> <a href="">{{ book.author }}</a></p>  -->
+  <p><strong>comm_div_name:</strong> {{ comm_div.comm_div_name }}</p>
+  <p><strong>summary:</strong> {{ comm_div.summary }}</p>
+  <p><strong>comm_code_name:</strong> {{ comm_div.comm_code_name }}</p>
+  <p><strong>create_dt:</strong> {{ comm_div.create_dt }}</p>
+  <p><strong>update_dt:</strong> {{ comm_div.update_dt }}</p>
+  <p><strong>create_id:</strong> {{ comm_div.create_id }}</p>
+  <p><strong>update_id:</strong> {{ comm_div.update_id }}</p>
+
+
+  <div style="margin-left:20px;margin-top:20px">
+    <br>
+    <a href="{% url 'comm_div_update' comm_div.comm_div_id %}">수정하기</a>
+    <a href="{% url 'comm_div_create'%}">입력하기</a>
+    <a href="{% url 'comm_div_delete' comm_div.comm_div_id %}">삭제하기</a>
+
+  </div>
+{% endblock %}

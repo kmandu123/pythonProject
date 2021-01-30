@@ -1,0 +1,18 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+
+
+<br>
+<br>
+<form action="" method="post">
+    {% csrf_token %}
+    <table >
+    <h4>공통구분 입력</h4>
+    {{ form.as_table }}
+    </table>
+    <button type="submit" class="btn btn-primary btn-sx">확인</button>
+
+</form>
+{% endblock %}
