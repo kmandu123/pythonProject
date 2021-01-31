@@ -125,13 +125,27 @@ def UpdateComm_div(request, pk):
 
 #Comm_div를 create하기 위한 function view
 def CreateComm_div(request):
+
+    from django import forms
+    # inlineformset 생성
+    CommFormset = inlineformset_factory(Comm_div, Comm_code, fields=('comm_code_name', 'ref_field', 'display_order', 'use_yn', 'summary'),
+                                        widgets={'summary': forms.TextInput(attrs={'size': 70}), 'display_order': forms.TextInput(attrs={'size': 3})}, extra=0, can_delete=True)
+    comm_div = Comm_div.objects.get()
+
+    print("첫번째")
+
     # POST 요청이면 폼 데이터를 처리한다
     if request.method == 'POST':
-        # 요청된 data를 FORM객체를 이용해 FROM인스턴스를 생성한다.(binding)
+        print("두번째")
+
+        # 요청된 data를 FORM객체를 이용해 Form인스턴스를 생성한다.(binding)
         comm_div_update_form = UpdateComm_divForm(request.POST)
+        # inline 새로 작성한 내용을 저장 <- 여기에 기술하지 않으면 마스터수정 없이 저장누를때 validation 수행하지 않고 error발생함.
+#        formset = CommFormset(request.POST, instance=comm_div)
+
         # form이 유효한지 체크한다
-        if comm_div_update_form.is_valid():
-            comm_div = Comm_div()
+        if comm_div_update_form.is_valid(): #and formset.is_valid():
+            print("세번째")
 
             #동일한 comm_div_name 값이 있는지 check
             #chk_comm_div_name = list(Comm_div.objects.all().values())
@@ -143,18 +157,47 @@ def CreateComm_div(request):
             comm_div.create_dt = comm_div_update_form.cleaned_data['f_create_dt']
             comm_div.update_dt = comm_div_update_form.cleaned_data['f_update_dt']
             comm_div.save()
+
+            #이위치에 반드시 아래 기록할 것 : 없으면 error발생함. if문 위에 기술했더니 error발생 함
+            formset = CommFormset(request.POST, instance=comm_div)
+
+            if formset.is_valid():
+                formset.save()
+                print("인라인 정상")
+            else:
+                print("인라인 error발생")
+                print(formset.errors)
+
+
             # 새로운 URL로 보낸다. 예) update 성공메시지가 있는곳
-            return HttpResponseRedirect(reverse('index'))
+            return HttpResponseRedirect(reverse('comm_divs'))
+        #else:
+        #    print("마스터 not valid")
+        #    print(comm_div_update_form.errors)
+        #    return HttpResponseRedirect(reverse('comm_divs'))
 
     # GET 요청이면 기본 폼을 생성(즉, 최초의 수정요청 화면으로 이동 시)
     else:
+        print("네번째")
+
+        # 일자계산하여 form의 날짜 필드에 default 값 세팅 : 예제
+        #proposed_create_date = datetime.date.today() + datetime.timedelta(weeks=3)
+        #comm_div_update_form = UpdateComm_divForm(initial={'f_create_date': proposed_create_date})
+
         #빈 form 전달
         comm_div_update_form = UpdateComm_divForm()
 
-    # template의 html에 Form을 딕셔너리 자료형태를 생성한다.
+        # inline formset : 빈 form 전달
+        formset = CommFormset()
+
+
+    # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
     context = {
         'form': comm_div_update_form,
+        'inline_form': formset,
     }
+
+    print("다섯번째")
 
     # template를 호출한다. context도 같이 넘긴다.
     return render(request, 'resume/create_comm_div.html', context)
