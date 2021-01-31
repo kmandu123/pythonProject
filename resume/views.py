@@ -48,17 +48,23 @@ def UpdateComm_div(request, pk):
     # 파라미터pk로 받은 data가 존재한다면 가져온다
     comm_div = get_object_or_404(Comm_div, pk=pk)
 
+    from django import forms
     # inlineformset 생성
-    CommFormset = inlineformset_factory(Comm_div, Comm_code, fields=('comm_code', 'comm_code_name', 'display_order', 'use_yn', 'summary'), extra=1)
+    CommFormset = inlineformset_factory(Comm_div, Comm_code, fields=('comm_code', 'comm_div_id', 'comm_code_name', 'ref_field', 'display_order', 'use_yn', 'summary'),
+                                        widgets={'summary': forms.TextInput(attrs={'size': 70}), 'display_order': forms.TextInput(attrs={'size': 3})}, extra=0, can_delete=True)
     comm_div = Comm_div.objects.get(comm_div_id=pk)
+
+
 
     # POST 요청이면 폼 데이터를 처리한다
     if request.method == 'POST':
         # 요청된 data를 FORM객체를 이용해 Form인스턴스를 생성한다.(binding)
         comm_div_update_form = UpdateComm_divForm(request.POST)
+        # inline 새로 작성한 내용을 저장 <- 여기에 기술하지 않으면 마스터수정 없이 저장누를때 validation 수행하지 않고 error발생함.
+        formset = CommFormset(request.POST, instance=comm_div)
 
         # form이 유효한지 체크한다
-        if comm_div_update_form.is_valid():
+        if comm_div_update_form.is_valid(): #and formset.is_valid():
 
             #동일한 comm_div_name 값이 있는지 check
             #chk_comm_div_name = list(Comm_div.objects.all().values())
@@ -71,13 +77,23 @@ def UpdateComm_div(request, pk):
             comm_div.update_dt = comm_div_update_form.cleaned_data['f_update_dt']
             comm_div.save()
 
-            # inline 새로 작성한 내용을 저장
+            #이위치에 반드시 아래 기록할 것 : 없으면 error발생함. if문 위에 기술했더니 error발생 함
             formset = CommFormset(request.POST, instance=comm_div)
-#            if formset.is_valid():
-#                formset.save()
+
+            if formset.is_valid():
+                formset.save()
+                print("인라인 정상")
+            else:
+                print("인라인 error발생")
+                print(formset.errors)
+
 
             # 새로운 URL로 보낸다. 예) update 성공메시지가 있는곳
             return HttpResponseRedirect(reverse('comm_divs'))
+        #else:
+        #    print("마스터 not valid")
+        #    print(comm_div_update_form.errors)
+        #    return HttpResponseRedirect(reverse('comm_divs'))
 
     # GET 요청이면 기본 폼을 생성(즉, 최초의 수정요청 화면으로 이동 시)
     else:
@@ -150,5 +166,6 @@ def DeleteComm_div(request, pk):
     comm_div = get_object_or_404(Comm_div, pk=pk)
     comm_div.delete()
     return HttpResponseRedirect(reverse('comm_divs'))
+
 
 

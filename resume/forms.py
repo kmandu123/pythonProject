@@ -19,3 +19,6 @@ class UpdateComm_divForm(forms.Form):
                 raise forms.ValidationError(
                     "최종수정일자는 최초생성일자 이후날짜여야 합니다!"
                 )
+
+
+

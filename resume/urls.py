@@ -20,3 +20,4 @@ urlpatterns += [
 urlpatterns += [
     path('comm_div_detail/<int:pk>/delete/', views.DeleteComm_div, name='comm_div_delete'),
 ]
+
