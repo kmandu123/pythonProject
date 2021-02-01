@@ -9,7 +9,7 @@
   <ul>
     {% for r in employee_list %}
       <li>
-          <a href="{{ r.get_absolute_url }}">{{ r.emp_name }}{{ r.fk_employee1.comm_code_name }}</a>
+          <tr><td><a href="{{ r.get_absolute_url }}">{{ r.emp_name }} </a> </td>   <td>{{ r.emp_position_cd }}</td></tr>
       </li>
     {% endfor %}
   </ul>
