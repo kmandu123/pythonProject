@@ -10,7 +10,7 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    path('comm_div_detail/<int:pk>/update/', views.UpdateComm_div, name='comm_div_update'),
+    path('comm_div_detail/<int:pk>/update/', views.UpdateComm, name='comm_div_update'),
 ]
 
 urlpatterns += [

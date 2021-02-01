@@ -5,8 +5,7 @@ from django.urls import reverse # Used to generate URLs by reversing the URL pat
 
 class Comm_div(models.Model):
     comm_div_id = models.AutoField(primary_key=True, verbose_name='공통코드 구분 ID')
-    comm_div_name = models.CharField(max_length=200, verbose_name='공통코드 구분',
-                                     help_text='공통코드를 구분하는 분류')
+    comm_div_name = models.CharField(max_length=200, verbose_name='공통코드 구분')
     summary = models.CharField(max_length=2000, null=True, blank=True, verbose_name='비고')
     create_dt = models.DateTimeField(auto_now_add=True, verbose_name='생성일시', null=True, blank=True)
     update_dt = models.DateTimeField(auto_now=True, verbose_name='수정일시', null=True, blank=True)
@@ -25,7 +24,7 @@ class Comm_code(models.Model):
     comm_code = models.AutoField(primary_key=True, verbose_name='공통코드')
     comm_div_id = models.ForeignKey('Comm_div', related_name='fk_comm_code1', on_delete=models.SET_NULL, db_column='comm_div_id',  null=True)
     comm_code_name = models.CharField(max_length=200, verbose_name='공통코드명')
-    ref_field = models.CharField(max_length=200, verbose_name='참조필드')
+    ref_field = models.CharField(max_length=200, null=True, blank=True, verbose_name='참조필드')
     display_order = models.IntegerField(null=True, blank=True, verbose_name='표시 순서')
 
     USE_YN_DIV = (
