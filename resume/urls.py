@@ -11,13 +11,11 @@ urlpatterns = [
 
 urlpatterns += [
     path('comm_div_detail/<int:pk>/update/', views.UpdateComm, name='comm_div_update'),
+    path('comm_div_detail/create/', views.CreateComm, name='comm_div_create'),
+    path('comm_div_detail/<int:pk>/delete/', views.DeleteComm, name='comm_div_delete'),
 ]
 
 urlpatterns += [
-     path('comm_div_detail/create/', views.CreateComm_div, name='comm_div_create'),
+    path('employee_list/', views.EmployeeListView.as_view(), name='employee_list'),
+    path('employee_list/<int:pk>/update/', views.EmployeeListView.as_view(), name='employee_update'),
 ]
-
-urlpatterns += [
-    path('comm_div_detail/<int:pk>/delete/', views.DeleteComm_div, name='comm_div_delete'),
-]
-

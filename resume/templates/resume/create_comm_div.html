@@ -17,22 +17,24 @@
     {% csrf_token %}
     <table >
     <h3>공통구분 입력</h3>
-    {{ form.as_table }}
+    {{ comm_div_form.as_table }}
     </table>
     <br>
 <div id="b-line">
     <table id="form_set"  class="table table-condensed table-hover">
         <tr class="bg-success">
-            <td>{{ inline_form.form.comm_code_name.label }}</td>
-            <td>{{ inline_form.form.display_order.label }}</td>
-            <td>{{ inline_form.form.use_yn.label }}</td>
-            <td>{{ inline_form.form.ref_field.label }}</td>
-            <td>{{ inline_form.form.summary.label }}</td>
+            <td>{{ comm_code_formset.form.comm_code.label }}</td>
+            <td>{{ comm_code_formset.form.comm_code_name.label }}</td>
+            <td>{{ comm_code_formset.form.display_order.label }}</td>
+            <td>{{ comm_code_formset.form.use_yn.label }}</td>
+            <td>{{ comm_code_formset.form.ref_field.label }}</td>
+            <td>{{ comm_code_formset.form.summary.label }}</td>
             <td>삭제</td>
         </tr>
-    {{ inline_form.management_form }}
-    {% for form in inline_form %}
+    {{ comm_code_formset.management_form }}
+    {% for form in comm_code_formset %}
         <tr>
+            <td>{{ form.comm_code }}</td>
             <td>{{ form.comm_code_name }}</td>
             <td>{{ form.display_order }}</td>
             <td>{{ form.use_yn }}</td>
@@ -44,19 +46,22 @@
 
     </table>
 
-    <input type="button" value="Add More" id="add_more" style="float: right;"  class="btn btn-warning">
     <table id="empty_form" style="display:none">
         <tr>
-            <td>{{ inline_form.empty_form.comm_code_name }}</td>
-            <td>{{ inline_form.empty_form.display_order }}</td>
-            <td>{{ inline_form.empty_form.use_yn }}</td>
-            <td>{{ inline_form.empty_form.ref_field }}</td>
-            <td>{{ inline_form.empty_form.summary }}</td>
-            <td>{{ inline_form.empty_form.DELETE }}</td>
+            <td>{{ comm_code_formset.empty_form.comm_code }}</td>
+            <td>{{ comm_code_formset.empty_form.comm_code_name }}</td>
+            <td>{{ comm_code_formset.empty_form.display_order }}</td>
+            <td>{{ comm_code_formset.empty_form.use_yn }}</td>
+            <td>{{ comm_code_formset.empty_form.ref_field }}</td>
+            <td>{{ comm_code_formset.empty_form.summary }}</td>
+            <td>{{ comm_code_formset.empty_form.DELETE }}</td>
         </tr>
     </table>
 
-    <button type="submit" class="btn btn-warning">저    장</button>
+    <input type="button" value="Add More" id="add_more" class="btn btn-warning">&nbsp&nbsp&nbsp
+    <button type="submit" class="btn btn-warning">저    장</button>&nbsp&nbsp&nbsp
+    <a href="{% url 'comm_divs' %}">취소</a>
+
 </div>
 </form>
 

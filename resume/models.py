@@ -18,7 +18,7 @@ class Comm_div(models.Model):
 
     def get_absolute_url(self):
         """Returns the url to access a detail record for this book."""
-        return reverse('come_div-detail', args=[str(self.comm_div_id)])
+        return reverse('comm_div_update', args=[str(self.comm_div_id)])
 
 class Comm_code(models.Model):
     comm_code = models.AutoField(primary_key=True, verbose_name='공통코드')
@@ -85,6 +85,10 @@ class Employee(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return self.emp_name
+
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this book."""
+        return reverse('employee_update', args=[str(self.emp_id)])
 
 
 class School_his(models.Model):

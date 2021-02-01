@@ -46,7 +46,6 @@
 
     </table>
 
-    <input type="button" value="Add More" id="add_more" style="float: right;"  class="btn btn-warning">
     <table id="empty_form" style="display:none">
         <tr>
             <td>{{ comm_code_formset.empty_form.comm_code }}</td>
@@ -59,7 +58,10 @@
         </tr>
     </table>
 
-    <button type="submit" class="btn btn-warning">저    장</button>
+    <input type="button" value="상세내역 추가" id="add_more" class="btn btn-warning">&nbsp&nbsp&nbsp
+    <button type="submit" class="btn btn-warning">저   장</button>&nbsp&nbsp&nbsp
+    <a href="{% url 'comm_divs' %}">취소</a>&nbsp&nbsp&nbsp
+    <a href="{% url 'comm_div_delete' comm_div.comm_div_id %}">전체삭제</a>
 </div>
 </form>
 
