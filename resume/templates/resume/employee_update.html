@@ -25,9 +25,7 @@
             padding: 20px 0 0;
             border-top: 1px solid #ddd;}
 
-        #tab1 {
-              display: none;}
-        #tab2 {
+        .option_check {
               display: none;}
 
         label {
@@ -115,16 +113,23 @@
     <!-- Detail Tab 영역:Start -->
     <div class="main" style="text-align:left">
 
-    <input id="tab1" type="radio" name="tabs" checked>
-    <label for="tab1">학   력</label>
+    <input class="option_check" id="tab1" type="radio" name="tabs" checked>
+    <label for="tab1">학 력</label>
 
-    <input id="tab2" type="radio" name="tabs">
-    <label for="tab2">두번째 탭</label>
+    <input class="option_check"  id="tab2" type="radio" name="tabs">
+    <label for="tab2">자격증</label>
+
+    <input class="option_check"  id="tab3" type="radio" name="tabs">
+    <label for="tab3">경 력</label>
+
+    <input class="option_check"  id="tab4" type="radio" name="tabs">
+    <label for="tab4">네번째 탭</label>
 
     <section id="content1" style="margin-bottom:20px;">
 
             <!-- Detail Tab 영역 중 학력:Start -->
-            <table id="form_set"  class="table table-condensed table-hover">
+            <!-- key필드는 display하지는 않지만 반드시 표기할 것 -->
+            <table id="form_set_sch"  class="table table-condensed table-hover">
                 <tr class="bg-success">
                     <td>{{ school_hisformset.form.school_his_id.label }}</td>
                     <td>{{ school_hisformset.form.emp_id.label }}</td>
@@ -151,7 +156,7 @@
 
             </table>
 
-            <table id="empty_form" style="display:none">
+            <table id="empty_form_sch" style="display:none">
                 <tr>
                     <td>{{ school_hisformset.empty_form.school_his_id }}</td>
                     <td>{{ school_hisformset.empty_form.emp_id }}</td>
@@ -164,7 +169,7 @@
                 </tr>
             </table>
 
-            <input type="button" value="상세내역 추가" id="add_more" class="btn btn-warning">
+            <input type="button" value="상세내역 추가" id="add_more_sch" class="btn btn-warning">
             <!-- Detail Tab 영역 중 학력:End -->
 
 
@@ -172,8 +177,110 @@
 
 
     <section id="content2" style="margin-bottom:20px;">
-        tab menu2의 내용
+            <!-- Detail Tab 영역 중 자격증:Start -->
+            <!-- key필드는 display하지는 않지만 반드시 표기할 것 -->
+            <table id="form_set_lic"  class="table table-condensed table-hover">
+                <tr class="bg-success">
+                    <td>{{ license_hisformset.form.license_his_id.label }}</td>
+                    <td>{{ license_hisformset.form.emp_id.label }}</td>
+                    <td>{{ license_hisformset.form.license_cd.label }}</td>
+                    <td>{{ license_hisformset.form.got_date.label }}</td>
+                    <td>{{ license_hisformset.form.evidence_status_cd.label }}</td>
+                    <td>{{ license_hisformset.form.summary.label }}</td>
+                    <td>삭제</td>
+                </tr>
+            {{ license_hisformset.management_form }}
+            {% for form in license_hisformset %}
+                <tr>
+                    <td>{{ form.license_his_id }}</td>
+                    <td>{{ form.emp_id }}</td>
+                    <td>{{ form.license_cd }}</td>
+                    <td>{{ form.got_date }}</td>
+                    <td>{{ form.evidence_status_cd }}</td>
+                    <td>{{ form.summary }}</td>
+                    <td>{{ form.DELETE }}</td>
+                </tr>
+            {% endfor %}
+
+            </table>
+
+            <table id="empty_form_lic" style="display:none">
+                <tr>
+                    <td>{{ license_hisformset.empty_form.license_his_id }}</td>
+                    <td>{{ license_hisformset.empty_form.emp_id }}</td>
+                    <td>{{ license_hisformset.empty_form.license_cd }}</td>
+                    <td>{{ license_hisformset.empty_form.got_date }}</td>
+                    <td>{{ license_hisformset.empty_form.evidence_status_cd }}</td>
+                    <td>{{ license_hisformset.empty_form.summary }}</td>
+                    <td>{{ license_hisformset.empty_form.DELETE }}</td>
+                </tr>
+            </table>
+
+            <input type="button" value="상세내역 추가" id="add_more_lic" class="btn btn-warning">
+            <!-- Detail Tab 영역 중 자격증:End -->
+
     </section>
+
+
+    <section id="content3" style="margin-bottom:20px;">
+            <!-- Detail Tab 영역 중 경력:Start -->
+            <!-- key필드는 display하지는 않지만 반드시 표기할 것 -->
+            <table id="form_set_wor"  class="table table-condensed table-hover">
+                <tr class="bg-success">
+                    <td>{{ work_hisformset.form.work_his_id.label }}</td>
+                    <td>{{ work_hisformset.form.emp_id.label }}</td>
+                    <td>{{ work_hisformset.form.company_name.label }}</td>
+                    <td>{{ work_hisformset.form.work_start_date.label }}</td>
+                    <td>{{ work_hisformset.form.work_end_date.label }}</td>
+                    <td>{{ work_hisformset.form.emp_position.label }}</td>
+                    <td>{{ work_hisformset.form.work_part.label }}</td>
+                    <td>{{ work_hisformset.form.evidence_status_cd.label }}</td>
+                    <td>{{ work_hisformset.form.summary.label }}</td>
+                    <td>삭제</td>
+                </tr>
+            {{ work_hisformset.management_form }}
+            {% for form in work_hisformset %}
+                <tr>
+                    <td>{{ form.work_his_id }}</td>
+                    <td>{{ form.emp_id }}</td>
+                    <td>{{ form.company_name }}</td>
+                    <td>{{ form.work_start_date }}</td>
+                    <td>{{ form.work_end_date }}</td>
+                    <td>{{ form.emp_position }}</td>
+                    <td>{{ form.work_part }}</td>
+                    <td>{{ form.evidence_status_cd }}</td>
+                    <td>{{ form.summary }}</td>
+                    <td>{{ form.DELETE }}</td>
+                </tr>
+            {% endfor %}
+
+            </table>
+
+            <table id="empty_form_wor" style="display:none">
+                <tr>
+                    <td>{{ work_hisformset.empty_form.work_his_id }}</td>
+                    <td>{{ work_hisformset.empty_form.emp_id }}</td>
+                    <td>{{ work_hisformset.empty_form.company_name }}</td>
+                    <td>{{ work_hisformset.empty_form.work_start_date }}</td>
+                    <td>{{ work_hisformset.empty_form.work_end_date }}</td>
+                    <td>{{ work_hisformset.empty_form.emp_position }}</td>
+                    <td>{{ work_hisformset.empty_form.work_part }}</td>
+                    <td>{{ work_hisformset.empty_form.evidence_status_cd }}</td>
+                    <td>{{ work_hisformset.empty_form.summary }}</td>
+                    <td>{{ work_hisformset.empty_form.DELETE }}</td>
+                </tr>
+            </table>
+
+            <input type="button" value="상세내역 추가" id="add_more_wor" class="btn btn-warning">
+            <!-- Detail Tab 영역 중 경력:End -->
+
+
+    </section>
+
+    <section id="content4" style="margin-bottom:20px;">
+        tab menu4의 내용
+    </section>
+
     <!-- Detail Tab 영역:End -->
 
 
@@ -182,15 +289,33 @@
 
 <!-- Detail Row 추가:Start -->
 <script>
-$('#add_more').click(function() {
+$('#add_more_sch').click(function() {
 	var form_idx = $('#id_fk_school_his1-TOTAL_FORMS').val();
 	console.log('idx', form_idx)
 
-	$('#form_set').append($('#empty_form').html().replace(/__prefix__/g, form_idx));
+	$('#form_set_sch').append($('#empty_form_sch').html().replace(/__prefix__/g, form_idx));
 	$('#id_fk_school_his1-TOTAL_FORMS').val(parseInt(form_idx) + 1);
 });
+
+$('#add_more_lic').click(function() {
+	var form_idx = $('#id_fk_license_his1-TOTAL_FORMS').val();
+	console.log('idx', form_idx)
+
+	$('#form_set_lic').append($('#empty_form_lic').html().replace(/__prefix__/g, form_idx));
+	$('#id_fk_license_his1-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+});
+
+$('#add_more_wor').click(function() {
+	var form_idx = $('#id_fk_work_his1-TOTAL_FORMS').val();
+	console.log('idx', form_idx)
+
+	$('#form_set_wor').append($('#empty_form_wor').html().replace(/__prefix__/g, form_idx));
+	$('#id_fk_work_his1-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+});
+
 </script>
 <!-- Detail Row 추가:End -->
+
 
 
 {% endblock %}

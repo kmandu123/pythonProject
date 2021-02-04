@@ -39,7 +39,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from .forms import Comm_divForm, EmployeeForm, School_hisFormset
+from .forms import Comm_divForm, EmployeeForm, School_hisFormset, License_hisFormset, Work_hisFormset
 #inline Formsets 사용
 from django.forms import inlineformset_factory
 from django import forms
@@ -179,6 +179,8 @@ def EmployeeUpdate(request, pk):
 
     #detail from instance 생성 : 최초 user화면에 보여주는 수정대상 instance
     school_hisformset = School_hisFormset(instance=employee)
+    license_hisformset = License_hisFormset(instance=employee)
+    work_hisformset = Work_hisFormset(instance=employee)
 
     if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
         # master form instance 생성 : Post요청 data로 생성
@@ -190,24 +192,33 @@ def EmployeeUpdate(request, pk):
 
         # detail form instance 생성 : Post요청 data로 생성
         school_hisformset = School_hisFormset(request.POST, request.FILES)
-
+        license_hisformset = License_hisFormset(request.POST, request.FILES)
+        work_hisformset = Work_hisFormset(request.POST, request.FILES)
 
         if employee_form.is_valid():
             created_employee = employee_form.save(commit=False)
             school_hisformset = School_hisFormset(request.POST, request.FILES, instance=created_employee)
+            license_hisformset = License_hisFormset(request.POST, request.FILES, instance=created_employee)
+            work_hisformset = Work_hisFormset(request.POST, request.FILES, instance=created_employee)
 
-            if school_hisformset.is_valid():
+            if school_hisformset.is_valid() and license_hisformset.is_valid():
                 created_employee.save()
                 school_hisformset.save()
+                license_hisformset.save()
+                work_hisformset.save()
                 return HttpResponseRedirect(reverse('employee_list'))
             else:
                 print("detail valid error발생")
                 print(school_hisformset.errors)
+                print(license_hisformset.errors)
+                print(work_hisformset.errors)
 
     # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
     context = {
         'employee_form': employee_form,
         'school_hisformset': school_hisformset,
+        'license_hisformset': license_hisformset,
+        'work_hisformset': work_hisformset,
         'employee': employee,
     }
 

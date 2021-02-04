@@ -143,6 +143,7 @@ class Work_his(models.Model):
     company_name = models.CharField(max_length=200, verbose_name='회사명')
     work_start_date = models.DateField(verbose_name='경력시작일자', null=True)
     work_end_date = models.DateField(verbose_name='경력종료일자', null=True, blank=True)
+    emp_position = models.CharField(max_length=200, verbose_name='직위')
     work_part = models.CharField(max_length=200, verbose_name='담당업무')
     evidence_status_cd = models.ForeignKey('Comm_code', related_name='fk_work_his2', on_delete=models.SET_NULL, null=True, blank=True, db_column='evidence_status_cd', verbose_name='증빙점검')
     summary = models.CharField(max_length=2000, null=True, blank=True, verbose_name='비고')

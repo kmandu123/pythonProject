@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comm_div, Comm_code, Employee, School_his
+from .models import Comm_div, Comm_code, Employee, School_his, License_his, Work_his
 from django.forms import inlineformset_factory
 
 class Comm_divForm(forms.ModelForm):
@@ -56,7 +56,7 @@ class EmployeeForm(forms.ModelForm):
 class School_hisForm(forms.ModelForm):
     class Meta:
         model = School_his
-        fields = '__all__'
+        fields = ('school_name', 'school_subject', 'graduate_date', 'evidence_status_cd', 'summary')
 
     # fk로 설정된 공통코드 구분 필터링 정의
     def __init__(self, *args, **kwargs):
@@ -68,8 +68,50 @@ class School_hisForm(forms.ModelForm):
 School_hisFormset = inlineformset_factory(Employee, School_his, form=School_hisForm,
 #                    fields=('school_his_id', 'emp_id', 'school_name', 'school_subject', 'graduate_date', 'evidence_status_cd', 'summary'),
                     widgets={
-                            'graduate_date': forms.TextInput(attrs={'size': 10, 'class': 'cal'}),
+                            'graduate_date': forms.TextInput(attrs={'autocomplete': 'off','size': 10, 'class': 'cal'}),
                             'summary': forms.TextInput(attrs={'size': 70})
                     },
-                    extra=0, can_delete=True)
+                    extra=1, can_delete=True)
 
+
+class License_hisForm(forms.ModelForm):
+    class Meta:
+        model = License_his
+        fields = ('license_cd', 'got_date', 'evidence_status_cd', 'summary')
+
+    # fk로 설정된 공통코드 구분 필터링 정의
+    def __init__(self, *args, **kwargs):
+        super(License_hisForm, self).__init__(*args, **kwargs)
+        self.fields['license_cd'].queryset = Comm_code.objects.filter(comm_div_id=5)
+        self.fields['evidence_status_cd'].queryset = Comm_code.objects.filter(comm_div_id=4)
+
+
+ # detail form 객체 생성
+License_hisFormset = inlineformset_factory(Employee, License_his, form=License_hisForm,
+                    widgets={
+                            'got_date': forms.TextInput(attrs={'autocomplete': 'off', 'size': 10, 'class': 'cal'}),
+                            'summary': forms.TextInput(attrs={'size': 70})
+                    },
+                    extra=1, can_delete=True)
+
+
+
+class Work_hisForm(forms.ModelForm):
+    class Meta:
+        model = Work_his
+        fields = ('company_name', 'work_start_date', 'work_end_date', 'emp_position', 'work_part', 'evidence_status_cd', 'summary')
+
+    # fk로 설정된 공통코드 구분 필터링 정의
+    def __init__(self, *args, **kwargs):
+        super(Work_hisForm, self).__init__(*args, **kwargs)
+        self.fields['evidence_status_cd'].queryset = Comm_code.objects.filter(comm_div_id=4)
+
+
+ # detail form 객체 생성
+Work_hisFormset = inlineformset_factory(Employee, Work_his, form=Work_hisForm,
+                    widgets={
+                            'work_start_date': forms.TextInput(attrs={'autocomplete': 'off', 'size': 10, 'class': 'cal'}),
+                            'work_end_date': forms.TextInput(attrs={'autocomplete': 'off', 'size': 10, 'class': 'cal'}),
+                            'summary': forms.TextInput(attrs={'size': 70})
+                    },
+                    extra=1, can_delete=True)
