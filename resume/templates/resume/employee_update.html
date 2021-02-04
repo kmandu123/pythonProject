@@ -1,0 +1,197 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<!-- 마스터 table 영역에 대한 스타일:Start -->
+<style>
+.main_table {
+  border-collapse: separate;
+  border-spacing: 0 5px;
+}
+</style>
+<!-- 마스터 table 영역에 대한 스타일:End -->
+
+<!-- Detail Tab 영역에 대한 스타일:Start -->
+<style>
+        .main {
+            min-width: 320px;
+            max-width: 1400px;
+            padding: 10px;
+            border-radius: 7px;;
+            background: #ffffff;}
+
+        section {
+            display: none;
+            padding: 20px 0 0;
+            border-top: 1px solid #ddd;}
+
+        #tab1 {
+              display: none;}
+        #tab2 {
+              display: none;}
+
+        label {
+            display: inline-block;
+            padding: 15px 25px;
+            font-weight: 600;
+            color: #bbb;
+            border: 1px solid transparent;}
+
+        label:hover {
+            color: #2e9cdf;
+            cursor: pointer;}
+
+        /*input 클릭시, label 스타일*/
+        input:checked + label {
+              color: #555;
+              border: 1px solid #ddd;
+              border-top: 2px solid #2e9cdf;
+              border-bottom: 1px solid #ffffff;}
+
+        #tab1:checked ~ #content1,
+        #tab2:checked ~ #content2,
+        #tab3:checked ~ #content3,
+        #tab4:checked ~ #content4 {
+            display: block;}
+    </style>
+<!-- Detail Tab 영역에 대한 스타일:End -->
+
+<br>
+<br>
+<form action="" method="post" >
+    {% csrf_token %}
+    <table >
+    <h3>사원정보 수정</h3>
+    </table>
+
+    <!-- Main 입력 영역:Start -->
+    <table class="main_table">
+        <tr>
+            <td align="right">{{ employee_form.emp_position_cd.label }}</td><td>{{ employee_form.emp_position_cd }}</td>
+            <td align="right">{{ employee_form.emp_name.label }}</td><td>{{ employee_form.emp_name }}</td>
+            <td align="right">{{ employee_form.skill_grade_cd.label }}</td><td>{{ employee_form.skill_grade_cd }}</td>
+            <td align="right">{{ employee_form.gender.label }}</td><td>{{ employee_form.gender }}</td>
+        </tr>
+        <tr>
+            <td align="right">{{ employee_form.birthdate.label }}</td><td>{{ employee_form.birthdate }}</td>
+            <td align="right">{{ employee_form.mobile_no.label }}</td><td>{{ employee_form.mobile_no }}</td>
+            <td align="right">{{ employee_form.emergency_telno.label }}</td><td>{{ employee_form.emergency_telno }}</td>
+            <td align="right">{{ employee_form.emergency_rel.label }}</td><td>{{ employee_form.emergency_rel }}</td>
+        </tr>
+        <tr>
+            <td align="right">{{ employee_form.postno.label }}</td><td>{{ employee_form.postno }}</td>
+            <td align="right">{{ employee_form.email_addr.label }}</td><td>{{ employee_form.email_addr }}</td>
+            <td align="right">{{ employee_form.indate.label }}</td><td>{{ employee_form.indate }}</td>
+            <td align="right">{{ employee_form.outdate.label }}</td><td>{{ employee_form.outdate }}</td>
+        </tr>
+        <tr>
+            <td align="right">{{ employee_form.addr.label }}</td><td colspan="3">{{ employee_form.addr }}</td>
+            <td align="right">{{ employee_form.addr_dtl.label }}</td><td colspan="3">{{ employee_form.addr_dtl }}</td>
+        </tr>
+        <tr>
+            <td align="right">{{ employee_form.work_base_date.label }}</td><td>{{ employee_form.work_base_date }}</td>
+            <td align="right">{{ employee_form.work_base_year.label }}</td><td>{{ employee_form.work_base_year }}</td>
+            <td align="right">{{ employee_form.work_base_month.label }}</td><td>{{ employee_form.work_base_month }}</td>
+            <td align="right">{{ employee_form.evidence_method_cd.label }}</td><td>{{ employee_form.evidence_method_cd }}</td>
+        </tr>
+        <tr>
+            <td align="right">{{ employee_form.skill_main.label }}</td><td colspan="3">{{ employee_form.skill_main }}</td>
+            <td align="right">{{ employee_form.skill_major.label }}</td><td colspan="3">{{ employee_form.skill_major }}</td>
+        </tr>
+        <tr>
+            <td align="right">{{ employee_form.summary.label }}</td><td colspan="3">{{ employee_form.summary }}</td>
+            <td align="right"></td><td colspan="3"></td>
+        </tr>
+    </table>
+
+    <button type="submit" class="btn btn-warning">저   장</button>&nbsp&nbsp&nbsp
+    <a href="{% url 'employee_list' %}">취소</a>&nbsp&nbsp&nbsp
+    <!-- Main 입력 영역:End -->
+
+    <br>
+
+
+
+    <!-- Detail Tab 영역:Start -->
+    <div class="main" style="text-align:left">
+
+    <input id="tab1" type="radio" name="tabs" checked>
+    <label for="tab1">학   력</label>
+
+    <input id="tab2" type="radio" name="tabs">
+    <label for="tab2">두번째 탭</label>
+
+    <section id="content1" style="margin-bottom:20px;">
+
+            <!-- Detail Tab 영역 중 학력:Start -->
+            <table id="form_set"  class="table table-condensed table-hover">
+                <tr class="bg-success">
+                    <td>{{ school_hisformset.form.school_his_id.label }}</td>
+                    <td>{{ school_hisformset.form.emp_id.label }}</td>
+                    <td>{{ school_hisformset.form.school_name.label }}</td>
+                    <td>{{ school_hisformset.form.school_subject.label }}</td>
+                    <td>{{ school_hisformset.form.graduate_date.label }}</td>
+                    <td>{{ school_hisformset.form.evidence_status_cd.label }}</td>
+                    <td>{{ school_hisformset.form.summary.label }}</td>
+                    <td>삭제</td>
+                </tr>
+            {{ school_hisformset.management_form }}
+            {% for form in school_hisformset %}
+                <tr>
+                    <td>{{ form.school_his_id }}</td>
+                    <td>{{ form.emp_id }}</td>
+                    <td>{{ form.school_name }}</td>
+                    <td>{{ form.school_subject }}</td>
+                    <td>{{ form.graduate_date }}</td>
+                    <td>{{ form.evidence_status_cd }}</td>
+                    <td>{{ form.summary }}</td>
+                    <td>{{ form.DELETE }}</td>
+                </tr>
+            {% endfor %}
+
+            </table>
+
+            <table id="empty_form" style="display:none">
+                <tr>
+                    <td>{{ school_hisformset.empty_form.school_his_id }}</td>
+                    <td>{{ school_hisformset.empty_form.emp_id }}</td>
+                    <td>{{ school_hisformset.empty_form.school_name }}</td>
+                    <td>{{ school_hisformset.empty_form.school_subject }}</td>
+                    <td>{{ school_hisformset.empty_form.graduate_date }}</td>
+                    <td>{{ school_hisformset.empty_form.evidence_status_cd }}</td>
+                    <td>{{ school_hisformset.empty_form.summary }}</td>
+                    <td>{{ school_hisformset.empty_form.DELETE }}</td>
+                </tr>
+            </table>
+
+            <input type="button" value="상세내역 추가" id="add_more" class="btn btn-warning">
+            <!-- Detail Tab 영역 중 학력:End -->
+
+
+    </section>
+
+
+    <section id="content2" style="margin-bottom:20px;">
+        tab menu2의 내용
+    </section>
+    <!-- Detail Tab 영역:End -->
+
+
+</form>
+
+
+<!-- Detail Row 추가:Start -->
+<script>
+$('#add_more').click(function() {
+	var form_idx = $('#id_fk_school_his1-TOTAL_FORMS').val();
+	console.log('idx', form_idx)
+
+	$('#form_set').append($('#empty_form').html().replace(/__prefix__/g, form_idx));
+	$('#id_fk_school_his1-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+});
+</script>
+<!-- Detail Row 추가:End -->
+
+
+{% endblock %}
+

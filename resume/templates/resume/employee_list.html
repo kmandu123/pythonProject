@@ -6,13 +6,17 @@
   <a href="{% url 'comm_div_create'%}">신규입력</a>
   <br><br>
   {% if employee_list %}
-  <ul>
+  <table class="table">
+      <tr bgcolor="silver">
+          <td>사원명 </td><td>직급</td><td>기술등급</td><td>입사일자</td>
+      </tr>
+
     {% for r in employee_list %}
-      <li>
-          <tr><td><a href="{{ r.get_absolute_url }}">{{ r.emp_name }} </a> </td>   <td>{{ r.emp_position_cd }}</td></tr>
-      </li>
+      <tr>
+          <td><a href="{{ r.get_absolute_url }}">{{ r.emp_name }}</a> </td><td>{{ r.emp_position_cd }}</td><td>{{ r.skill_grade_cd }}</td><td>{{ r.indate | date:'Y-m-d' }}</td>
+      </tr>
     {% endfor %}
-  </ul>
+  </table>
   {% else %}
     <p>사원정보가 없습니다..</p>
   {% endif %}

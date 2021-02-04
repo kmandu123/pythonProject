@@ -39,7 +39,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from .forms import Comm_divForm, EmployeeForm, School_hisFormset
+from .forms import Comm_divForm, EmployeeForm
 #inline Formsets 사용
 from django.forms import inlineformset_factory
 from django import forms
@@ -176,6 +176,20 @@ def EmployeeUpdate(request, pk):
 
     # master form instance 생성 : 마스터 form 객체는 forms.py에 존재함. : 최초 user화면에 보여주는 수정대상 instance
     employee_form = EmployeeForm(instance=employee)
+
+    # detail form 객체 생성
+    School_hisFormset = inlineformset_factory(Employee, School_his,
+                        fields=('school_his_id', 'emp_id', 'school_name', 'school_subject', 'graduate_date', 'evidence_status_cd', 'summary'),
+                        widgets={
+                                'graduate_date': forms.TextInput(attrs={'size': 10, 'class': 'cal'}),
+                                'summary': forms.TextInput(attrs={'size': 70})
+                        },
+
+
+
+                        extra=0, can_delete=True)
+
+ 
 
     #detail from instance 생성 : 최초 user화면에 보여주는 수정대상 instance
     school_hisformset = School_hisFormset(instance=employee)

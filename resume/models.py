@@ -73,10 +73,10 @@ class Employee(models.Model):
     evidence_method_cd = models.ForeignKey('Comm_code', related_name='fk_employee3', on_delete=models.SET_NULL, null=True, blank=True,
                                            db_column='evidence_method_cd', verbose_name='경력 증빙 점검 방법')
 
-    skill_main = models.CharField(max_length=2000, null=True, blank=True, verbose_name='전문분야')
-    skill_major = models.CharField(max_length=2000, null=True, blank=True, verbose_name='주요사업')
+    skill_main = models.TextField(max_length=2000, null=True, blank=True, verbose_name='전문분야')
+    skill_major = models.TextField(max_length=2000, null=True, blank=True, verbose_name='주요사업')
 
-    summary = models.CharField(max_length=2000, null=True, blank=True, verbose_name='비고')
+    summary = models.TextField(max_length=2000, null=True, blank=True, verbose_name='비고')
     create_dt = models.DateTimeField(auto_now_add=True, verbose_name='생성일시', null=True, blank=True)
     update_dt = models.DateTimeField(auto_now=True, verbose_name='수정일시', null=True, blank=True)
     create_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='생성자id')
@@ -89,6 +89,17 @@ class Employee(models.Model):
     def get_absolute_url(self):
         """Returns the url to access a detail record for this book."""
         return reverse('employee_update', args=[str(self.emp_id)])
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "emp_position_cd":
+            kwargs["queryset"] = Comm_code.objects.filter(comm_div_name='직위')
+        elif db_field.name == "skill_grade_cd":
+            kwargs["queryset"] = Comm_code.objects.filter(comm_div_name='등급')
+        elif db_field.name == "evidence_method_cd":
+            kwargs["queryset"] = Comm_code.objects.filter(comm_div_name='경력 증빙 점검 방법')
+        elif db_field.name == "skill_etl":
+            kwargs["queryset"] = Comm_code.objects.filter(comm_div_name='기술 ETL')
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 class School_his(models.Model):

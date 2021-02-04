@@ -122,6 +122,7 @@ class EmployeeAdmin(admin.ModelAdmin):
     list_display = ('emp_name', 'emp_position_cd', 'skill_grade_cd', 'indate')
 
 
+
 @admin.register(School_his)
 class School_hisAdmin(admin.ModelAdmin):
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
@@ -185,6 +186,9 @@ class PjtAdmin(admin.ModelAdmin):
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
     inlines = [Pjt_hisInline]
     list_filter = ('order_comp_id', )
+
+
+
 
 
 @admin.register(Pjt_his)
