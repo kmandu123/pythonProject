@@ -1,14 +1,22 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>사원 List</h1>
+
+
+<style>
+
+</style>
+
   <br>
-  <a href="{% url 'comm_div_create'%}">신규입력</a>
+  <h2 class="tit">사원 List</h2>
+
+  <input class="btn btn btn-info" type="button" value="신규입력" onClick="location.href='{% url 'comm_div_create'%}'">
+
   <br><br>
   {% if employee_list %}
   <table class="table">
-      <tr bgcolor="silver">
-          <td>사원명 </td><td>직급</td><td>기술등급</td><td>입사일자</td>
+      <tr bgcolor="#F7F7F7">
+          <td><strong>사원명</strong> </td><td><strong>직급</strong></td><td><strong>기술등급</strong></td><td><strong>입사일자</strong></td>
       </tr>
 
     {% for r in employee_list %}
