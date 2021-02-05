@@ -73,14 +73,6 @@ class Employee(models.Model):
     evidence_method_cd = models.ForeignKey('Comm_code', related_name='fk_employee3', on_delete=models.SET_NULL, null=True, blank=True,
                                            db_column='evidence_method_cd', verbose_name='경력 증빙 점검 방법')
 
-    skill_hw_cd = models.ManyToManyField('Comm_code', related_name='mk_employee1', null=True, blank=True, db_column='skill_hw_cd', verbose_name='기술 하드웨어')
-    skill_os_cd = models.ManyToManyField('Comm_code', related_name='mk_employee2', null=True, blank=True, db_column='skill_os_cd', verbose_name='기술 운영체제')
-    skill_olap_cd = models.ManyToManyField('Comm_code', related_name='mk_employee3', null=True, blank=True, db_column='skill_olap_cd', verbose_name='기술 OLAP/UI')
-    skill_etl_cd = models.ManyToManyField('Comm_code', related_name='mk_employee4', null=True, blank=True, db_column='skill_etl_cd', verbose_name='기술 ETL')
-    skill_dev_cd = models.ManyToManyField('Comm_code', related_name='mk_employee5', null=True, blank=True, db_column='skill_dev_cd', verbose_name='기술 개발언어')
-    skill_db_cd = models.ManyToManyField('Comm_code', related_name='mk_employee6', null=True, blank=True, db_column='skill_db_cd', verbose_name='기술 데이터베이스')
-    skill_was_cd = models.ManyToManyField('Comm_code', related_name='mk_employee7', null=True, blank=True, db_column='skill_was_cd', verbose_name='기술 개발플랫폼(WAS)')
-
     skill_main = models.TextField(max_length=2000, null=True, blank=True, verbose_name='전문분야')
     skill_major = models.TextField(max_length=2000, null=True, blank=True, verbose_name='주요사업')
 
@@ -100,25 +92,13 @@ class Employee(models.Model):
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "emp_position_cd":
-            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=1)
+            kwargs["queryset"] = Comm_code.objects.filter(comm_div_name='직위')
         elif db_field.name == "skill_grade_cd":
-            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=2)
+            kwargs["queryset"] = Comm_code.objects.filter(comm_div_name='등급')
         elif db_field.name == "evidence_method_cd":
-            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=3)
-        elif db_field.name == "skill_hw_cd":
-            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=6)
-        elif db_field.name == "skill_os_cd":
-            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=7)
-        elif db_field.name == "skill_olap_cd":
-            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=8)
-        elif db_field.name == "skill_etl_cd":
-            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=9)
-        elif db_field.name == "skill_dev_cd":
-            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=10)
-        elif db_field.name == "skill_db_cd":
-            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=11)
-        elif db_field.name == "skill_was_cd":
-            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=12)
+            kwargs["queryset"] = Comm_code.objects.filter(comm_div_name='경력 증빙 점검 방법')
+        elif db_field.name == "skill_etl":
+            kwargs["queryset"] = Comm_code.objects.filter(comm_div_name='기술 ETL')
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
@@ -277,4 +257,16 @@ class Pjt_his(models.Model):
         """String for representing the Model object."""
         return str(self.pjt_his_id)
 
+
+
+class Skill_his(models.Model):
+    skill_his_id = models.AutoField(primary_key=True, verbose_name='하드웨이이력ID')
+    emp_id = models.ForeignKey('Employee', related_name='fk_Skill_his1', on_delete=models.SET_NULL, null=True, db_column='emp_id', verbose_name='사원')
+    skill_div_cd = models.ForeignKey('Comm_code', related_name='fk_Skill_his2', on_delete=models.SET_NULL, null=True, blank=True, db_column='skill_div_cd', verbose_name='기술구분')
+    skill_cd = models.ForeignKey('Comm_code', related_name='fk_Skill_his3', on_delete=models.SET_NULL, null=True, db_column='skill_cd', verbose_name='기술')
+    summary = models.CharField(max_length=2000, null=True, blank=True, verbose_name='비고')
+    create_dt = models.DateTimeField(auto_now_add=True, verbose_name='생성일시', null=True, blank=True)
+    update_dt = models.DateTimeField(auto_now=True, verbose_name='수정일시', null=True, blank=True)
+    create_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='생성자id')
+    update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 

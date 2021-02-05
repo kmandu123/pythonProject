@@ -133,7 +133,7 @@
     <label for="tab4">교 육</label>
 
     <input class="option_check"  id="tab5" type="radio" name="tabs">
-    <label for="tab5">주요 기술</label>
+    <label for="tab5">다섯번째 탭</label>
 
     <input class="option_check"  id="tab6" type="radio" name="tabs">
     <label for="tab6">여섯번째 탭</label>
@@ -332,41 +332,7 @@
 
     <section id="content5" style="margin-bottom:20px;">
 
-            <!-- Detail Tab 영역 중 주요기술:Start -->
-            <!-- key필드는 display하지는 않지만 반드시 표기할 것 -->
-            <table id="form_set_ski"  class="table table-condensed table-hover">
-                <tr  bgcolor="#F7F7F7">
-                    <td><strong>{{ skill_hisformset.form.skill_his_id.label }}</strong></td>
-                    <td><strong>{{ skill_hisformset.form.skill_div_cd.label }}</strong></td>
-                    <td><strong>{{ skill_hisformset.form.skill_cd.label }}</strong></td>
-                    <td><strong>{{ skill_hisformset.form.summary.label }}</strong></td>
-                    <td><strong>삭제</td>
-                </tr>
-            {{ skill_hisformset.management_form }}
-            {% for form in skill_hisformset %}
-                <tr>
-                    <td>{{ form.skill_his_id }}</td>
-                    <td>{{ form.skill_div_cd }}</td>
-                    <td>{{ form.skill_cd }}</td>
-                    <td>{{ form.summary }}</td>
-                    <td>{{ form.DELETE }}</td>
-                </tr>
-            {% endfor %}
-
-            </table>
-
-            <table id="empty_form_ski" style="display:none">
-                <tr>
-                    <td>{{ skill_hisformset.empty_form.skill_his_id }}</td>
-                    <td>{{ skill_hisformset.empty_form.skill_div_cd }}</td>
-                    <td>{{ skill_hisformset.empty_form.skill_cd }}</td>
-                    <td>{{ skill_hisformset.empty_form.summary }}</td>
-                    <td>{{ skill_hisformset.empty_form.DELETE }}</td>
-                </tr>
-            </table>
-
-            <input type="button" value="상세내역 추가" id="add_more_ski" class="btn btn-info">
-            <!-- Detail Tab 영역 중 주요기술:End -->
+        tab menu5의 내용
 
     </section>
 
@@ -415,13 +381,7 @@ $('#add_more_edu').click(function() {
 	$('#id_fk_edu_his1-TOTAL_FORMS').val(parseInt(form_idx) + 1);
 });
 
-$('#add_more_ski').click(function() {
-	var form_idx = $('#id_fk_Skill_his1-TOTAL_FORMS').val();
-	console.log('idx', form_idx)
 
-	$('#form_set_ski').append($('#empty_form_ski').html().replace(/__prefix__/g, form_idx));
-	$('#id_fk_Skill_his1-TOTAL_FORMS').val(parseInt(form_idx) + 1);
-});
 </script>
 <!-- Detail Row 추가:End -->
 

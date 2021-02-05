@@ -157,3 +157,21 @@ Edu_hisFormset2 = inlineformset_factory(Employee, Edu_his, form=Edu_hisForm,
                     extra=1, can_delete=True)
 
 
+class Skill_hisForm(forms.ModelForm):
+    class Meta:
+        model = Skill_his
+        fields = '__all__'
+
+    # fk로 설정된 공통코드 구분 필터링 정의
+    def __init__(self, *args, **kwargs):
+        super(Skill_hisForm, self).__init__(*args, **kwargs)
+        self.fields['skill_div_cd'].queryset = Comm_code.objects.filter(comm_div_id=19)
+
+
+
+ # detail form 객체 생성
+Skill_hisFormset = inlineformset_factory(Employee, Skill_his, form=Skill_hisForm,
+                    widgets={
+                            'summary': forms.TextInput(attrs={'size': 70})
+                    },
+                    extra=1, can_delete=True)

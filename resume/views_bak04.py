@@ -182,6 +182,7 @@ def EmployeeUpdate(request, pk):
     license_hisformset = License_hisFormset(instance=employee)
     work_hisformset = Work_hisFormset(instance=employee)
     edu_hisformset2 = Edu_hisFormset2(instance=employee)
+    skill_hisformset = Skill_hisFormset(instance=employee)
 
     if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
         # master form instance 생성 : Post요청 data로 생성
@@ -196,6 +197,7 @@ def EmployeeUpdate(request, pk):
         license_hisformset = License_hisFormset(request.POST, request.FILES)
         work_hisformset = Work_hisFormset(request.POST, request.FILES)
         edu_hisformset2 = Edu_hisFormset2(request.POST, request.FILES)
+        skill_hisformset = Skill_hisFormset(request.POST, request.FILES)
 
 
         if employee_form.is_valid():
@@ -204,6 +206,7 @@ def EmployeeUpdate(request, pk):
             license_hisformset = License_hisFormset(request.POST, request.FILES, instance=created_employee)
             work_hisformset = Work_hisFormset(request.POST, request.FILES, instance=created_employee)
             edu_hisformset2 = Edu_hisFormset2(request.POST, request.FILES, instance=created_employee)
+            skill_hisformset = Skill_hisFormset(request.POST, request.FILES, instance=created_employee)
 
             if school_hisformset.is_valid() and license_hisformset.is_valid() and work_hisformset.is_valid() and edu_hisformset2.is_valid() and skill_hisformset.is_valid():
                 created_employee.save()
@@ -211,6 +214,7 @@ def EmployeeUpdate(request, pk):
                 license_hisformset.save()
                 work_hisformset.save()
                 edu_hisformset2.save()
+                skill_hisformset.save()
                 return HttpResponseRedirect(reverse('employee_list'))
             else:
                 print("detail valid error발생")
@@ -218,6 +222,7 @@ def EmployeeUpdate(request, pk):
                 print(license_hisformset.errors)
                 print(work_hisformset.errors)
                 print(edu_hisformset2.errors)
+                print(skill_hisformset.errors)
 
     # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
     context = {
@@ -226,6 +231,7 @@ def EmployeeUpdate(request, pk):
         'license_hisformset': license_hisformset,
         'work_hisformset': work_hisformset,
         'edu_hisformset2': edu_hisformset2,
+        'skill_hisformset': skill_hisformset,
         'employee': employee,
     }
 
