@@ -19,3 +19,8 @@ urlpatterns += [
     path('employee_list/', views.EmployeeList.as_view(), name='employee_list'),
     path('employee_list/<int:pk>/update/', views.EmployeeUpdate, name='employee_update'),
 ]
+
+urlpatterns += [
+    path('education_list/', views.EducationList.as_view(), name='education_list'),
+    path('education_list/<int:pk>/update/', views.EducationUpdate, name='education_update'),
+]

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comm_div, Comm_code, Employee, School_his, License_his, Work_his
+from .models import Comm_div, Comm_code, Employee, School_his, License_his, Work_his, Education, Edu_his
 from django.forms import inlineformset_factory
 
 class Comm_divForm(forms.ModelForm):
@@ -112,6 +112,45 @@ Work_hisFormset = inlineformset_factory(Employee, Work_his, form=Work_hisForm,
                     widgets={
                             'work_start_date': forms.TextInput(attrs={'autocomplete': 'off', 'size': 10, 'class': 'cal'}),
                             'work_end_date': forms.TextInput(attrs={'autocomplete': 'off', 'size': 10, 'class': 'cal'}),
+                            'summary': forms.TextInput(attrs={'size': 70})
+                    },
+                    extra=1, can_delete=True)
+
+
+class EducationForm(forms.ModelForm):
+    class Meta:
+        model = Education
+        fields = '__all__'
+
+        # 속성별로 재정의 할때
+        widgets = {
+            'edu_start_date': forms.TextInput(attrs={'class': 'cal', 'autocomplete': 'off', 'size': '10'}),
+            'edu_end_date': forms.TextInput(attrs={'class': 'cal', 'autocomplete': 'off', 'size': '10'}),
+            'summary': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '63', 'rows': '3'}),
+        }
+
+
+class Edu_hisForm(forms.ModelForm):
+    class Meta:
+        model = Edu_his
+        fields = ('edu_id', 'emp_id', 'evidence_status_cd', 'summary')
+
+    # fk로 설정된 공통코드 구분 필터링 정의
+    def __init__(self, *args, **kwargs):
+        super(Edu_hisForm, self).__init__(*args, **kwargs)
+        self.fields['evidence_status_cd'].queryset = Comm_code.objects.filter(comm_div_id=4)
+
+
+ # detail form 객체 생성
+Edu_hisFormset = inlineformset_factory(Education, Edu_his, form=Edu_hisForm,
+                    widgets={
+                            'summary': forms.TextInput(attrs={'size': 70})
+                    },
+                    extra=1, can_delete=True)
+
+ # detail form 객체 생성
+Edu_hisFormset2 = inlineformset_factory(Employee, Edu_his, form=Edu_hisForm,
+                    widgets={
                             'summary': forms.TextInput(attrs={'size': 70})
                     },
                     extra=1, can_delete=True)

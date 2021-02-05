@@ -290,9 +290,10 @@
 
             <!-- Detail Tab 영역 중 교육:Start -->
             <!-- key필드는 display하지는 않지만 반드시 표기할 것 -->
-            <table id="form_set_edu"  class="table table-condensed table-hover">
+            <table id="form_set_wor"  class="table table-condensed table-hover">
                 <tr  bgcolor="#F7F7F7">
                     <td><strong>{{ edu_hisformset2.form.edu_his_id.label }}</strong></td>
+                    <td><strong>{{ edu_hisformset2.form.emp_id.label }}</strong></td>
                     <td><strong>{{ edu_hisformset2.form.edu_id.label }}</strong></td>
                     <td><strong>{{ edu_hisformset2.form.evidence_status_cd.label }}</strong></td>
                     <td><strong>{{ edu_hisformset2.form.summary.label }}</strong></td>
@@ -302,6 +303,7 @@
             {% for form in edu_hisformset2 %}
                 <tr>
                     <td>{{ form.edu_his_id }}</td>
+                    <td>{{ form.emp_id }}</td>
                     <td>{{ form.edu_id }}</td>
                     <td>{{ form.evidence_status_cd }}</td>
                     <td>{{ form.summary }}</td>
@@ -311,9 +313,10 @@
 
             </table>
 
-            <table id="empty_form_edu" style="display:none">
+            <table id="empty_form_wor" style="display:none">
                 <tr>
                     <td>{{ edu_hisformset2.empty_form.edu_his_id }}</td>
+                    <td>{{ edu_hisformset2.empty_form.emp_id }}</td>
                     <td>{{ edu_hisformset2.empty_form.edu_id }}</td>
                     <td>{{ edu_hisformset2.empty_form.evidence_status_cd }}</td>
                     <td>{{ edu_hisformset2.empty_form.summary }}</td>
@@ -321,7 +324,7 @@
                 </tr>
             </table>
 
-            <input type="button" value="상세내역 추가" id="add_more_edu" class="btn btn-info">
+            <input type="button" value="상세내역 추가" id="add_more_wor" class="btn btn-info">
             <!-- Detail Tab 영역 중 교육:End -->
 
     </section>
@@ -360,14 +363,6 @@ $('#add_more_wor').click(function() {
 
 	$('#form_set_wor').append($('#empty_form_wor').html().replace(/__prefix__/g, form_idx));
 	$('#id_fk_work_his1-TOTAL_FORMS').val(parseInt(form_idx) + 1);
-});
-
-$('#add_more_edu').click(function() {
-	var form_idx = $('#id_fk_edu_his1-TOTAL_FORMS').val();
-	console.log('idx', form_idx)
-
-	$('#form_set_edu').append($('#empty_form_edu').html().replace(/__prefix__/g, form_idx));
-	$('#id_fk_edu_his1-TOTAL_FORMS').val(parseInt(form_idx) + 1);
 });
 
 </script>

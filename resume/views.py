@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
-from resume.models import Comm_div, Comm_code, Employee, School_his
+from resume.models import Comm_div, Comm_code, Employee, School_his, Education
 
 def index(request):
     """View function for home page of site."""
@@ -39,7 +39,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from .forms import Comm_divForm, EmployeeForm, School_hisFormset, License_hisFormset, Work_hisFormset
+from .forms import Comm_divForm, EmployeeForm, School_hisFormset, License_hisFormset, Work_hisFormset, EducationForm, Edu_hisFormset, Edu_hisFormset2
 #inline Formsets 사용
 from django.forms import inlineformset_factory
 from django import forms
@@ -181,6 +181,7 @@ def EmployeeUpdate(request, pk):
     school_hisformset = School_hisFormset(instance=employee)
     license_hisformset = License_hisFormset(instance=employee)
     work_hisformset = Work_hisFormset(instance=employee)
+    edu_hisformset2 = Edu_hisFormset2(instance=employee)
 
     if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
         # master form instance 생성 : Post요청 data로 생성
@@ -194,24 +195,29 @@ def EmployeeUpdate(request, pk):
         school_hisformset = School_hisFormset(request.POST, request.FILES)
         license_hisformset = License_hisFormset(request.POST, request.FILES)
         work_hisformset = Work_hisFormset(request.POST, request.FILES)
+        edu_hisformset2 = Edu_hisFormset2(request.POST, request.FILES)
+
 
         if employee_form.is_valid():
             created_employee = employee_form.save(commit=False)
             school_hisformset = School_hisFormset(request.POST, request.FILES, instance=created_employee)
             license_hisformset = License_hisFormset(request.POST, request.FILES, instance=created_employee)
             work_hisformset = Work_hisFormset(request.POST, request.FILES, instance=created_employee)
+            edu_hisformset2 = Edu_hisFormset2(request.POST, request.FILES, instance=created_employee)
 
-            if school_hisformset.is_valid() and license_hisformset.is_valid():
+            if school_hisformset.is_valid() and license_hisformset.is_valid() and work_hisformset.is_valid() and edu_hisformset2.is_valid():
                 created_employee.save()
                 school_hisformset.save()
                 license_hisformset.save()
                 work_hisformset.save()
+                edu_hisformset2.save()
                 return HttpResponseRedirect(reverse('employee_list'))
             else:
                 print("detail valid error발생")
                 print(school_hisformset.errors)
                 print(license_hisformset.errors)
                 print(work_hisformset.errors)
+                print(edu_hisformset2.errors)
 
     # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
     context = {
@@ -219,8 +225,63 @@ def EmployeeUpdate(request, pk):
         'school_hisformset': school_hisformset,
         'license_hisformset': license_hisformset,
         'work_hisformset': work_hisformset,
+        'edu_hisformset2': edu_hisformset2,
         'employee': employee,
     }
 
     # template를 호출한다. context도 같이 넘긴다.
     return render(request, 'resume/employee_update.html', context)
+
+
+
+# 교육 list
+class EducationList(generic.ListView):
+    model = Education
+
+
+def EducationUpdate(request, pk):
+
+    if pk:
+        #master model instance 생성
+        education = Education.objects.get(edu_id=pk)
+    else:
+        education = Education()
+
+    # master form instance 생성 : 마스터 form 객체는 forms.py에 존재함. : 최초 user화면에 보여주는 수정대상 instance
+    education_form = EducationForm(instance=education)
+
+    #detail from instance 생성 : 최초 user화면에 보여주는 수정대상 instance
+    edu_hisformset = Edu_hisFormset(instance=education)
+
+    if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
+        # master form instance 생성 : Post요청 data로 생성
+        education_form = EducationForm(request.POST)
+
+        if pk:
+            # master form instance 생성 : Post요청 data와 pk에 해당하는 마스터 모델 instance연계
+            education_form = EducationForm(request.POST, instance=education)
+
+        # detail form instance 생성 : Post요청 data로 생성
+        edu_hisformset = Edu_hisFormset(request.POST, request.FILES)
+
+        if education_form.is_valid():
+            created_education = education_form.save(commit=False)
+            edu_hisformset = Edu_hisFormset(request.POST, request.FILES, instance=created_education)
+
+            if edu_hisformset.is_valid():
+                created_education.save()
+                edu_hisformset.save()
+                return HttpResponseRedirect(reverse('education_list'))
+            else:
+                print("detail valid error발생")
+                print(edu_hisformset.errors)
+
+    # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
+    context = {
+        'education_form': education_form,
+        'edu_hisformset': edu_hisformset,
+        'employee': education,
+    }
+
+    # template를 호출한다. context도 같이 넘긴다.
+    return render(request, 'resume/education_update.html', context)

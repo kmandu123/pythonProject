@@ -180,6 +180,11 @@ class Education(models.Model):
         """String for representing the Model object."""
         return self.edu_name
 
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this book."""
+        return reverse('education_update', args=[str(self.edu_id)])
+
+
 
 class Edu_his(models.Model):
     edu_his_id = models.AutoField(primary_key=True, verbose_name='교육이력ID')
