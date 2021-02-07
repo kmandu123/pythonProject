@@ -146,6 +146,319 @@ def Comm_divDelete(request, pk):
     return HttpResponseRedirect(reverse('comm_div_list'))
 
 
+# 발주처 list
+class Order_compList(generic.ListView):
+    model = Order_comp
+    paginate_by = 15
+
+    #검색 결과 (초기값)
+    def get_queryset(self):
+        filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
+        filter_val_2 = self.request.GET.get('filter_2', '')
+        order = self.request.GET.get('orderby', 'order_comp_name') #정렬대상 컬럼명(초기값)
+
+        new_context = Order_comp.objects.filter(
+            order_comp_name__icontains=filter_val_1,
+            indus_cd__comm_code_name__icontains=filter_val_2,
+        ).order_by(order)
+        return new_context
+
+    #검색 조건 (초기값)
+    def get_context_data(self, **kwargs):
+        context = super(Order_compList, self).get_context_data(**kwargs)
+        context['filter_1'] = self.request.GET.get('filter_1', '')
+        context['filter_2'] = self.request.GET.get('filter_2', '')
+        context['orderby'] = self.request.GET.get('orderby', 'order_comp_name') #정렬대상 컬럼명(초기값)
+        return context
+
+
+def Order_compUpdate(request, pk):
+
+    if pk:
+        #master model instance 생성
+        order_comp = Order_comp.objects.get(order_comp_id=pk)
+    else:
+        order_comp = Order_comp()
+
+    # master form instance 생성 : 마스터 form 객체는 forms.py에 존재함. : 최초 user화면에 보여주는 수정대상 instance
+    order_compform = Order_compForm(instance=order_comp)
+
+    #detail from instance 생성 : 최초 user화면에 보여주는 수정대상 instance
+    pjtformset = PjtFormset(instance=order_comp)
+
+    if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
+        # master form instance 생성 : Post요청 data로 생성
+        order_compform = Order_compForm(request.POST)
+
+        if pk:
+            # master form instance 생성 : Post요청 data와 pk에 해당하는 마스터 모델 instance연계
+            order_compform = Order_compForm(request.POST, instance=order_comp)
+
+        # detail form instance 생성 : Post요청 data로 생성
+        pjtformset = PjtFormset(request.POST, request.FILES)
+
+        if order_compform.is_valid():
+            created_order_comp = order_compform.save(commit=False)
+            pjtformset = PjtFormset(request.POST, request.FILES, instance=created_order_comp)
+
+            if pjtformset.is_valid():
+                created_order_comp.save()
+                pjtformset.save()
+                return HttpResponseRedirect(reverse('order_comp_list'))
+            else:
+                print("detail valid error발생")
+                print(pjtformset.errors)
+
+
+    # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
+    context = {
+        'order_compform': order_compform,
+        'pjtformset': pjtformset,
+        'order_comp': order_comp,
+    }
+
+    # template를 호출한다. context도 같이 넘긴다.
+    return render(request, 'resume/order_comp_update.html', context)
+
+
+def Order_compCreate(request):
+
+    # master model 빈 instance 생성
+    order_comp = Order_comp()
+
+    # master form instance 생성 : 마스터 form 객체는 forms.py에 존재함. : 최초 user화면에 보여주는 수정대상 instance
+    order_compform = Order_compForm(instance=order_comp)
+
+    #detail from instance 생성 : 최초 user화면에 보여주는 수정대상 instance
+    pjtformset = PjtFormset(instance=order_comp)
+
+
+    if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
+        # master form instance 생성 : Post요청 data로 생성
+        order_compform = Order_compForm(request.POST)
+
+        # detail form instance 생성 : Post요청 data로 생성
+        pjtformset = PjtFormset(request.POST, request.FILES)
+
+        if order_compform.is_valid():
+            created_order_comp = order_compform.save(commit=False)
+            pjtformset = PjtFormset(request.POST, request.FILES, instance=created_order_comp)
+
+            if pjtformset.is_valid():
+                created_order_comp.save()
+                pjtformset.save()
+                return HttpResponseRedirect(reverse('order_comp_list'))
+            else:
+                print("detail valid error발생")
+                print(pjtformset.errors)
+
+
+    # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
+    context = {
+        'order_compform': order_compform,
+        'pjtformset': pjtformset,
+        'order_comp': order_comp,
+    }
+
+    # template를 호출한다. context도 같이 넘긴다.
+    return render(request, 'resume/order_comp_update.html', context)
+
+
+
+def Order_compDelete(request, pk):
+    # 파라미터pk로 받은 data가 존재한다면 가져온다
+    order_comp = get_object_or_404(Order_comp, pk=pk)
+    order_comp.delete()
+    return HttpResponseRedirect(reverse('order_comp_list'))
+
+
+
+# 프로젝트 list
+class PjtList(generic.ListView):
+    model = Pjt
+    paginate_by = 15
+
+    #검색 결과 (초기값)
+    def get_queryset(self):
+        filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
+        filter_val_2 = self.request.GET.get('filter_2', '')
+        order = self.request.GET.get('orderby', 'pjt_name') #정렬대상 컬럼명(초기값)
+
+        new_context = Pjt.objects.filter(
+            pjt_name__icontains=filter_val_1,
+            order_comp_id__order_comp_name__icontains=filter_val_2,
+        ).order_by(order)
+        return new_context
+
+    #검색 조건 (초기값)
+    def get_context_data(self, **kwargs):
+        context = super(PjtList, self).get_context_data(**kwargs)
+        context['filter_1'] = self.request.GET.get('filter_1', '')
+        context['filter_2'] = self.request.GET.get('filter_2', '')
+        context['orderby'] = self.request.GET.get('orderby', 'pjt_name') #정렬대상 컬럼명(초기값)
+        return context
+
+
+
+def PjtUpdate(request, pk):
+
+    if pk:
+        #master model instance 생성
+        pjt = Pjt.objects.get(pjt_id=pk)
+    else:
+        pjt = Pjt()
+
+    # master form instance 생성 : 마스터 form 객체는 forms.py에 존재함. : 최초 user화면에 보여주는 수정대상 instance
+    pjtform = PjtForm(instance=pjt)
+
+    #detail from instance 생성 : 최초 user화면에 보여주는 수정대상 instance
+    pjt_hisformset = Pjt_hisFormset(instance=pjt)
+
+    if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
+        # master form instance 생성 : Post요청 data로 생성
+        pjtform = PjtForm(request.POST)
+
+        if pk:
+            # master form instance 생성 : Post요청 data와 pk에 해당하는 마스터 모델 instance연계
+            pjtform = PjtForm(request.POST, instance=pjt)
+
+        # detail form instance 생성 : Post요청 data로 생성
+        pjt_hisformset = Pjt_hisFormset(request.POST, request.FILES)
+
+        if pjtform.is_valid():
+            created_pjt = pjtform.save(commit=False)
+            pjt_hisformset = Pjt_hisFormset(request.POST, request.FILES, instance=created_pjt)
+
+            if pjt_hisformset.is_valid():
+                created_pjt.save()
+                pjt_hisformset.save()
+                return HttpResponseRedirect(reverse('pjt_list'))
+            else:
+                print("detail valid error발생")
+                print(pjt_hisformset.errors)
+
+
+    # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
+    context = {
+        'pjtform': pjtform,
+        'pjt_hisformset': pjt_hisformset,
+        'pjt': pjt,
+    }
+
+    # template를 호출한다. context도 같이 넘긴다.
+    return render(request, 'resume/pjt_update.html', context)
+
+
+
+def PjtCreate(request):
+
+    # master model 빈 instance 생성
+    pjt = Pjt()
+
+    # master form instance 생성 : 마스터 form 객체는 forms.py에 존재함. : 최초 user화면에 보여주는 수정대상 instance
+    pjtform = PjtForm(instance=pjt)
+
+    #detail from instance 생성 : 최초 user화면에 보여주는 수정대상 instance
+    pjt_hisformset = Pjt_hisFormset(instance=pjt)
+
+    if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
+        # master form instance 생성 : Post요청 data로 생성
+        pjtform = PjtForm(request.POST)
+
+        # detail form instance 생성 : Post요청 data로 생성
+        pjt_hisformset = Pjt_hisFormset(request.POST, request.FILES)
+
+        if pjtform.is_valid():
+            created_pjt = pjtform.save(commit=False)
+            pjt_hisformset = Pjt_hisFormset(request.POST, request.FILES, instance=created_pjt)
+
+            if pjt_hisformset.is_valid():
+                created_pjt.save()
+                pjt_hisformset.save()
+                return HttpResponseRedirect(reverse('pjt_list'))
+            else:
+                print("detail valid error발생")
+                print(pjt_hisformset.errors)
+
+
+    # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
+    context = {
+        'pjtform': pjtform,
+        'pjt_hisformset': pjt_hisformset,
+        'pjt': pjt,
+    }
+
+    # template를 호출한다. context도 같이 넘긴다.
+    return render(request, 'resume/pjt_update.html', context)
+
+
+
+def PjtDelete(request, pk):
+    # 파라미터pk로 받은 data가 존재한다면 가져온다
+    pjt = get_object_or_404(Pjt, pk=pk)
+    pjt.delete()
+    return HttpResponseRedirect(reverse('pjt_list'))
+
+
+
+# 교육 list
+class EducationList(generic.ListView):
+    model = Education
+
+
+def EducationUpdate(request, pk):
+
+    if pk:
+        #master model instance 생성
+        education = Education.objects.get(edu_id=pk)
+    else:
+        education = Education()
+
+    # master form instance 생성 : 마스터 form 객체는 forms.py에 존재함. : 최초 user화면에 보여주는 수정대상 instance
+    education_form = EducationForm(instance=education)
+
+    #detail from instance 생성 : 최초 user화면에 보여주는 수정대상 instance
+    edu_hisformset = Edu_hisFormset(instance=education)
+
+    if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
+        # master form instance 생성 : Post요청 data로 생성
+        education_form = EducationForm(request.POST)
+
+        if pk:
+            # master form instance 생성 : Post요청 data와 pk에 해당하는 마스터 모델 instance연계
+            education_form = EducationForm(request.POST, instance=education)
+
+        # detail form instance 생성 : Post요청 data로 생성
+        edu_hisformset = Edu_hisFormset(request.POST, request.FILES)
+
+        if education_form.is_valid():
+            created_education = education_form.save(commit=False)
+            edu_hisformset = Edu_hisFormset(request.POST, request.FILES, instance=created_education)
+
+            if edu_hisformset.is_valid():
+                created_education.save()
+                edu_hisformset.save()
+                return HttpResponseRedirect(reverse('education_list'))
+            else:
+                print("detail valid error발생")
+                print(edu_hisformset.errors)
+
+
+    # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
+    context = {
+        'education_form': education_form,
+        'edu_hisformset': edu_hisformset,
+        'education': education,
+    }
+
+    # template를 호출한다. context도 같이 넘긴다.
+    return render(request, 'resume/education_update.html', context)
+
+
+
+
+
+
 
 
 # 사원 list
@@ -227,209 +540,3 @@ def EmployeeUpdate(request, pk):
     # template를 호출한다. context도 같이 넘긴다.
     return render(request, 'resume/employee_update.html', context)
 
-
-
-# 교육 list
-class EducationList(generic.ListView):
-    model = Education
-
-
-def EducationUpdate(request, pk):
-
-    if pk:
-        #master model instance 생성
-        education = Education.objects.get(edu_id=pk)
-    else:
-        education = Education()
-
-    # master form instance 생성 : 마스터 form 객체는 forms.py에 존재함. : 최초 user화면에 보여주는 수정대상 instance
-    education_form = EducationForm(instance=education)
-
-    #detail from instance 생성 : 최초 user화면에 보여주는 수정대상 instance
-    edu_hisformset = Edu_hisFormset(instance=education)
-
-    if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
-        # master form instance 생성 : Post요청 data로 생성
-        education_form = EducationForm(request.POST)
-
-        if pk:
-            # master form instance 생성 : Post요청 data와 pk에 해당하는 마스터 모델 instance연계
-            education_form = EducationForm(request.POST, instance=education)
-
-        # detail form instance 생성 : Post요청 data로 생성
-        edu_hisformset = Edu_hisFormset(request.POST, request.FILES)
-
-        if education_form.is_valid():
-            created_education = education_form.save(commit=False)
-            edu_hisformset = Edu_hisFormset(request.POST, request.FILES, instance=created_education)
-
-            if edu_hisformset.is_valid():
-                created_education.save()
-                edu_hisformset.save()
-                return HttpResponseRedirect(reverse('education_list'))
-            else:
-                print("detail valid error발생")
-                print(edu_hisformset.errors)
-
-
-    # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
-    context = {
-        'education_form': education_form,
-        'edu_hisformset': edu_hisformset,
-        'education': education,
-    }
-
-    # template를 호출한다. context도 같이 넘긴다.
-    return render(request, 'resume/education_update.html', context)
-
-
-# 발주처 list
-class Order_compList(generic.ListView):
-    model = Order_comp
-    paginate_by = 15
-
-    #검색 결과 (초기값)
-    def get_queryset(self):
-        filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
-        filter_val_2 = self.request.GET.get('filter_2', '')
-        order = self.request.GET.get('orderby', 'order_comp_name') #정렬대상 컬럼명(초기값)
-
-        new_context = Order_comp.objects.filter(
-            order_comp_name__icontains=filter_val_1,
-            indus_cd__comm_code_name__icontains=filter_val_2,
-        ).order_by(order)
-        return new_context
-
-    #검색 조건 (초기값)
-    def get_context_data(self, **kwargs):
-        context = super(Order_compList, self).get_context_data(**kwargs)
-        context['filter_1'] = self.request.GET.get('filter_1', '')
-        context['filter_2'] = self.request.GET.get('filter_2', '')
-        context['orderby'] = self.request.GET.get('orderby', 'order_comp_name') #정렬대상 컬럼명(초기값)
-        return context
-
-
-def Order_compUpdate(request, pk):
-
-    if pk:
-        #master model instance 생성
-        order_comp = Order_comp.objects.get(order_comp_id=pk)
-    else:
-        order_comp = Order_comp()
-
-    # master form instance 생성 : 마스터 form 객체는 forms.py에 존재함. : 최초 user화면에 보여주는 수정대상 instance
-    order_compform = Order_compForm(instance=order_comp)
-
-    #detail from instance 생성 : 최초 user화면에 보여주는 수정대상 instance
-    pjtformset = PjtFormset(instance=order_comp)
-
-    if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
-        # master form instance 생성 : Post요청 data로 생성
-        order_compform = Order_compForm(request.POST)
-
-        if pk:
-            # master form instance 생성 : Post요청 data와 pk에 해당하는 마스터 모델 instance연계
-            order_compform = Order_compForm(request.POST, instance=order_comp)
-
-        # detail form instance 생성 : Post요청 data로 생성
-        pjtformset = PjtFormset(request.POST, request.FILES)
-
-        if order_compform.is_valid():
-            created_order_comp = order_compform.save(commit=False)
-            pjtformset = PjtFormset(request.POST, request.FILES, instance=created_order_comp)
-
-            if pjtformset.is_valid():
-                created_order_comp.save()
-                pjtformset.save()
-                return HttpResponseRedirect(reverse('order_comp_list'))
-            else:
-                print("detail valid error발생")
-                print(pjtformset.errors)
-
-
-    # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
-    context = {
-        'order_compform': order_compform,
-        'pjtformset': pjtformset,
-        'order_comp': order_comp,
-    }
-
-    # template를 호출한다. context도 같이 넘긴다.
-    return render(request, 'resume/order_comp_update.html', context)
-
-
-
-# 프로젝트 list
-class PjtList(generic.ListView):
-    model = Pjt
-    paginate_by = 15
-
-    #검색 결과 (초기값)
-    def get_queryset(self):
-        filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
-        filter_val_2 = self.request.GET.get('filter_2', '')
-        order = self.request.GET.get('orderby', 'pjt_name') #정렬대상 컬럼명(초기값)
-
-        new_context = Pjt.objects.filter(
-            pjt_name__icontains=filter_val_1,
-            order_comp_id__order_comp_name__icontains=filter_val_2,
-        ).order_by(order)
-        return new_context
-
-    #검색 조건 (초기값)
-    def get_context_data(self, **kwargs):
-        context = super(PjtList, self).get_context_data(**kwargs)
-        context['filter_1'] = self.request.GET.get('filter_1', '')
-        context['filter_2'] = self.request.GET.get('filter_2', '')
-        context['orderby'] = self.request.GET.get('orderby', 'pjt_name') #정렬대상 컬럼명(초기값)
-        return context
-
-
-
-def PjtUpdate(request, pk):
-
-    if pk:
-        #master model instance 생성
-        pjt = Pjt.objects.get(pjt_id=pk)
-    else:
-        pjt = Pjt()
-
-    # master form instance 생성 : 마스터 form 객체는 forms.py에 존재함. : 최초 user화면에 보여주는 수정대상 instance
-    pjtform = PjtForm(instance=pjt)
-
-    #detail from instance 생성 : 최초 user화면에 보여주는 수정대상 instance
-    pjt_hisformset = Pjt_hisFormset(instance=pjt)
-
-    if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
-        # master form instance 생성 : Post요청 data로 생성
-        pjtform = PjtForm(request.POST)
-
-        if pk:
-            # master form instance 생성 : Post요청 data와 pk에 해당하는 마스터 모델 instance연계
-            pjtform = PjtForm(request.POST, instance=pjt)
-
-        # detail form instance 생성 : Post요청 data로 생성
-        pjt_hisformset = Pjt_hisFormset(request.POST, request.FILES)
-
-        if pjtform.is_valid():
-            created_pjt = pjtform.save(commit=False)
-            pjt_hisformset = Pjt_hisFormset(request.POST, request.FILES, instance=created_pjt)
-
-            if pjt_hisformset.is_valid():
-                created_pjt.save()
-                pjt_hisformset.save()
-                return HttpResponseRedirect(reverse('pjt_list'))
-            else:
-                print("detail valid error발생")
-                print(pjt_hisformset.errors)
-
-
-    # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
-    context = {
-        'pjtform': pjtform,
-        'pjt_hisformset': pjt_hisformset,
-        'pjt': pjt,
-    }
-
-    # template를 호출한다. context도 같이 넘긴다.
-    return render(request, 'resume/pjt_update.html', context)

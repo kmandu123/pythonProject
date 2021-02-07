@@ -11,55 +11,13 @@
 </style>
 <!-- 마스터 table 영역에 대한 스타일:End -->
 
-<!-- Detail Tab 영역에 대한 스타일:Start -->
-<style>
-        .main {
-            min-width: 320px;
-            max-width: 1400px;
-            padding: 10px;
-            border-radius: 7px;;
-            background: #ffffff;}
 
-        section {
-            display: none;
-            padding: 20px 0 0;
-            border-top: 1px solid #ddd;}
-
-        .option_check {
-              display: none;}
-
-        label {
-            display: inline-block;
-            padding: 15px 25px;
-            font-weight: 600;
-            color: #bbb;
-            border: 1px solid transparent;}
-
-        label:hover {
-            color: #2e9cdf;
-            cursor: pointer;}
-
-        /*input 클릭시, label 스타일*/
-        input:checked + label {
-              color: #555;
-              border: 1px solid #ddd;
-              border-top: 2px solid #2e9cdf;
-              border-bottom: 1px solid #ffffff;}
-
-        #tab1:checked ~ #content1,
-        #tab2:checked ~ #content2,
-        #tab3:checked ~ #content3,
-        #tab4:checked ~ #content4 {
-            display: block;}
-
-        .td_pad_right {padding-right:5px;}
-    </style>
-<!-- Detail Tab 영역에 대한 스타일:End -->
 
 <br>
 <form action="" method="post" >
     {% csrf_token %}
     <table >
+
     <!-- 수정/입력경우에 따라(pk값이 존재하는지 여부에 따라) title변경:start -->
     {% if comm_div.comm_div_id %}
     <h2 class="tit">공통코드 구분 수정</h2>
@@ -67,6 +25,7 @@
     <h2 class="tit">공통코드 구분 입력</h2>
     {% endif %}
     <!-- 수정/입력경우에 따라(pk값이 존재하는지 여부에 따라) title변경:end -->
+
     </table>
 
     <!-- Main 입력 영역:Start -->

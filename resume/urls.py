@@ -10,6 +10,20 @@ urlpatterns = [
     path('comm_div_list/<int:pk>/delete/', views.Comm_divDelete, name='comm_div_delete'),
 ]
 
+urlpatterns += [
+    path('order_comp_list/', views.Order_compList.as_view(), name='order_comp_list'),
+    path('order_comp_list/<int:pk>/update/', views.Order_compUpdate, name='order_comp_update'),
+    path('order_comp_list/create/', views.Order_compCreate, name='order_comp_create'),
+    path('order_comp_list/<int:pk>/delete/', views.Order_compDelete, name='order_comp_delete'),
+]
+
+urlpatterns += [
+    path('pjt_list/', views.PjtList.as_view(), name='pjt_list'),
+    path('pjt_list/<int:pk>/update/', views.PjtUpdate, name='pjt_update'),
+    path('pjt_list/create/', views.PjtCreate, name='pjt_create'),
+    path('pjt_list/<int:pk>/delete/', views.PjtDelete, name='pjt_delete'),
+]
+
 
 urlpatterns += [
     path('employee_list/', views.EmployeeList.as_view(), name='employee_list'),
@@ -21,12 +35,4 @@ urlpatterns += [
     path('education_list/<int:pk>/update/', views.EducationUpdate, name='education_update'),
 ]
 
-urlpatterns += [
-    path('order_comp_list/', views.Order_compList.as_view(), name='order_comp_list'),
-    path('order_comp_list/<int:pk>/update/', views.Order_compUpdate, name='order_comp_update'),
-]
 
-urlpatterns += [
-    path('pjt_list/', views.PjtList.as_view(), name='pjt_list'),
-    path('pjt_list/<int:pk>/update/', views.PjtUpdate, name='pjt_update'),
-]
