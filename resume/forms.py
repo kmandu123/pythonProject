@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comm_div, Comm_code, Employee, School_his, License_his, Work_his, Education, Edu_his, Skill_his
+from .models import Comm_div, Comm_code, Employee, School_his, License_his, Work_his, Education, Edu_his, Order_comp, Pjt, Pjt_his
 from django.forms import inlineformset_factory
 
 class Comm_divForm(forms.ModelForm):
@@ -22,6 +22,26 @@ class Comm_divForm(forms.ModelForm):
             'summary': '비고',
         }
 
+
+
+class Comm_codeForm(forms.ModelForm):
+    class Meta:
+        model = Comm_code
+        fields = '__all__'
+
+        widgets = {
+            'display_order': forms.TextInput(attrs={'autocomplete': 'off', 'size': '2'}),
+            'summary': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '63', 'rows': '1'}),
+        }
+
+
+
+ # detail form 객체 생성
+Comm_codeFormset = inlineformset_factory(Comm_div, Comm_code, form=Comm_codeForm,
+                    extra=1, can_delete=True)
+
+
+
 class EmployeeForm(forms.ModelForm):
     class Meta:
         model = Employee
@@ -42,7 +62,15 @@ class EmployeeForm(forms.ModelForm):
             'work_base_month': forms.TextInput(attrs={'autocomplete': 'off', 'size': '3'}),
             'skill_main': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '63', 'rows': '3'}),
             'skill_major': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '66', 'rows': '3'}),
-            'summary': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '63', 'rows': '3'}),
+            'summary': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '63', 'rows': '2'}),
+
+            'skill_hw_cd': forms.SelectMultiple(attrs={'size': '10'}),
+            'skill_os_cd': forms.SelectMultiple(attrs={'size': '10'}),
+            'skill_olap_cd': forms.SelectMultiple(attrs={'size': '10'}),
+            'skill_etl_cd': forms.SelectMultiple(attrs={'size': '10'}),
+            'skill_dev_cd': forms.SelectMultiple(attrs={'size': '10'}),
+            'skill_db_cd': forms.SelectMultiple(attrs={'size': '10'}),
+            'skill_was_cd': forms.SelectMultiple(attrs={'size': '10'}),
         }
 
     # fk로 설정된 공통코드 구분 필터링 정의
@@ -51,6 +79,13 @@ class EmployeeForm(forms.ModelForm):
         self.fields['emp_position_cd'].queryset = Comm_code.objects.filter(comm_div_id=1)
         self.fields['skill_grade_cd'].queryset = Comm_code.objects.filter(comm_div_id=2)
         self.fields['evidence_method_cd'].queryset = Comm_code.objects.filter(comm_div_id=3)
+        self.fields['skill_hw_cd'].queryset = Comm_code.objects.filter(comm_div_id=6)
+        self.fields['skill_os_cd'].queryset = Comm_code.objects.filter(comm_div_id=7)
+        self.fields['skill_olap_cd'].queryset = Comm_code.objects.filter(comm_div_id=8)
+        self.fields['skill_etl_cd'].queryset = Comm_code.objects.filter(comm_div_id=9)
+        self.fields['skill_dev_cd'].queryset = Comm_code.objects.filter(comm_div_id=10)
+        self.fields['skill_db_cd'].queryset = Comm_code.objects.filter(comm_div_id=11)
+        self.fields['skill_was_cd'].queryset = Comm_code.objects.filter(comm_div_id=12)
 
 
 class School_hisForm(forms.ModelForm):
@@ -157,3 +192,81 @@ Edu_hisFormset2 = inlineformset_factory(Employee, Edu_his, form=Edu_hisForm,
                     extra=1, can_delete=True)
 
 
+
+
+class Order_compForm(forms.ModelForm):
+    class Meta:
+        model = Order_comp
+        fields = '__all__'
+
+        # 속성별로 재정의 할때
+        widgets = {
+            'summary': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '63', 'rows': '3'}),
+        }
+
+    # fk로 설정된 공통코드 구분 필터링 정의
+    def __init__(self, *args, **kwargs):
+        super(Order_compForm, self).__init__(*args, **kwargs)
+        self.fields['indus_cd'].queryset = Comm_code.objects.filter(comm_div_id=13)
+
+
+class PjtForm(forms.ModelForm):
+    class Meta:
+        model = Pjt
+        fields = '__all__'
+
+        # 속성별로 재정의 할때
+        widgets = {
+            'pjt_name': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '40', 'rows': '1'}),
+            'use_skill': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '40', 'rows': '1'}),
+            'pjt_start_date': forms.TextInput(attrs={'class': 'cal', 'autocomplete': 'off', 'size': '10'}),
+            'pjt_end_date': forms.TextInput(attrs={'class': 'cal', 'autocomplete': 'off', 'size': '10'}),
+            'summary': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '40', 'rows': '1'}),
+        }
+
+    # fk로 설정된 공통코드 구분 필터링 정의
+    def __init__(self, *args, **kwargs):
+        super(PjtForm, self).__init__(*args, **kwargs)
+        self.fields['pjt_type_cd'].queryset = Comm_code.objects.filter(comm_div_id=14)
+        self.fields['pjt_location_cd'].queryset = Comm_code.objects.filter(comm_div_id=15)
+
+
+ # detail form 객체 생성
+PjtFormset = inlineformset_factory(Order_comp, Pjt, form=PjtForm,
+                    extra=1, can_delete=True)
+
+
+
+class Pjt_hisForm(forms.ModelForm):
+    class Meta:
+        model = Pjt_his
+        fields = '__all__'
+
+        # 속성별로 재정의 할때
+        widgets = {
+            'join_start_date': forms.TextInput(attrs={'class': 'cal', 'autocomplete': 'off', 'size': '10'}),
+            'join_end_date': forms.TextInput(attrs={'class': 'cal', 'autocomplete': 'off', 'size': '10'}),
+            'summary': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '40', 'rows': '2'}),
+        }
+
+    # fk로 설정된 공통코드 구분 필터링 정의
+    def __init__(self, *args, **kwargs):
+        super(Pjt_hisForm, self).__init__(*args, **kwargs)
+        self.fields['kosa_conf_cd'].queryset = Comm_code.objects.filter(comm_div_id=16)
+        self.fields['insurance_conf_cd'].queryset = Comm_code.objects.filter(comm_div_id=17)
+        self.fields['his_status_cd'].queryset = Comm_code.objects.filter(comm_div_id=18)
+
+
+ # detail form 객체 생성
+Pjt_hisFormset = inlineformset_factory(Pjt, Pjt_his, form=Pjt_hisForm,
+                    extra=1, can_delete=True)
+
+
+ # detail form 객체 생성
+Pjt_hisFormset2 = inlineformset_factory(Employee, Pjt_his, form=Pjt_hisForm,
+                    widgets={
+                        'join_start_date': forms.TextInput(attrs={'class': 'cal', 'autocomplete': 'off', 'size': '10'}),
+                        'join_end_date': forms.TextInput(attrs={'class': 'cal', 'autocomplete': 'off', 'size': '10'}),
+                        'summary': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '20', 'rows': '1'}),
+                    },
+                    extra=1, can_delete=True)

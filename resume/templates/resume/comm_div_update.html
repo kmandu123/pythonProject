@@ -1,0 +1,157 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<!-- 마스터 table 영역에 대한 스타일:Start -->
+<style>
+.main_table {
+  border-collapse: separate;
+  border-spacing: 0 5px;
+}
+</style>
+<!-- 마스터 table 영역에 대한 스타일:End -->
+
+<!-- Detail Tab 영역에 대한 스타일:Start -->
+<style>
+        .main {
+            min-width: 320px;
+            max-width: 1400px;
+            padding: 10px;
+            border-radius: 7px;;
+            background: #ffffff;}
+
+        section {
+            display: none;
+            padding: 20px 0 0;
+            border-top: 1px solid #ddd;}
+
+        .option_check {
+              display: none;}
+
+        label {
+            display: inline-block;
+            padding: 15px 25px;
+            font-weight: 600;
+            color: #bbb;
+            border: 1px solid transparent;}
+
+        label:hover {
+            color: #2e9cdf;
+            cursor: pointer;}
+
+        /*input 클릭시, label 스타일*/
+        input:checked + label {
+              color: #555;
+              border: 1px solid #ddd;
+              border-top: 2px solid #2e9cdf;
+              border-bottom: 1px solid #ffffff;}
+
+        #tab1:checked ~ #content1,
+        #tab2:checked ~ #content2,
+        #tab3:checked ~ #content3,
+        #tab4:checked ~ #content4 {
+            display: block;}
+
+        .td_pad_right {padding-right:5px;}
+    </style>
+<!-- Detail Tab 영역에 대한 스타일:End -->
+
+<br>
+<form action="" method="post" >
+    {% csrf_token %}
+    <table >
+    <!-- 수정/입력경우에 따라(pk값이 존재하는지 여부에 따라) title변경:start -->
+    {% if comm_div.comm_div_id %}
+    <h2 class="tit">공통코드 구분 수정</h2>
+    {% else %}
+    <h2 class="tit">공통코드 구분 입력</h2>
+    {% endif %}
+    <!-- 수정/입력경우에 따라(pk값이 존재하는지 여부에 따라) title변경:end -->
+    </table>
+
+    <!-- Main 입력 영역:Start -->
+    <table class="main_table">
+        <tr>
+            <td class="td_pad_right" align="right"><strong>{{ comm_divform.comm_div_name.label }}</strong></td><td>{{ comm_divform.comm_div_name }}</td>
+        </tr>
+        <tr>
+            <td class="td_pad_right" align="right"><strong>{{ comm_divform.summary.label }}</strong></td><td>{{ comm_divform.summary }}</td>
+        </tr>
+    </table>
+
+
+
+    <!-- Main 입력 영역:End -->
+
+    <br>
+            <!-- Detail 영역 :Start -->
+            <!-- key필드는 display하지는 않지만 반드시 표기할 것 -->
+            <h3 class="tit_m">공통코드</h3>
+
+            <table id="form_set_sch"  class="table table-condensed table-hover">
+                <tr bgcolor="#F7F7F7">
+                    <td><strong>{{ comm_codeformset.form.comm_code.label }}</strong></td>
+                    <td><strong>{{ comm_codeformset.form.comm_code_name.label }}</strong></td>
+                    <td><strong>{{ comm_codeformset.form.ref_field.label }}</strong></td>
+                    <td><strong>{{ comm_codeformset.form.display_order.label }}</strong></td>
+                    <td><strong>{{ comm_codeformset.form.use_yn.label }}</strong></td>
+                    <td><strong>{{ comm_codeformset.form.summary.label }}</strong></td>
+                    <td><strong>삭제</td>
+                </tr>
+            {{ comm_codeformset.management_form }}
+            {% for form in comm_codeformset %}
+                <tr>
+                    <td>{{ form.comm_code }}</td>
+                    <td>{{ form.comm_code_name }}</td>
+                    <td>{{ form.ref_field }}</td>
+                    <td>{{ form.display_order }}</td>
+                    <td>{{ form.use_yn }}</td>
+                    <td>{{ form.summary }}</td>
+                    <td>{{ form.DELETE }}</td>
+                </tr>
+            {% endfor %}
+
+            </table>
+
+            <table id="empty_form_sch" style="display:none">
+                <tr>
+                    <td>{{ comm_codeformset.empty_form.comm_code }}</td>
+                    <td>{{ comm_codeformset.empty_form.comm_code_name }}</td>
+                    <td>{{ comm_codeformset.empty_form.ref_field }}</td>
+                    <td>{{ comm_codeformset.empty_form.display_order }}</td>
+                    <td>{{ comm_codeformset.empty_form.use_yn }}</td>
+                    <td>{{ comm_codeformset.empty_form.summary }}</td>
+                    <td>{{ comm_codeformset.empty_form.DELETE }}</td>
+                </tr>
+            </table>
+
+            <input type="button" value="상세내역 추가" id="add_more" class="btn btn-info">&nbsp&nbsp&nbsp
+            <button type="submit" class="btn btn btn-info">저   장</button>&nbsp&nbsp&nbsp
+            <input class="btn btn btn-info" type="button" value="취소" onClick="location.href='{% url 'comm_div_list'%}'">&nbsp&nbsp&nbsp
+
+            <!-- 수정일 때만(pk값이 존재할 때) 삭제 버튼 활성화:start -->
+            {% if comm_div.comm_div_id %}
+            <input class="btn btn btn-warning" type="button" value="전체삭제" onClick="location.href='{% url 'comm_div_delete' comm_div.comm_div_id %}'">
+            {% endif %}
+            <!-- 수정일 때만(pk값이 존재할 때) 삭제 버튼 활성화:end -->
+    <!-- Detail 영역:End -->
+
+</form>
+
+
+<!-- Detail Row 추가:Start -->
+<script>
+$('#add_more').click(function() {
+	var form_idx = $('#id_fk_comm_code1-TOTAL_FORMS').val();
+	console.log('idx', form_idx)
+
+	$('#form_set_sch').append($('#empty_form_sch').html().replace(/__prefix__/g, form_idx));
+	$('#id_fk_comm_code1-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+});
+
+</script>
+<!-- Detail Row 추가:End -->
+
+
+{% endblock %}
+

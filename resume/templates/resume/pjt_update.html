@@ -1,0 +1,167 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<!-- 마스터 table 영역에 대한 스타일:Start -->
+<style>
+.main_table {
+  border-collapse: separate;
+  border-spacing: 0 5px;
+}
+</style>
+<!-- 마스터 table 영역에 대한 스타일:End -->
+
+<!-- Detail Tab 영역에 대한 스타일:Start -->
+<style>
+        .main {
+            min-width: 320px;
+            max-width: 1400px;
+            padding: 10px;
+            border-radius: 7px;;
+            background: #ffffff;}
+
+        section {
+            display: none;
+            padding: 20px 0 0;
+            border-top: 1px solid #ddd;}
+
+        .option_check {
+              display: none;}
+
+        label {
+            display: inline-block;
+            padding: 15px 25px;
+            font-weight: 600;
+            color: #bbb;
+            border: 1px solid transparent;}
+
+        label:hover {
+            color: #2e9cdf;
+            cursor: pointer;}
+
+        /*input 클릭시, label 스타일*/
+        input:checked + label {
+              color: #555;
+              border: 1px solid #ddd;
+              border-top: 2px solid #2e9cdf;
+              border-bottom: 1px solid #ffffff;}
+
+        #tab1:checked ~ #content1,
+        #tab2:checked ~ #content2,
+        #tab3:checked ~ #content3,
+        #tab4:checked ~ #content4 {
+            display: block;}
+
+        .td_pad_right {padding-right:5px;}
+    </style>
+<!-- Detail Tab 영역에 대한 스타일:End -->
+
+<br>
+<form action="" method="post" >
+    {% csrf_token %}
+    <table >
+    <h2 class="tit">프로젝트 수정</h2>
+
+    </table>
+
+    <!-- Main 입력 영역:Start -->
+    <table class="main_table">
+        <tr>
+            <td class="td_pad_right" align="right"><strong>{{ pjtform.pjt_name.label }}</strong></td><td>{{ pjtform.pjt_name }}</td>
+            <td class="td_pad_right" align="right"><strong>{{ pjtform.order_comp_id.label }}</strong></td><td>{{ pjtform.order_comp_id }}</td>
+            <td class="td_pad_right" align="right"><strong>{{ pjtform.pjt_type_cd.label }}</strong></td><td>{{ pjtform.pjt_type_cd }}</td>
+        </tr>
+        <tr>
+            <td class="td_pad_right" align="right"><strong>{{ pjtform.pjt_location_cd.label }}</strong></td><td>{{ pjtform.pjt_location_cd }}</td>
+            <td class="td_pad_right" align="right"><strong>{{ pjtform.pjt_start_date.label }}</strong></td><td>{{ pjtform.pjt_start_date }}</td>
+            <td class="td_pad_right" align="right"><strong>{{ pjtform.pjt_end_date.label }}</strong></td><td>{{ pjtform.pjt_end_date }}</td>
+        </tr>
+        <tr>
+            <td class="td_pad_right" align="right"><strong>{{ pjtform.use_skill.label }}</strong></td><td>{{ pjtform.use_skill }}</td>
+            <td class="td_pad_right" align="right"><strong>{{ pjtform.summary.label }}</strong></td><td>{{ pjtform.summary }}</td>
+            <td></td><td></td>
+        </tr>
+    </table>
+
+
+
+    <!-- Main 입력 영역:End -->
+
+    <br>
+            <!-- Detail 영역 :Start -->
+            <!-- key필드는 display하지는 않지만 반드시 표기할 것 -->
+            <h3 class="tit_m">프로젝트 투입 인원</h3>
+
+            <table id="form_set_sch"  class="table table-condensed table-hover">
+                <tr bgcolor="#F7F7F7">
+                    <td><strong>{{ pjt_hisformset.form.pjt_his_id.label }}</strong></td>
+                    <td><strong>{{ pjt_hisformset.form.emp_id.label }}</strong></td>
+                    <td><strong>{{ pjt_hisformset.form.company_name.label }}</strong></td>
+                    <td><strong>{{ pjt_hisformset.form.join_start_date.label }}</strong></td>
+                    <td><strong>{{ pjt_hisformset.form.join_end_date.label }}</strong></td>
+                    <td><strong>{{ pjt_hisformset.form.pjt_role.label }}</strong></td>
+                    <td><strong>{{ pjt_hisformset.form.kosa_conf_cd.label }}</strong></td>
+                    <td><strong>{{ pjt_hisformset.form.insurance_conf_cd.label }}</strong></td>
+                    <td><strong>{{ pjt_hisformset.form.his_status_cd.label }}</strong></td>
+                    <td><strong>{{ pjt_hisformset.form.summary.label }}</strong></td>
+                    <td><strong>삭제</td>
+                </tr>
+            {{ pjt_hisformset.management_form }}
+            {% for form in pjt_hisformset %}
+                <tr>
+                    <td>{{ form.pjt_his_id }}</td>
+                    <td>{{ form.emp_id }}</td>
+                    <td>{{ form.company_name }}</td>
+                    <td>{{ form.join_start_date }}</td>
+                    <td>{{ form.join_end_date }}</td>
+                    <td>{{ form.pjt_role }}</td>
+                    <td>{{ form.kosa_conf_cd }}</td>
+                    <td>{{ form.insurance_conf_cd }}</td>
+                    <td>{{ form.his_status_cd }}</td>
+                    <td>{{ form.summary }}</td>
+                    <td>{{ form.DELETE }}</td>
+                </tr>
+            {% endfor %}
+
+            </table>
+
+            <table id="empty_form_sch" style="display:none">
+                <tr>
+                    <td>{{ pjt_hisformset.empty_form.pjt_his_id }}</td>
+                    <td>{{ pjt_hisformset.empty_form.emp_id }}</td>
+                    <td>{{ pjt_hisformset.empty_form.company_name }}</td>
+                    <td>{{ pjt_hisformset.empty_form.join_start_date }}</td>
+                    <td>{{ pjt_hisformset.empty_form.join_end_date }}</td>
+                    <td>{{ pjt_hisformset.empty_form.pjt_role }}</td>
+                    <td>{{ pjt_hisformset.empty_form.kosa_conf_cd }}</td>
+                    <td>{{ pjt_hisformset.empty_form.insurance_conf_cd }}</td>
+                    <td>{{ pjt_hisformset.empty_form.his_status_cd }}</td>
+                    <td>{{ pjt_hisformset.empty_form.summary }}</td>
+                    <td>{{ pjt_hisformset.empty_form.DELETE }}</td>
+                </tr>
+            </table>
+
+            <input type="button" value="상세내역 추가" id="add_more" class="btn btn-info">&nbsp&nbsp&nbsp
+            <button type="submit" class="btn btn btn-info">저   장</button>&nbsp&nbsp&nbsp
+            <input class="btn btn btn-info" type="button" value="취소" onClick="location.href='{% url 'order_comp_list'%}'">
+    <!-- Detail 영역:End -->
+
+</form>
+
+
+<!-- Detail Row 추가:Start -->
+<script>
+$('#add_more').click(function() {
+	var form_idx = $('#id_fk_pjt_his2-TOTAL_FORMS').val();
+	console.log('idx', form_idx)
+
+	$('#form_set_sch').append($('#empty_form_sch').html().replace(/__prefix__/g, form_idx));
+	$('#id_fk_pjt_his2-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+});
+
+</script>
+<!-- Detail Row 추가:End -->
+
+
+{% endblock %}
+

@@ -73,18 +73,18 @@ class Employee(models.Model):
     evidence_method_cd = models.ForeignKey('Comm_code', related_name='fk_employee3', on_delete=models.SET_NULL, null=True, blank=True,
                                            db_column='evidence_method_cd', verbose_name='경력 증빙 점검 방법')
 
-    skill_hw_cd = models.ManyToManyField('Comm_code', related_name='mk_employee1', null=True, blank=True, db_column='skill_hw_cd', verbose_name='기술 하드웨어')
-    skill_os_cd = models.ManyToManyField('Comm_code', related_name='mk_employee2', null=True, blank=True, db_column='skill_os_cd', verbose_name='기술 운영체제')
-    skill_olap_cd = models.ManyToManyField('Comm_code', related_name='mk_employee3', null=True, blank=True, db_column='skill_olap_cd', verbose_name='기술 OLAP/UI')
-    skill_etl_cd = models.ManyToManyField('Comm_code', related_name='mk_employee4', null=True, blank=True, db_column='skill_etl_cd', verbose_name='기술 ETL')
-    skill_dev_cd = models.ManyToManyField('Comm_code', related_name='mk_employee5', null=True, blank=True, db_column='skill_dev_cd', verbose_name='기술 개발언어')
-    skill_db_cd = models.ManyToManyField('Comm_code', related_name='mk_employee6', null=True, blank=True, db_column='skill_db_cd', verbose_name='기술 데이터베이스')
-    skill_was_cd = models.ManyToManyField('Comm_code', related_name='mk_employee7', null=True, blank=True, db_column='skill_was_cd', verbose_name='기술 개발플랫폼(WAS)')
+    skill_hw_cd = models.ManyToManyField('Comm_code', related_name='mk_employee1',  blank=True, db_column='skill_hw_cd', verbose_name='하드웨어')
+    skill_os_cd = models.ManyToManyField('Comm_code', related_name='mk_employee2',  blank=True, db_column='skill_os_cd', verbose_name='운영체제')
+    skill_olap_cd = models.ManyToManyField('Comm_code', related_name='mk_employee3',  blank=True, db_column='skill_olap_cd', verbose_name='OLAP/UI')
+    skill_etl_cd = models.ManyToManyField('Comm_code', related_name='mk_employee4',  blank=True, db_column='skill_etl_cd', verbose_name='ETL')
+    skill_dev_cd = models.ManyToManyField('Comm_code', related_name='mk_employee5',  blank=True, db_column='skill_dev_cd', verbose_name='개발언어')
+    skill_db_cd = models.ManyToManyField('Comm_code', related_name='mk_employee6',  blank=True, db_column='skill_db_cd', verbose_name='데이터베이스')
+    skill_was_cd = models.ManyToManyField('Comm_code', related_name='mk_employee7',  blank=True, db_column='skill_was_cd', verbose_name='개발플랫폼(WAS)')
 
-    skill_main = models.TextField(max_length=2000, null=True, blank=True, verbose_name='전문분야')
-    skill_major = models.TextField(max_length=2000, null=True, blank=True, verbose_name='주요사업')
+    skill_main = models.CharField(max_length=2000, null=True, blank=True, verbose_name='전문분야')
+    skill_major = models.CharField(max_length=2000, null=True, blank=True, verbose_name='주요사업')
 
-    summary = models.TextField(max_length=2000, null=True, blank=True, verbose_name='비고')
+    summary = models.CharField(max_length=2000, null=True, blank=True, verbose_name='비고')
     create_dt = models.DateTimeField(auto_now_add=True, verbose_name='생성일시', null=True, blank=True)
     update_dt = models.DateTimeField(auto_now=True, verbose_name='수정일시', null=True, blank=True)
     create_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='생성자id')
@@ -98,28 +98,28 @@ class Employee(models.Model):
         """Returns the url to access a detail record for this book."""
         return reverse('employee_update', args=[str(self.emp_id)])
 
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "emp_position_cd":
-            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=1)
-        elif db_field.name == "skill_grade_cd":
-            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=2)
-        elif db_field.name == "evidence_method_cd":
-            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=3)
-        elif db_field.name == "skill_hw_cd":
-            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=6)
-        elif db_field.name == "skill_os_cd":
-            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=7)
-        elif db_field.name == "skill_olap_cd":
-            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=8)
-        elif db_field.name == "skill_etl_cd":
-            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=9)
-        elif db_field.name == "skill_dev_cd":
-            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=10)
-        elif db_field.name == "skill_db_cd":
-            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=11)
-        elif db_field.name == "skill_was_cd":
-            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=12)
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+#    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+#        if db_field.name == "emp_position_cd":
+#            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=1)
+#        elif db_field.name == "skill_grade_cd":
+#            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=2)
+#        elif db_field.name == "evidence_method_cd":
+#            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=3)
+#        elif db_field.name == "skill_hw_cd":
+#            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=6)
+#        elif db_field.name == "skill_os_cd":
+#            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=7)
+#        elif db_field.name == "skill_olap_cd":
+#            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=8)
+#        elif db_field.name == "skill_etl_cd":
+#            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=9)
+#        elif db_field.name == "skill_dev_cd":
+#            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=10)
+#        elif db_field.name == "skill_db_cd":
+#            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=11)
+#        elif db_field.name == "skill_was_cd":
+#            kwargs["queryset"] = Comm_code.objects.filter(comm_div_id=12)
+#        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 class School_his(models.Model):
@@ -236,6 +236,10 @@ class Order_comp(models.Model):
         """String for representing the Model object."""
         return self.order_comp_name
 
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this book."""
+        return reverse('order_comp_update', args=[str(self.order_comp_id)])
+
 
 class Pjt(models.Model):
     pjt_id = models.AutoField(primary_key=True, verbose_name='프로젝트ID')
@@ -255,6 +259,11 @@ class Pjt(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return self.pjt_name
+
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this book."""
+        return reverse('pjt_update', args=[str(self.pjt_id)])
+
 
 class Pjt_his(models.Model):
     pjt_his_id = models.AutoField(primary_key=True, verbose_name='프로젝트이력ID')

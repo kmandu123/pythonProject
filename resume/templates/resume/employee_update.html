@@ -50,10 +50,13 @@
         #tab2:checked ~ #content2,
         #tab3:checked ~ #content3,
         #tab4:checked ~ #content4,
-        #tab5:checked ~ #content5 {
+        #tab5:checked ~ #content5,
+        #tab6:checked ~ #content6 {
             display: block;}
 
         .td_pad_right {padding-right:5px;}
+        .table_mtm {border-spacing:10px;}
+
     </style>
 <!-- Detail Tab 영역에 대한 스타일:End -->
 
@@ -103,6 +106,7 @@
             <td class="td_pad_right" align="right"><strong>{{ employee_form.summary.label }}</strong></td><td colspan="3">{{ employee_form.summary }}</td>
             <td class="td_pad_right" align="right"></td><td colspan="3"></td>
         </tr>
+
     </table>
 
     <button type="submit" class="btn btn btn-info">저   장</button>&nbsp&nbsp&nbsp
@@ -133,10 +137,10 @@
     <label for="tab4">교 육</label>
 
     <input class="option_check"  id="tab5" type="radio" name="tabs">
-    <label for="tab5">주요 기술</label>
+    <label for="tab5">주요기술</label>
 
     <input class="option_check"  id="tab6" type="radio" name="tabs">
-    <label for="tab6">여섯번째 탭</label>
+    <label for="tab6">프로젝트 수행</label>
 
     <section id="content1" style="margin-bottom:20px;">
 
@@ -331,23 +335,62 @@
     </section>
 
     <section id="content5" style="margin-bottom:20px;">
+        <!-- 마스터의 mtom Tab 영역 기술:start -->
+        <table id="table_mtm" style="border-spacing:50px 10px; border-collapse: separate;">
+            <div>"CTRL"key를 누르고 선택하세요..!<div>
+        <tr>
+            <td class="td_pad_right" align="center"><strong>{{ employee_form.skill_hw_cd.label }}</strong></td>
+            <td class="td_pad_right" align="center"><strong>{{ employee_form.skill_os_cd.label }}</strong></td>
+            <td class="td_pad_right" align="center"><strong>{{ employee_form.skill_olap_cd.label }}</strong></td>
+            <td class="td_pad_right" align="center"><strong>{{ employee_form.skill_etl_cd.label }}</strong></td>
+            <td class="td_pad_right" align="center"><strong>{{ employee_form.skill_dev_cd.label }}</strong></td>
+            <td class="td_pad_right" align="center"><strong>{{ employee_form.skill_db_cd.label }}</strong></td>
+            <td class="td_pad_right" align="center"><strong>{{ employee_form.skill_was_cd.label }}</strong></td>
+        </tr>
+        <tr>
+            <td>{{ employee_form.skill_hw_cd }}</td>
+            <td>{{ employee_form.skill_os_cd }}</td>
+            <td>{{ employee_form.skill_olap_cd }}</td>
+            <td>{{ employee_form.skill_etl_cd }}</td>
+            <td>{{ employee_form.skill_dev_cd }}</td>
+            <td>{{ employee_form.skill_db_cd }}</td>
+            <td>{{ employee_form.skill_was_cd }}</td>
+        </tr>
+        </table>
+        <!-- 마스터의 mtom Tab 영역 기술:End -->
+    </section>
 
-            <!-- Detail Tab 영역 중 주요기술:Start -->
+
+    <section id="content6" style="margin-bottom:20px;">
+
+            <!-- Detail Tab 영역 중 프로젝트 수행:Start -->
             <!-- key필드는 display하지는 않지만 반드시 표기할 것 -->
-            <table id="form_set_ski"  class="table table-condensed table-hover">
+            <table id="form_set_prj"  class="table table-condensed table-hover">
                 <tr  bgcolor="#F7F7F7">
-                    <td><strong>{{ skill_hisformset.form.skill_his_id.label }}</strong></td>
-                    <td><strong>{{ skill_hisformset.form.skill_div_cd.label }}</strong></td>
-                    <td><strong>{{ skill_hisformset.form.skill_cd.label }}</strong></td>
-                    <td><strong>{{ skill_hisformset.form.summary.label }}</strong></td>
+                    <td><strong>{{ pjt_hisformset2.form.pjt_his_id.label }}</strong></td>
+                    <td><strong>{{ pjt_hisformset2.form.pjt_id.label }}</strong></td>
+                    <td><strong>{{ pjt_hisformset2.form.company_name.label }}</strong></td>
+                    <td><strong>{{ pjt_hisformset2.form.join_start_date.label }}</strong></td>
+                    <td><strong>{{ pjt_hisformset2.form.join_end_date.label }}</strong></td>
+                    <td><strong>{{ pjt_hisformset2.form.pjt_role.label }}</strong></td>
+                    <td><strong>{{ pjt_hisformset2.form.kosa_conf_cd.label }}</strong></td>
+                    <td><strong>{{ pjt_hisformset2.form.insurance_conf_cd.label }}</strong></td>
+                    <td><strong>{{ pjt_hisformset2.form.his_status_cd.label }}</strong></td>
+                    <td><strong>{{ pjt_hisformset2.form.summary.label }}</strong></td>
                     <td><strong>삭제</td>
                 </tr>
-            {{ skill_hisformset.management_form }}
-            {% for form in skill_hisformset %}
+            {{ pjt_hisformset2.management_form }}
+            {% for form in pjt_hisformset2 %}
                 <tr>
-                    <td>{{ form.skill_his_id }}</td>
-                    <td>{{ form.skill_div_cd }}</td>
-                    <td>{{ form.skill_cd }}</td>
+                    <td>{{ form.pjt_his_id }}</td>
+                    <td>{{ form.pjt_id }}</td>
+                    <td>{{ form.company_name }}</td>
+                    <td>{{ form.join_start_date }}</td>
+                    <td>{{ form.join_end_date }}</td>
+                    <td>{{ form.pjt_role }}</td>
+                    <td>{{ form.kosa_conf_cd }}</td>
+                    <td>{{ form.insurance_conf_cd }}</td>
+                    <td>{{ form.his_status_cd }}</td>
                     <td>{{ form.summary }}</td>
                     <td>{{ form.DELETE }}</td>
                 </tr>
@@ -355,24 +398,26 @@
 
             </table>
 
-            <table id="empty_form_ski" style="display:none">
+            <table id="empty_form_prj" style="display:none">
                 <tr>
-                    <td>{{ skill_hisformset.empty_form.skill_his_id }}</td>
-                    <td>{{ skill_hisformset.empty_form.skill_div_cd }}</td>
-                    <td>{{ skill_hisformset.empty_form.skill_cd }}</td>
-                    <td>{{ skill_hisformset.empty_form.summary }}</td>
-                    <td>{{ skill_hisformset.empty_form.DELETE }}</td>
+                    <td>{{ pjt_hisformset2.empty_form.pjt_his_id }}</td>
+                    <td>{{ pjt_hisformset2.empty_form.pjt_id }}</td>
+                    <td>{{ pjt_hisformset2.empty_form.company_name }}</td>
+                    <td>{{ pjt_hisformset2.empty_form.join_start_date }}</td>
+                    <td>{{ pjt_hisformset2.empty_form.join_end_date }}</td>
+                    <td>{{ pjt_hisformset2.empty_form.pjt_role }}</td>
+                    <td>{{ pjt_hisformset2.empty_form.kosa_conf_cd }}</td>
+                    <td>{{ pjt_hisformset2.empty_form.insurance_conf_cd }}</td>
+                    <td>{{ pjt_hisformset2.empty_form.his_status_cd }}</td>
+                    <td>{{ pjt_hisformset2.empty_form.summary }}</td>
+                    <td>{{ pjt_hisformset2.empty_form.DELETE }}</td>
                 </tr>
             </table>
 
-            <input type="button" value="상세내역 추가" id="add_more_ski" class="btn btn-info">
-            <!-- Detail Tab 영역 중 주요기술:End -->
-
-    </section>
+            <input type="button" value="상세내역 추가" id="add_more_prj" class="btn btn-info">
+            <!-- Detail Tab 영역 중 프로젝트 수행:End -->
 
 
-    <section id="content6" style="margin-bottom:20px;">
-        tab menu6의 내용
     </section>
 
     <!-- Detail Tab 영역:End -->
@@ -422,6 +467,15 @@ $('#add_more_ski').click(function() {
 	$('#form_set_ski').append($('#empty_form_ski').html().replace(/__prefix__/g, form_idx));
 	$('#id_fk_Skill_his1-TOTAL_FORMS').val(parseInt(form_idx) + 1);
 });
+
+$('#add_more_prj').click(function() {
+	var form_idx = $('#id_fk_pjt_his1-TOTAL_FORMS').val();
+	console.log('idx', form_idx)
+
+	$('#form_set_prj').append($('#empty_form_prj').html().replace(/__prefix__/g, form_idx));
+	$('#id_fk_pjt_his1-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+});
+
 </script>
 <!-- Detail Row 추가:End -->
 
