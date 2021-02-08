@@ -22,17 +22,23 @@ urlpatterns += [
     path('pjt_list/<int:pk>/update/', views.PjtUpdate, name='pjt_update'),
     path('pjt_list/create/', views.PjtCreate, name='pjt_create'),
     path('pjt_list/<int:pk>/delete/', views.PjtDelete, name='pjt_delete'),
+    path('pjt_list/order_comp_popup/', views.Order_comp_popup.as_view(), name='order_comp_popup'),
+]
+
+
+urlpatterns += [
+    path('education_list/', views.EducationList.as_view(), name='education_list'),
+    path('education_list/<int:pk>/update/', views.EducationUpdate, name='education_update'),
+    path('education_list/create/', views.EducationCreate, name='education_create'),
+    path('education_list/<int:pk>/delete/', views.EducationDelete, name='education_delete'),
 ]
 
 
 urlpatterns += [
     path('employee_list/', views.EmployeeList.as_view(), name='employee_list'),
     path('employee_list/<int:pk>/update/', views.EmployeeUpdate, name='employee_update'),
-]
-
-urlpatterns += [
-    path('education_list/', views.EducationList.as_view(), name='education_list'),
-    path('education_list/<int:pk>/update/', views.EducationUpdate, name='education_update'),
+    path('employee_list/create/', views.EmployeeCreate, name='employee_create'),
+    path('employee_list/<int:pk>/delete/', views.EmployeeDelete, name='employee_delete'),
 ]
 
 

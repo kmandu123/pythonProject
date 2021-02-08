@@ -64,7 +64,14 @@
 <form action="" method="post" >
     {% csrf_token %}
     <table >
+
+    <!-- 수정/입력경우에 따라(pk값이 존재하는지 여부에 따라) title변경:start -->
+    {% if employee.emp_id %}
     <h2 class="tit">사원정보 수정</h2>
+    {% else %}
+    <h2 class="tit">사원정보 입력</h2>
+    {% endif %}
+    <!-- 수정/입력경우에 따라(pk값이 존재하는지 여부에 따라) title변경:end -->
 
     </table>
 
@@ -112,7 +119,13 @@
     <button type="submit" class="btn btn btn-info">저   장</button>&nbsp&nbsp&nbsp
     <!--a href="{% url 'employee_list' %}">취소</a-->&nbsp&nbsp&nbsp
 
-   <input class="btn btn btn-info" type="button" value="취소" onClick="location.href='{% url 'employee_list'%}'">
+    <input class="btn btn btn-info" type="button" value="취소" onClick="location.href='{% url 'employee_list'%}'">&nbsp&nbsp&nbsp
+
+    <!-- 수정일 때만(pk값이 존재할 때) 삭제 버튼 활성화:start -->
+    {% if employee.emp_id %}
+    <input class="btn btn btn-warning" type="button" value="전체삭제" onClick="location.href='{% url 'employee_delete' employee.emp_id %}'">
+    {% endif %}
+    <!-- 수정일 때만(pk값이 존재할 때) 삭제 버튼 활성화:end -->
 
 
     <!-- Main 입력 영역:End -->

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+<!-- 부트스트랩:Start -->
+<!-- 합쳐지고 최소화된 최신 CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<!-- 부가적인 테마 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<!-- 부트스트랩:End -->
+
+
+<style>
+    body{font-family: 'Malgun Gothic', '맑은 고딕', Dotum, '돋움', sans-serif;}
+
+    .table{border-top:2px solid;}
+    .table{border-bottom:2px solid;}
+    .tit {
+        margin: 0;
+        padding: 0 0 30px 0;
+        color: #333;
+        font-size: 1.7143em;
+        line-height: 1.1;
+        font-weight: 700;
+        letter-spacing: -0.05em;
+    }
+
+    .tit2 {
+        margin: 0;
+        padding: 0 0 30px 0;
+        color: #333;
+        font-size: 1.2143em;
+        line-height: 1.1;
+        font-weight: 700;
+        letter-spacing: -0.05em;
+    }
+
+    .tit_m {
+        margin: 0;
+        padding: 0 0 30px 0;
+        color: #333;
+        font-size: 1.4em;
+        line-height: 1.1;
+        font-weight: 700;
+        letter-spacing: -0.05em;
+    }
+
+</style>
+
+</head>
+<body>
+
+
+{% block content %}
+
+<style>
+
+</style>
+
+  <br>
+  <h2 class="tit">발주처 Popup</h2>
+
+  <!-- 검색 조건 : start -->
+<form method="get" action="{% url 'order_comp_popup' %}">
+    <tr>
+    <td>발주처: <input type="text" value="{{filter_1}}" name="filter_1"/></td>
+    <td>업종: <input type="text" value="{{filter_2}}" name="filter_2"/></td><br>
+
+    <!-- page가 바뀌어도 selected 유지하기 위해 if 문 사용함 -->
+    <td>order_by:
+      <select name="orderby" value="{{orderby}}" >
+        <option value="order_comp_name" {% if orderby == 'order_comp_name' %} selected {% endif %} >발주처</option>
+        <option value="indus_cd" {% if orderby == 'indus_cd' %} selected {% endif %} >업종</option>
+      </select>
+    </td>
+
+    <td><input type="submit" name="submit" value="검색"/></td>
+    </tr>
+</form>
+  <!-- 검색 조건 : end -->
+
+  <br><br>
+  {% if order_comp_popup %}
+  <table class="table">
+      <tr bgcolor="#F7F7F7">
+          <td><strong>발주처</strong></td>
+          <td><strong>업종</strong></td>
+          <td><strong>비고</strong></td>
+      </tr>
+
+    {% for r in order_comp_popup %}
+      <tr>
+          <td><a onclick="setParentText('{{ r.order_comp_id }}')">{{ r.order_comp_name }}</a></td>
+          <td>{{ r.indus_cd }}</td>
+          <td>{{ r.summary }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+    <p>발주처 정보가 없습니다..</p>
+  {% endif %}
+
+
+<!-- paging 처리:start -->
+
+<div class="pagination">
+    <span class="step-links">
+        <!--조회 조건 page뒤에 붙임 : 조회 조건 결과 paging 유지하기 위해서 : &filter_1={{filter_1}}&filter_2={{filter_2}}&orderby={{orderby}} -->
+        {% if page_obj.has_previous %}
+            <a href="?page=1&filter_1={{filter_1}}&filter_2={{filter_2}}&orderby={{orderby}}">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}&filter_1={{filter_1}}&filter_2={{filter_2}}&orderby={{orderby}}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}&filter_1={{filter_1}}&filter_2={{filter_2}}&orderby={{orderby}}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}&filter_1={{filter_1}}&filter_2={{filter_2}}&orderby={{orderby}}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+<!-- paging 처리:end -->
+
+
+{% endblock %}
+
+<script>
+<!-- 발주처 popup 처리:start -->
+function setParentText(comp_id) {
+    opener.document.getElementById("id_order_comp_id").options[comp_id].selected = true
+}
+<!-- 발주처 popup 처리:end -->
+</script>
+
+</body>
+</html>

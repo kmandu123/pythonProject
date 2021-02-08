@@ -11,56 +11,19 @@
 </style>
 <!-- 마스터 table 영역에 대한 스타일:End -->
 
-<!-- Detail Tab 영역에 대한 스타일:Start -->
-<style>
-        .main {
-            min-width: 320px;
-            max-width: 1400px;
-            padding: 10px;
-            border-radius: 7px;;
-            background: #ffffff;}
-
-        section {
-            display: none;
-            padding: 20px 0 0;
-            border-top: 1px solid #ddd;}
-
-        .option_check {
-              display: none;}
-
-        label {
-            display: inline-block;
-            padding: 15px 25px;
-            font-weight: 600;
-            color: #bbb;
-            border: 1px solid transparent;}
-
-        label:hover {
-            color: #2e9cdf;
-            cursor: pointer;}
-
-        /*input 클릭시, label 스타일*/
-        input:checked + label {
-              color: #555;
-              border: 1px solid #ddd;
-              border-top: 2px solid #2e9cdf;
-              border-bottom: 1px solid #ffffff;}
-
-        #tab1:checked ~ #content1,
-        #tab2:checked ~ #content2,
-        #tab3:checked ~ #content3,
-        #tab4:checked ~ #content4 {
-            display: block;}
-
-        .td_pad_right {padding-right:5px;}
-    </style>
-<!-- Detail Tab 영역에 대한 스타일:End -->
 
 <br>
 <form action="" method="post" >
     {% csrf_token %}
     <table >
+
+    <!-- 수정/입력경우에 따라(pk값이 존재하는지 여부에 따라) title변경:start -->
+    {% if education.edu_id %}
     <h2 class="tit">교육정보 수정</h2>
+    {% else %}
+    <h2 class="tit">교육정보 입력</h2>
+    {% endif %}
+    <!-- 수정/입력경우에 따라(pk값이 존재하는지 여부에 따라) title변경:end -->
 
     </table>
 
@@ -126,6 +89,13 @@
             <input type="button" value="상세내역 추가" id="add_more" class="btn btn-info">&nbsp&nbsp&nbsp
             <button type="submit" class="btn btn btn-info">저   장</button>&nbsp&nbsp&nbsp
             <input class="btn btn btn-info" type="button" value="취소" onClick="location.href='{% url 'education_list'%}'">
+
+            <!-- 수정일 때만(pk값이 존재할 때) 삭제 버튼 활성화:start -->
+            {% if education.edu_id %}
+            <input class="btn btn btn-warning" type="button" value="전체삭제" onClick="location.href='{% url 'education_delete' education.edu_id %}'">
+            {% endif %}
+            <!-- 수정일 때만(pk값이 존재할 때) 삭제 버튼 활성화:end -->
+
     <!-- Detail 영역:End -->
 
 </form>

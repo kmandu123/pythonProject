@@ -31,7 +31,8 @@
     <table class="main_table">
         <tr>
             <td class="td_pad_right" align="right"><strong>{{ pjtform.pjt_name.label }}</strong></td><td>{{ pjtform.pjt_name }}</td>
-            <td class="td_pad_right" align="right"><strong>{{ pjtform.order_comp_id.label }}</strong></td><td>{{ pjtform.order_comp_id }}</td>
+            <td class="td_pad_right" align="right"><strong>{{ pjtform.order_comp_id.label }}</strong></td>
+                                    <td>{{ pjtform.order_comp_id }} <input type="button" value="선택" onClick="showPopup();"></td>
             <td class="td_pad_right" align="right"><strong>{{ pjtform.pjt_type_cd.label }}</strong></td><td>{{ pjtform.pjt_type_cd }}</td>
         </tr>
         <tr>
@@ -106,7 +107,7 @@
 
             <input type="button" value="상세내역 추가" id="add_more" class="btn btn-info">&nbsp&nbsp&nbsp
             <button type="submit" class="btn btn btn-info">저   장</button>&nbsp&nbsp&nbsp
-            <input class="btn btn btn-info" type="button" value="취소" onClick="location.href='{% url 'order_comp_list'%}'">
+            <input class="btn btn btn-info" type="button" value="취소" onClick="location.href='{% url 'pjt_list'%}'">
 
             <!-- 수정일 때만(pk값이 존재할 때) 삭제 버튼 활성화:start -->
             {% if pjt.pjt_id %}
@@ -128,6 +129,12 @@ $('#add_more').click(function() {
 	$('#form_set_sch').append($('#empty_form_sch').html().replace(/__prefix__/g, form_idx));
 	$('#id_fk_pjt_his2-TOTAL_FORMS').val(parseInt(form_idx) + 1);
 });
+
+
+var openWin;
+function showPopup() {
+	openWin = window.open("{% url 'order_comp_popup' %}", "popup", "width=500, height=700, left=700, top=218");
+}
 
 </script>
 <!-- Detail Row 추가:End -->

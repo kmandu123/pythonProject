@@ -401,6 +401,40 @@ def PjtDelete(request, pk):
 
 
 
+# 발주처 popup용 list
+class Order_comp_popup(generic.ListView):
+    model = Order_comp
+    paginate_by = 10
+    context_object_name = 'order_comp_popup'
+    template_name = 'resume/order_comp_popup.html'
+
+    #검색 결과 (초기값)
+    def get_queryset(self):
+        filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
+        filter_val_2 = self.request.GET.get('filter_2', '')
+        order = self.request.GET.get('orderby', 'order_comp_name') #정렬대상 컬럼명(초기값)
+
+        new_context = Order_comp.objects.filter(
+            order_comp_name__icontains=filter_val_1,
+            indus_cd__comm_code_name__icontains=filter_val_2,
+        ).order_by(order)
+        return new_context
+
+    #검색 조건 (초기값)
+    def get_context_data(self, **kwargs):
+        context = super(Order_comp_popup, self).get_context_data(**kwargs)
+        context['filter_1'] = self.request.GET.get('filter_1', '')
+        context['filter_2'] = self.request.GET.get('filter_2', '')
+        context['orderby'] = self.request.GET.get('orderby', 'order_comp_name') #정렬대상 컬럼명(초기값)
+        return context
+
+
+
+
+
+
+
+
 # 교육 list
 class EducationList(generic.ListView):
     model = Education
@@ -455,8 +489,57 @@ def EducationUpdate(request, pk):
     return render(request, 'resume/education_update.html', context)
 
 
+# 신규입력 : 수정과 동일하지만 일부분 수정
+# 수정1 : 함수명 변경 및 파라미터 pk 삭제
+# 수정2 : if pk 지우고 master model 빈 instance 생성으로 변경
+# 수정3 : 2번째 if pk 삭제
+def EducationCreate(request):
+    # master model 빈 instance 생성
+    education = Education()
+
+    # master form instance 생성 : 마스터 form 객체는 forms.py에 존재함. : 최초 user화면에 보여주는 수정대상 instance
+    education_form = EducationForm(instance=education)
+
+    #detail from instance 생성 : 최초 user화면에 보여주는 수정대상 instance
+    edu_hisformset = Edu_hisFormset(instance=education)
+
+    if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
+        # master form instance 생성 : Post요청 data로 생성
+        education_form = EducationForm(request.POST)
+
+        # detail form instance 생성 : Post요청 data로 생성
+        edu_hisformset = Edu_hisFormset(request.POST, request.FILES)
+
+        if education_form.is_valid():
+            created_education = education_form.save(commit=False)
+            edu_hisformset = Edu_hisFormset(request.POST, request.FILES, instance=created_education)
+
+            if edu_hisformset.is_valid():
+                created_education.save()
+                edu_hisformset.save()
+                return HttpResponseRedirect(reverse('education_list'))
+            else:
+                print("detail valid error발생")
+                print(edu_hisformset.errors)
 
 
+    # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
+    context = {
+        'education_form': education_form,
+        'edu_hisformset': edu_hisformset,
+        'education': education,
+    }
+
+    # template를 호출한다. context도 같이 넘긴다.
+    return render(request, 'resume/education_update.html', context)
+
+
+
+def EducationDelete(request, pk):
+    # 파라미터pk로 받은 data가 존재한다면 가져온다
+    education = get_object_or_404(Education, pk=pk)
+    education.delete()
+    return HttpResponseRedirect(reverse('education_list'))
 
 
 
@@ -485,13 +568,95 @@ def EmployeeUpdate(request, pk):
     edu_hisformset2 = Edu_hisFormset2(instance=employee)
     pjt_hisformset2 = Pjt_hisFormset2(instance=employee)
 
+
+
     if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
         # master form instance 생성 : Post요청 data로 생성
         employee_form = EmployeeForm(request.POST)
 
+
         if pk:
             # master form instance 생성 : Post요청 data와 pk에 해당하는 마스터 모델 instance연계
             employee_form = EmployeeForm(request.POST, instance=employee)
+
+        # detail form instance 생성 : Post요청 data로 생성
+        school_hisformset = School_hisFormset(request.POST, request.FILES)
+        license_hisformset = License_hisFormset(request.POST, request.FILES)
+        work_hisformset = Work_hisFormset(request.POST, request.FILES)
+        edu_hisformset2 = Edu_hisFormset2(request.POST, request.FILES)
+        pjt_hisformset2 = Pjt_hisFormset2(request.POST, request.FILES)
+
+
+
+        if employee_form.is_valid():
+            created_employee = employee_form.save(commit=False)
+            school_hisformset = School_hisFormset(request.POST, request.FILES, instance=created_employee)
+            license_hisformset = License_hisFormset(request.POST, request.FILES, instance=created_employee)
+            work_hisformset = Work_hisFormset(request.POST, request.FILES, instance=created_employee)
+            edu_hisformset2 = Edu_hisFormset2(request.POST, request.FILES, instance=created_employee)
+            pjt_hisformset2 = Pjt_hisFormset2(request.POST, request.FILES, instance=created_employee)
+
+
+
+            if school_hisformset.is_valid() and license_hisformset.is_valid() and work_hisformset.is_valid() and edu_hisformset2.is_valid() and pjt_hisformset2.is_valid():
+                created_employee.save()
+                employee_form.save_m2m()
+                school_hisformset.save()
+                license_hisformset.save()
+                work_hisformset.save()
+                edu_hisformset2.save()
+                pjt_hisformset2.save()
+
+
+
+                return HttpResponseRedirect(reverse('employee_list'))
+            else:
+                print("detail valid error발생")
+                print(school_hisformset.errors)
+                print(license_hisformset.errors)
+                print(work_hisformset.errors)
+                print(edu_hisformset2.errors)
+                print(pjt_hisformset2.errors)
+
+
+
+    # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
+    context = {
+        'employee_form': employee_form,
+        'school_hisformset': school_hisformset,
+        'license_hisformset': license_hisformset,
+        'work_hisformset': work_hisformset,
+        'edu_hisformset2': edu_hisformset2,
+        'pjt_hisformset2': pjt_hisformset2,
+        'employee': employee,
+    }
+
+    # template를 호출한다. context도 같이 넘긴다.
+    return render(request, 'resume/employee_update.html', context)
+
+
+
+# 신규입력 : 수정과 동일하지만 일부분 수정
+# 수정1 : 함수명 변경 및 파라미터 pk 삭제
+# 수정2 : if pk 지우고 master model 빈 instance 생성으로 변경
+# 수정3 : 2번째 if pk 삭제
+def EmployeeCreate(request):
+    # master model 빈 instance 생성
+    employee = Employee()
+
+    # master form instance 생성 : 마스터 form 객체는 forms.py에 존재함. : 최초 user화면에 보여주는 수정대상 instance
+    employee_form = EmployeeForm(instance=employee)
+
+    #detail from instance 생성 : 최초 user화면에 보여주는 수정대상 instance
+    school_hisformset = School_hisFormset(instance=employee)
+    license_hisformset = License_hisFormset(instance=employee)
+    work_hisformset = Work_hisFormset(instance=employee)
+    edu_hisformset2 = Edu_hisFormset2(instance=employee)
+    pjt_hisformset2 = Pjt_hisFormset2(instance=employee)
+
+    if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
+        # master form instance 생성 : Post요청 data로 생성
+        employee_form = EmployeeForm(request.POST)
 
         # detail form instance 생성 : Post요청 data로 생성
         school_hisformset = School_hisFormset(request.POST, request.FILES)
@@ -509,7 +674,7 @@ def EmployeeUpdate(request, pk):
             edu_hisformset2 = Edu_hisFormset2(request.POST, request.FILES, instance=created_employee)
             pjt_hisformset2 = Pjt_hisFormset2(request.POST, request.FILES, instance=created_employee)
 
-            if school_hisformset.is_valid() and license_hisformset.is_valid() and work_hisformset.is_valid() and edu_hisformset2.is_valid and pjt_hisformset2.is_valid():
+            if school_hisformset.is_valid() and license_hisformset.is_valid() and work_hisformset.is_valid() and edu_hisformset2.is_valid() and pjt_hisformset2.is_valid():
                 created_employee.save()
                 employee_form.save_m2m()
                 school_hisformset.save()
@@ -540,3 +705,33 @@ def EmployeeUpdate(request, pk):
     # template를 호출한다. context도 같이 넘긴다.
     return render(request, 'resume/employee_update.html', context)
 
+
+def EmployeeDelete(request, pk):
+    # 파라미터pk로 받은 data가 존재한다면 가져온다
+    employee = get_object_or_404(Employee, pk=pk)
+    employee.delete()
+    return HttpResponseRedirect(reverse('employee_list'))
+
+
+
+from urllib.request import urlopen
+from urllib.parse import urlencode, quote_plus
+import urllib
+
+def Postno_Popup(request, pk):
+
+    url = 'http://openapi.epost.go.kr/postal/retrieveNewAdressAreaCdSearchAllService/retrieveNewAdressAreaCdSearchAllService/getNewAddressListAreaCdSearchAll'
+
+    queryParams = '?' + urlencode(
+        {quote_plus('ServiceKey'): 'unb2bpjZn5ejbwxPpIOnQkgzJ7Tv0Q9AtcF8Y5nIp6TgrY%2BMZ8RM8WL8bwhfd7sRFwQe6V9Ee3kfEcqQ4d8BMA%3D%3D', quote_plus('srchwrd'): '공평동', quote_plus('countPerPage'): '10',
+         quote_plus('currentPage'): '1'})
+
+    post_rst = urllib.request.urlopen(url+queryParams).read().decode('utf-8')
+
+    print(post_rst)
+
+    url = 'http://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList'
+    queryParams = '?' + urlencode(
+        {quote_plus('ServiceKey'): '#### 인증키 넣자 ####', quote_plus('pageNo'): '1', quote_plus('numOfRows'): '10',
+         quote_plus('dataType'): 'XML', quote_plus('dataCd'): 'ASOS', quote_plus('dateCd'): 'DAY',
+         quote_plus('startDt'): '20100101', quote_plus('endDt'): '20100601', quote_plus('stnIds'): '108'})
