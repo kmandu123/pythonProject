@@ -29,6 +29,32 @@
 
     <!-- Main 입력 영역:Start -->
     <table class="main_table">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
+            {% endfor %}
+        {% endif %}
+
+
+
+    {{ pjtform.errors }}
+
+    {% if pjtform.errors %}
+	<!-- Error messaging -->
+	<div id="errors">
+		<div class="inner">
+			<p>There were some errors in the information you entered. Please correct the following:</p>
+			<ul>
+				{% for field in pjtform %}
+					{% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<!-- /Error messaging -->
+    {% endif %}
+
+
         <tr>
             <td class="td_pad_right" align="right"><strong>{{ pjtform.pjt_name.label }}</strong></td><td>{{ pjtform.pjt_name }}</td>
             <td class="td_pad_right" align="right"><strong>{{ pjtform.order_comp_id.label }}</strong></td>

@@ -299,7 +299,7 @@ class PjtList(generic.ListView):
         return context
 
 
-
+from django.contrib import messages
 def PjtUpdate(request, pk):
 
     if pk:
@@ -317,6 +317,8 @@ def PjtUpdate(request, pk):
     if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
         # master form instance 생성 : Post요청 data로 생성
         pjtform = PjtForm(request.POST)
+
+        messages.success(request, f"New account created: 김종식")
 
         if pk:
             # master form instance 생성 : Post요청 data와 pk에 해당하는 마스터 모델 instance연계
@@ -730,8 +732,3 @@ def Postno_Popup(request, pk):
 
     print(post_rst)
 
-    url = 'http://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList'
-    queryParams = '?' + urlencode(
-        {quote_plus('ServiceKey'): '#### 인증키 넣자 ####', quote_plus('pageNo'): '1', quote_plus('numOfRows'): '10',
-         quote_plus('dataType'): 'XML', quote_plus('dataCd'): 'ASOS', quote_plus('dateCd'): 'DAY',
-         quote_plus('startDt'): '20100101', quote_plus('endDt'): '20100601', quote_plus('stnIds'): '108'})

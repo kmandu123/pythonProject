@@ -1,6 +1,9 @@
 from django.db import models
 #from django.db.models import Max
 from django.urls import reverse # Used to generate URLs by reversing the URL patterns
+from django.core.validators import MinLengthValidator
+
+
 # Create your models here.
 
 class Comm_div(models.Model):
@@ -241,10 +244,12 @@ class Order_comp(models.Model):
         return reverse('order_comp_update', args=[str(self.order_comp_id)])
 
 
+title_validator = MinLengthValidator(3, "길이가 너무 짧습니다.")
+
 class Pjt(models.Model):
     pjt_id = models.AutoField(primary_key=True, verbose_name='프로젝트ID')
     order_comp_id = models.ForeignKey('Order_comp', related_name='fk_pjt1', on_delete=models.SET_NULL, null=True, db_column='order_comp_id', verbose_name='발주처ID')
-    pjt_name = models.CharField(max_length=200, verbose_name='사업명')
+    pjt_name = models.CharField(max_length=200, verbose_name='사업명', validators=[title_validator])
     pjt_type_cd = models.ForeignKey('Comm_code', related_name='fk_pjt2', on_delete=models.SET_NULL, null=True, db_column='pjt_type_cd', verbose_name='프로젝트 형태')
     pjt_start_date = models.DateField(verbose_name='프로젝트 시작일자', null=True, blank=True)
     pjt_end_date = models.DateField(verbose_name='프로젝트 종료일자', null=True, blank=True)

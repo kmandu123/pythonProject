@@ -1,6 +1,7 @@
 from django import forms
 from .models import Comm_div, Comm_code, Employee, School_his, License_his, Work_his, Education, Edu_his, Order_comp, Pjt, Pjt_his
 from django.forms import inlineformset_factory
+from django.core.exceptions import ValidationError
 
 class Comm_divForm(forms.ModelForm):
 # 필드별로 재정의할때
@@ -229,6 +230,18 @@ class PjtForm(forms.ModelForm):
         super(PjtForm, self).__init__(*args, **kwargs)
         self.fields['pjt_type_cd'].queryset = Comm_code.objects.filter(comm_div_id=14)
         self.fields['pjt_location_cd'].queryset = Comm_code.objects.filter(comm_div_id=15)
+
+    def clean(self):
+        pjt_start_date = self.cleaned_data['pjt_start_date']
+        pjt_end_date = self.cleaned_data['pjt_end_date']
+
+        if pjt_start_date and pjt_end_date:
+            if pjt_start_date > pjt_end_date:
+                raise ValidationError("종료일자가 시작일자 이전 입니다. 다시 입력하세요!")
+
+        return self.cleaned_data
+
+
 
 
  # detail form 객체 생성
