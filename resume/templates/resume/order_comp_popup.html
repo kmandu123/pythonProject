@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 
 <!-- 부트스트랩:Start -->
 <!-- 합쳐지고 최소화된 최신 CSS -->
@@ -133,7 +135,9 @@
 <script>
 <!-- 발주처 popup 처리: 조회결과 list 클릭 시 호출한 main page로 data 전송 :start -->
 function setParentText(comp_id) {
-    opener.document.getElementById("id_order_comp_id").options[comp_id].selected = true
+    // opener.document.getElementById("id_order_comp_id").options[comp_id].selected = true  // index로 위치를 찾기때문에 아래 jqury의 값으로 찾는 것으로 변경함.
+
+    $("#id_order_comp_id", opener.document).val(comp_id).prop("selected", true);
 }
 <!-- 발주처 popup 처리:end -->
 </script>

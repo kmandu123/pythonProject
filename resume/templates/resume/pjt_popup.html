@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Title</title>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 <!-- 부트스트랩:Start -->
 <!-- 합쳐지고 최소화된 최신 CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
@@ -64,6 +66,9 @@
   <br>
   <h2 class="tit">프로젝트 List</h2>
 
+<!-- 부모창으로 부터 받은 id값 확인 테스트 -->
+전달받은 Data<input type="text" value="aaa" id="childText">
+
   <!-- 검색 조건 : start -->
 <form method="get" action="{% url 'pjt_popup' %}">
     <tr>
@@ -71,6 +76,7 @@
     <td>발주처: <input type="text" value="{{filter_2}}" name="filter_2"/></td>
 
     <!-- page가 바뀌어도 selected 유지하기 위해 if 문 사용함 -->
+    <br>
     <td>order_by:
       <select name="orderby" value="{{orderby}}" >
         <option value="pjt_name" {% if orderby == 'pjt_name' %} selected {% endif %} >프로젝트(오름차순)</option>
@@ -82,10 +88,12 @@
       </select>
     </td>
 
-    <td><input class="btn btn btn-info" type="submit" name="submit" value="검색"/></td>
+    <td><input type="submit" name="submit" value="검색"/></td>
     </tr>
 </form>
   <!-- 검색 조건 : end -->
+
+
 
 
   <br><br>
@@ -94,21 +102,17 @@
       <tr bgcolor="#F7F7F7">
           <td><strong>프로젝트</strong></td>
           <td><strong>발주처</strong></td>
-          <td><strong>프로젝트 형태</strong></td>
-          <td><strong>프로젝트 시작일자</strong></td>
-          <td><strong>프로젝트 종료일자</strong></td>
-          <td><strong>프로젝트수행장소</strong></td>
+          <td><strong>시작일자</strong></td>
+          <td><strong>종료일자</strong></td>
       </tr>
 
     {% for r in pjt_popup %}
       <tr>
           <!-- 검색 결과 click시 본문에 선택값 전송하기 위해 onclick 자바스크립 함수 호출 함 -->
-          <td><a onclick="setParentText('{{ r.pjt_id }}')">{{ r.pjt_name }}</a></td>
+          <td><a onclick="setParentText('{{ r.pjt_id }}')">{{ r.pjt_name }}{{ r.pjt_id }}</a></td>
           <td>{{ r.order_comp_id }}</td>
-          <td>{{ r.pjt_type_cd }}</td>
           <td>{{ r.pjt_start_date | date:'Y-m-d' }}</td>
           <td>{{ r.pjt_end_date | date:'Y-m-d' }}</td>
-          <td>{{ r.pjt_location_cd }}</td>
       </tr>
     {% endfor %}
   </table>
@@ -142,7 +146,6 @@
 
 
 
-
 <!-- 검색 조건 및 검색 결과 본문 : end -->
 {% endblock %}
 
@@ -151,7 +154,7 @@
 <script>
 <!-- 발주처 popup 처리: 조회결과 list 클릭 시 호출한 main page로 data 전송 :start -->
 function setParentText(pjt_id) {
-    opener.document.getElementById("id_fk_pjt_his1-0-pjt_id").options[pjt_id].selected = true
+      $("#id_fk_pjt_his1-0-pjt_id", opener.document).val(pjt_id).prop("selected", true);
 }
 <!-- 발주처 popup 처리:end -->
 </script>

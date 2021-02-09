@@ -811,10 +811,6 @@ class Pjt_popup(generic.ListView):
 
 
 
-
-
-
-
 from urllib.request import urlopen
 from urllib.parse import urlencode, quote_plus
 import urllib

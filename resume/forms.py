@@ -304,8 +304,11 @@ Pjt_hisFormset = inlineformset_factory(Pjt, Pjt_his, form=Pjt_hisForm,
  # detail form 객체 생성
 Pjt_hisFormset2 = inlineformset_factory(Employee, Pjt_his, form=Pjt_hisForm,
                     widgets={
-                        'join_start_date': forms.TextInput(attrs={'class': 'cal', 'autocomplete': 'off', 'size': '10'}),
-                        'join_end_date': forms.TextInput(attrs={'class': 'cal', 'autocomplete': 'off', 'size': '10'}),
-                        'summary': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '20', 'rows': '1'}),
+                        'company_name': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '20', 'rows': '2'}),
+                        'pjt_role': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '20', 'rows': '2'}),
+                        'join_start_date': forms.TextInput(attrs={'class': 'cal', 'autocomplete': 'off', 'size': '8'}),
+                        'join_end_date': forms.TextInput(attrs={'class': 'cal', 'autocomplete': 'off', 'size': '8'}),
+                        'summary': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '20', 'rows': '2'}),
                     },
                     extra=1, can_delete=True)
+

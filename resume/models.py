@@ -275,7 +275,7 @@ class Pjt_his(models.Model):
     pjt_his_id = models.AutoField(primary_key=True, verbose_name='프로젝트이력ID')
     emp_id = models.ForeignKey('Employee', related_name='fk_pjt_his1', on_delete=models.SET_NULL, null=True, db_column='emp_id', verbose_name='사원')
     pjt_id = models.ForeignKey('pjt', related_name='fk_pjt_his2', on_delete=models.SET_NULL, null=True, db_column='pjt_id', verbose_name='프로젝트ID')
-    company_name = models.CharField(max_length=200, verbose_name='프로젝트 투입 시 근무처')
+    company_name = models.CharField(max_length=200, verbose_name='근무처')
     join_start_date = models.DateField(verbose_name='참여 시작일자', null=True)
     join_end_date = models.DateField(verbose_name='참여 종료일자', null=True)
     kosa_conf_cd = models.ForeignKey('Comm_code', related_name='fk_pjt_his3', on_delete=models.SET_NULL, null=True, blank=True, db_column='kosa_conf_cd', verbose_name='KOSA 증빙')
