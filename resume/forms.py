@@ -160,10 +160,23 @@ class EducationForm(forms.ModelForm):
 
         # 속성별로 재정의 할때
         widgets = {
+            'edu_name': forms.TextInput(attrs={'autocomplete': 'off', 'size': '60'}),
             'edu_start_date': forms.TextInput(attrs={'class': 'cal', 'autocomplete': 'off', 'size': '10'}),
             'edu_end_date': forms.TextInput(attrs={'class': 'cal', 'autocomplete': 'off', 'size': '10'}),
             'summary': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '63', 'rows': '3'}),
         }
+
+    # 추가 validation 처리
+    def clean(self):
+        edu_start_date = self.cleaned_data['edu_start_date']
+        edu_end_date = self.cleaned_data['edu_end_date']
+
+        if edu_start_date and edu_end_date:
+            if edu_start_date > edu_end_date:
+                raise ValidationError("종료일자가 시작일자 이전 입니다. 다시 입력하세요!")
+
+        return self.cleaned_data
+
 
 
 class Edu_hisForm(forms.ModelForm):
@@ -231,6 +244,7 @@ class PjtForm(forms.ModelForm):
         self.fields['pjt_type_cd'].queryset = Comm_code.objects.filter(comm_div_id=14)
         self.fields['pjt_location_cd'].queryset = Comm_code.objects.filter(comm_div_id=15)
 
+    # 추가 validation 처리
     def clean(self):
         pjt_start_date = self.cleaned_data['pjt_start_date']
         pjt_end_date = self.cleaned_data['pjt_end_date']
@@ -268,6 +282,18 @@ class Pjt_hisForm(forms.ModelForm):
         self.fields['kosa_conf_cd'].queryset = Comm_code.objects.filter(comm_div_id=16)
         self.fields['insurance_conf_cd'].queryset = Comm_code.objects.filter(comm_div_id=17)
         self.fields['his_status_cd'].queryset = Comm_code.objects.filter(comm_div_id=18)
+
+    # 추가 validation 처리
+    def clean(self):
+        join_start_date = self.cleaned_data['join_start_date']
+        join_end_date = self.cleaned_data['join_end_date']
+
+        if join_start_date and join_end_date:
+            if join_start_date > join_end_date:
+                raise ValidationError("종료일자가 시작일자 이전 입니다. 다시 입력하세요!")
+
+        return self.cleaned_data
+
 
 
  # detail form 객체 생성

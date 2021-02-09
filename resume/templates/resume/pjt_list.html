@@ -21,8 +21,12 @@
     <!-- page가 바뀌어도 selected 유지하기 위해 if 문 사용함 -->
     <td>order_by:
       <select name="orderby" value="{{orderby}}" >
-        <option value="pjt_name" {% if orderby == 'pjt_name' %} selected {% endif %} >프로젝트</option>
-        <option value="order_comp_id" {% if orderby == 'order_comp_id' %} selected {% endif %} >발주처</option>
+        <option value="pjt_name" {% if orderby == 'pjt_name' %} selected {% endif %} >프로젝트(오름차순)</option>
+        <option value="-pjt_name" {% if orderby == '-pjt_name' %} selected {% endif %} >프로젝트(내림차순)</option>
+        <option value="order_comp_id" {% if orderby == 'order_comp_id' %} selected {% endif %} >발주처(오름차순)</option>
+        <option value="-order_comp_id" {% if orderby == '-order_comp_id' %} selected {% endif %} >발주처(내림차순)</option>
+        <option value="pjt_start_date" {% if orderby == 'pjt_start_date' %} selected {% endif %} >시작일자(오름차순)</option>
+        <option value="-pjt_start_date" {% if orderby == '-pjt_start_date' %} selected {% endif %} >시작일자(내림차순)</option>
       </select>
     </td>
 

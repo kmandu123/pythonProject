@@ -29,6 +29,27 @@ from django.views import generic
 # 공통구분 list
 class  Comm_divList(generic.ListView):
     model = Comm_div
+    paginate_by = 15
+
+    #검색 결과 (초기값)
+    def get_queryset(self):
+        filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
+        order = self.request.GET.get('orderby', 'comm_div_name') #정렬대상 컬럼명(초기값)
+
+        new_context = Comm_div.objects.filter(
+            comm_div_name__icontains=filter_val_1,
+        ).order_by(order)
+        return new_context
+
+    #검색 조건 (초기값)
+    def get_context_data(self, **kwargs):
+        context = super(Comm_divList, self).get_context_data(**kwargs)
+        context['filter_1'] = self.request.GET.get('filter_1', '')
+        context['orderby'] = self.request.GET.get('orderby', 'comm_div_name') #정렬대상 컬럼명(초기값)
+        return context
+
+
+
 
 
 #Comm_div를 update하기 위한 function view
@@ -287,7 +308,7 @@ class PjtList(generic.ListView):
         new_context = Pjt.objects.filter(
             pjt_name__icontains=filter_val_1,
             order_comp_id__order_comp_name__icontains=filter_val_2,
-        ).order_by(order)
+        ).order_by(order)  #sort컬럼 2개이상도 가능 ","로 구분하여 입력하면됨.
         return new_context
 
     #검색 조건 (초기값)
@@ -317,8 +338,6 @@ def PjtUpdate(request, pk):
     if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
         # master form instance 생성 : Post요청 data로 생성
         pjtform = PjtForm(request.POST)
-
-        messages.success(request, f"New account created: 김종식")
 
         if pk:
             # master form instance 생성 : Post요청 data와 pk에 해당하는 마스터 모델 instance연계
@@ -440,6 +459,30 @@ class Order_comp_popup(generic.ListView):
 # 교육 list
 class EducationList(generic.ListView):
     model = Education
+    paginate_by = 15
+
+    #검색 결과 (초기값)
+    def get_queryset(self):
+        filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
+        filter_val_2 = self.request.GET.get('filter_2', '')
+        order = self.request.GET.get('orderby', 'edu_name') #정렬대상 컬럼명(초기값)
+
+        new_context = Education.objects.filter(
+            edu_name__icontains=filter_val_1,
+            agency_name__icontains=filter_val_2,
+        ).order_by(order)
+        return new_context
+
+    #검색 조건 (초기값)
+    def get_context_data(self, **kwargs):
+        context = super(EducationList, self).get_context_data(**kwargs)
+        context['filter_1'] = self.request.GET.get('filter_1', '')
+        context['filter_2'] = self.request.GET.get('filter_2', '')
+        context['orderby'] = self.request.GET.get('orderby', 'edu_name') #정렬대상 컬럼명(초기값)
+        return context
+
+
+
 
 
 def EducationUpdate(request, pk):
@@ -549,6 +592,27 @@ def EducationDelete(request, pk):
 # 사원 list
 class EmployeeList(generic.ListView):
     model = Employee
+    paginate_by = 15
+
+    #검색 결과 (초기값)
+    def get_queryset(self):
+        filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
+        filter_val_2 = self.request.GET.get('filter_2', '')
+        order = self.request.GET.get('orderby', 'emp_name') #정렬대상 컬럼명(초기값)
+
+        new_context = Employee.objects.filter(
+            emp_name__icontains=filter_val_1,
+            emp_position_cd__comm_code_name__icontains=filter_val_2,
+        ).order_by(order)  #sort컬럼 2개이상도 가능 ","로 구분하여 입력하면됨.
+        return new_context
+
+    #검색 조건 (초기값)
+    def get_context_data(self, **kwargs):
+        context = super(EmployeeList, self).get_context_data(**kwargs)
+        context['filter_1'] = self.request.GET.get('filter_1', '')
+        context['filter_2'] = self.request.GET.get('filter_2', '')
+        context['orderby'] = self.request.GET.get('orderby', 'emp_name') #정렬대상 컬럼명(초기값)
+        return context
 
 
 
@@ -716,6 +780,41 @@ def EmployeeDelete(request, pk):
 
 
 
+# 프로젝트 popup용 list
+class Pjt_popup(generic.ListView):
+    model = Pjt
+    paginate_by = 10
+    context_object_name = 'pjt_popup'
+    template_name = 'resume/pjt_popup.html'
+
+    #검색 결과 (초기값)
+    def get_queryset(self):
+        filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
+        filter_val_2 = self.request.GET.get('filter_2', '')
+        order = self.request.GET.get('orderby', 'pjt_name') #정렬대상 컬럼명(초기값)
+
+        new_context = Pjt.objects.filter(
+            pjt_name__icontains=filter_val_1,
+            order_comp_id__order_comp_name__icontains=filter_val_2,
+        ).order_by(order)  #sort컬럼 2개이상도 가능 ","로 구분하여 입력하면됨.
+        return new_context
+
+    #검색 조건 (초기값)
+    def get_context_data(self, **kwargs):
+        context = super(Pjt_popup, self).get_context_data(**kwargs)
+        context['filter_1'] = self.request.GET.get('filter_1', '')
+        context['filter_2'] = self.request.GET.get('filter_2', '')
+        context['orderby'] = self.request.GET.get('orderby', 'pjt_name') #정렬대상 컬럼명(초기값)
+        return context
+
+
+
+
+
+
+
+
+
 from urllib.request import urlopen
 from urllib.parse import urlencode, quote_plus
 import urllib
@@ -731,4 +830,5 @@ def Postno_Popup(request, pk):
     post_rst = urllib.request.urlopen(url+queryParams).read().decode('utf-8')
 
     print(post_rst)
+
 

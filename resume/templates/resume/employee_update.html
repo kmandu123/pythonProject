@@ -77,6 +77,17 @@
 
     <!-- Main 입력 영역:Start -->
     <table class="main_table">
+
+    <!-- Master error 메시지처리:start -->
+    {% if employee_form.errors %}
+	<div id="errors">
+			<ul>
+                <font size="2em" color="red">{{ employee_form.errors }}</font>
+			</ul>
+	</div>
+    {% endif %}
+    <!-- Master error 메시지처리:end -->
+
         <tr>
             <td class="td_pad_right" align="right"><strong>{{ employee_form.emp_position_cd.label }}</strong></td><td>{{ employee_form.emp_position_cd }}</td>
             <td class="td_pad_right" align="right"><strong>{{ employee_form.emp_name.label }}</strong></td><td>{{ employee_form.emp_name }}</td>
@@ -126,6 +137,20 @@
     <input class="btn btn btn-warning" type="button" value="전체삭제" onClick="location.href='{% url 'employee_delete' employee.emp_id %}'">
     {% endif %}
     <!-- 수정일 때만(pk값이 존재할 때) 삭제 버튼 활성화:end -->
+
+
+    <!-- Master error 메시지처리:start -->
+    {% if license_hisformset.errors or work_hisformset.errors  or edu_hisformset2.errors or pjt_hisformset2.errors %}
+
+	<div id="errors">
+			<ul>
+                <font size="2em" color="red">
+                    "상세 내역" 입력 에러 발생함..! 아래 상세 내역 입력 확인 바랍니다!
+                </font>
+			</ul>
+	</div>
+    {% endif %}
+    <!-- Master error 메시지처리:end -->
 
 
     <!-- Main 입력 영역:End -->
@@ -182,6 +207,15 @@
                     <td>{{ form.summary }}</td>
                     <td>{{ form.DELETE }}</td>
                 </tr>
+
+                <!-- detail error 메시지처리:start -->
+                {% if form.errors %}
+                <tr>
+                    <td colspan="7"><font size="2em" color="red">{{ form.errors }}</font></td>
+                </tr>
+                {% endif %}
+                <!-- detail error 메시지처리:end -->
+
             {% endfor %}
 
             </table>
@@ -230,6 +264,15 @@
                     <td>{{ form.summary }}</td>
                     <td>{{ form.DELETE }}</td>
                 </tr>
+
+                <!-- detail error 메시지처리:start -->
+                {% if form.errors %}
+                <tr>
+                    <td colspan="6"><font size="2em" color="red">{{ form.errors }}</font></td>
+                </tr>
+                {% endif %}
+                <!-- detail error 메시지처리:end -->
+
             {% endfor %}
 
             </table>
@@ -282,6 +325,15 @@
                     <td>{{ form.summary }}</td>
                     <td>{{ form.DELETE }}</td>
                 </tr>
+
+                <!-- detail error 메시지처리:start -->
+                {% if form.errors %}
+                <tr>
+                    <td colspan="9"><font size="2em" color="red">{{ form.errors }}</font></td>
+                </tr>
+                {% endif %}
+                <!-- detail error 메시지처리:end -->
+
             {% endfor %}
 
             </table>
@@ -328,6 +380,15 @@
                     <td>{{ form.summary }}</td>
                     <td>{{ form.DELETE }}</td>
                 </tr>
+
+                <!-- detail error 메시지처리:start -->
+                {% if form.errors %}
+                <tr>
+                    <td colspan="4"><font size="2em" color="red">{{ form.errors }}</font></td>
+                </tr>
+                {% endif %}
+                <!-- detail error 메시지처리:end -->
+
             {% endfor %}
 
             </table>
@@ -396,7 +457,7 @@
             {% for form in pjt_hisformset2 %}
                 <tr>
                     <td>{{ form.pjt_his_id }}</td>
-                    <td>{{ form.pjt_id }}</td>
+                    <td>{{ form.pjt_id }}<input type="button" value="선택" onClick="showPopup();"></td>
                     <td>{{ form.company_name }}</td>
                     <td>{{ form.join_start_date }}</td>
                     <td>{{ form.join_end_date }}</td>
@@ -407,6 +468,15 @@
                     <td>{{ form.summary }}</td>
                     <td>{{ form.DELETE }}</td>
                 </tr>
+
+                <!-- detail error 메시지처리:start -->
+                {% if form.errors %}
+                <tr>
+                    <td colspan="10"><font size="2em" color="red">{{ form.errors }}</font></td>
+                </tr>
+                {% endif %}
+                <!-- detail error 메시지처리:end -->
+
             {% endfor %}
 
             </table>
@@ -489,6 +559,14 @@ $('#add_more_prj').click(function() {
 	$('#id_fk_pjt_his1-TOTAL_FORMS').val(parseInt(form_idx) + 1);
 });
 
+
+
+// 팝업창 호출하기 위한 함수:start
+var openWin;
+function showPopup() {
+	openWin = window.open("{% url 'pjt_popup' %}", "popup", "width=500, height=700, left=700, top=218");
+}
+// 팝업창 호출하기 위한 함수:end
 </script>
 <!-- Detail Row 추가:End -->
 

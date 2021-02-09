@@ -10,6 +10,28 @@
   <br>
   <h2 class="tit">공통코드 구분 List</h2>
 
+<!-- 검색 조건 : start -->
+<form method="get" action="{% url 'comm_div_list' %}">
+    <tr>
+    <td>공통코드 구분: <input type="text" value="{{filter_1}}" name="filter_1"/></td>
+
+    <!-- page가 바뀌어도 selected 유지하기 위해 if 문 사용함 -->
+    <td>order_by:
+      <select name="orderby" value="{{orderby}}" >
+        <option value="comm_div_name" {% if orderby == 'comm_div_name' %} selected {% endif %} >공통코드 구분(오름차순)</option>
+        <option value="-comm_div_name" {% if orderby == '-comm_div_name' %} selected {% endif %} >공통코드 구분(내림차순)</option>
+        <option value="update_dt" {% if orderby == 'update_dt' %} selected {% endif %} >수정일시(오름차순)</option>
+        <option value="-update_dt" {% if orderby == '-update_dt' %} selected {% endif %} >수정일시(내림차순)</option>
+      </select>
+    </td>
+
+    <td><input class="btn btn btn-info" type="submit" name="submit" value="검색"/></td>
+    </tr>
+</form>
+<!-- 검색 조건 : end -->
+
+  <br>
+
   <input class="btn btn btn-info" type="button" value="신규입력" onClick="location.href='{% url 'comm_div_create'%}'">
 
   <br><br>
@@ -34,5 +56,28 @@
   {% else %}
     <p>교육정보가 없습니다..</p>
   {% endif %}
+
+
+<!-- paging 처리:start -->
+
+<div class="pagination">
+    <span class="step-links">
+        <!--조회 조건 page뒤에 붙임 : 조회 조건 결과 paging 유지하기 위해서 : &filter_1={{filter_1}}&filter_2={{filter_2}}&orderby={{orderby}} -->
+        {% if page_obj.has_previous %}
+            <a href="?page=1&filter_1={{filter_1}}&orderby={{orderby}}">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}&filter_1={{filter_1}}&orderby={{orderby}}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}&filter_1={{filter_1}}&orderby={{orderby}}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}&filter_1={{filter_1}}&orderby={{orderby}}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+<!-- paging 처리:end -->
 
 {% endblock %}

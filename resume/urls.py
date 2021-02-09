@@ -39,6 +39,7 @@ urlpatterns += [
     path('employee_list/<int:pk>/update/', views.EmployeeUpdate, name='employee_update'),
     path('employee_list/create/', views.EmployeeCreate, name='employee_create'),
     path('employee_list/<int:pk>/delete/', views.EmployeeDelete, name='employee_delete'),
+    path('employee_list/pjt_popup/', views.Pjt_popup.as_view(), name='pjt_popup'),
 ]
 
 

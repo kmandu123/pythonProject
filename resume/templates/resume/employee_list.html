@@ -10,6 +10,30 @@
   <br>
   <h2 class="tit">사원 List</h2>
 
+<!-- 검색 조건 : start -->
+<form method="get" action="{% url 'employee_list' %}">
+    <tr>
+    <td>사원명: <input type="text" value="{{filter_1}}" name="filter_1"/></td>
+    <td>직급: <input type="text" value="{{filter_2}}" name="filter_2"/></td>
+
+    <!-- page가 바뀌어도 selected 유지하기 위해 if 문 사용함 -->
+    <td>order_by:
+      <select name="orderby" value="{{orderby}}" >
+        <option value="emp_name" {% if orderby == 'emp_name' %} selected {% endif %} >사원명(오름차순)</option>
+        <option value="-emp_name" {% if orderby == '-emp_name' %} selected {% endif %} >사원명(내림차순)</option>
+        <option value="emp_position_cd" {% if orderby == 'emp_position_cd' %} selected {% endif %} >직급(오름차순)</option>
+        <option value="-emp_position_cd" {% if orderby == '-emp_position_cd' %} selected {% endif %} >직급(내림차순)</option>
+        <option value="indate" {% if orderby == 'indate' %} selected {% endif %} >입사일자(오름차순)</option>
+        <option value="-indate" {% if orderby == '-indate' %} selected {% endif %} >입사일자(내림차순)</option>
+      </select>
+    </td>
+
+    <td><input class="btn btn btn-info" type="submit" name="submit" value="검색"/></td>
+    </tr>
+</form>
+<!-- 검색 조건 : end -->
+
+  <br>
   <input class="btn btn btn-info" type="button" value="신규입력" onClick="location.href='{% url 'employee_create'%}'">
 
   <br><br>
@@ -28,5 +52,28 @@
   {% else %}
     <p>사원정보가 없습니다..</p>
   {% endif %}
+
+<!-- paging 처리:start -->
+
+<div class="pagination">
+    <span class="step-links">
+        <!--조회 조건 page뒤에 붙임 : 조회 조건 결과 paging 유지하기 위해서 : &filter_1={{filter_1}}&filter_2={{filter_2}}&orderby={{orderby}} -->
+        {% if page_obj.has_previous %}
+            <a href="?page=1&filter_1={{filter_1}}&filter_2={{filter_2}}&orderby={{orderby}}">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}&filter_1={{filter_1}}&filter_2={{filter_2}}&orderby={{orderby}}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}&filter_1={{filter_1}}&filter_2={{filter_2}}&orderby={{orderby}}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}&filter_1={{filter_1}}&filter_2={{filter_2}}&orderby={{orderby}}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+<!-- paging 처리:end -->
+
 {% endblock %}
 

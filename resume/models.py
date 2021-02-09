@@ -244,6 +244,7 @@ class Order_comp(models.Model):
         return reverse('order_comp_update', args=[str(self.order_comp_id)])
 
 
+# 컬럼에 대한 추가 validation 처리
 title_validator = MinLengthValidator(3, "길이가 너무 짧습니다.")
 
 class Pjt(models.Model):

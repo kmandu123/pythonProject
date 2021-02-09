@@ -29,6 +29,18 @@
 
     <!-- Main 입력 영역:Start -->
     <table class="main_table">
+
+    <!-- Master error 메시지처리:start -->
+    {% if education_form.errors %}
+	<div id="errors">
+			<ul>
+                <font size="2em" color="red">{{ education_form.errors }}</font>
+			</ul>
+	</div>
+    {% endif %}
+    <!-- Master error 메시지처리:end -->
+
+
         <tr>
             <td class="td_pad_right" align="right"><strong>{{ education_form.edu_name.label }}</strong></td><td colspan="1">{{ education_form.edu_name }}</td>
         </tr>
@@ -72,6 +84,15 @@
                     <td>{{ form.summary }}</td>
                     <td>{{ form.DELETE }}</td>
                 </tr>
+
+                <!-- detail error 메시지처리:start -->
+                {% if form.errors %}
+                <tr>
+                    <td colspan="4"><font size="2em" color="red">{{ form.errors }}</font></td>
+                </tr>
+                {% endif %}
+                <!-- detail error 메시지처리:end -->
+
             {% endfor %}
 
             </table>

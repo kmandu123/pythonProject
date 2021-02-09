@@ -29,30 +29,21 @@
 
     <!-- Main 입력 영역:Start -->
     <table class="main_table">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
-            {% endfor %}
-        {% endif %}
 
-
-
-    {{ pjtform.errors }}
-
+    <!-- Master error 메시지처리:start -->
     {% if pjtform.errors %}
-	<!-- Error messaging -->
 	<div id="errors">
-		<div class="inner">
-			<p>There were some errors in the information you entered. Please correct the following:</p>
-			<ul>
+			<ul><!-- 필드별 에러 발생 시 사용 예제
 				{% for field in pjtform %}
 					{% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
 				{% endfor %}
+                -->
+                <!-- "--all--" error인 경우 출력 -->
+                <font size="2em" color="red">{{ pjtform.errors }}</font>
 			</ul>
-		</div>
 	</div>
-	<!-- /Error messaging -->
     {% endif %}
+    <!-- Master error 메시지처리:end -->
 
 
         <tr>
@@ -111,6 +102,15 @@
                     <td>{{ form.summary }}</td>
                     <td>{{ form.DELETE }}</td>
                 </tr>
+
+                <!-- detail error 메시지처리:start -->
+                {% if form.errors %}
+                <tr>
+                    <td colspan="10"><font size="2em" color="red">{{ form.errors }}</font></td>
+                </tr>
+                {% endif %}
+                <!-- detail error 메시지처리:end -->
+
             {% endfor %}
 
             </table>
@@ -156,11 +156,12 @@ $('#add_more').click(function() {
 	$('#id_fk_pjt_his2-TOTAL_FORMS').val(parseInt(form_idx) + 1);
 });
 
-
+// 팝업창 호출하기 위한 함수:start
 var openWin;
 function showPopup() {
 	openWin = window.open("{% url 'order_comp_popup' %}", "popup", "width=500, height=700, left=700, top=218");
 }
+// 팝업창 호출하기 위한 함수:end
 
 </script>
 <!-- Detail Row 추가:End -->

@@ -11,7 +11,7 @@
   <br>
   <h2 class="tit">발주처 List</h2>
 
-  <!-- 검색 조건 : start -->
+<!-- 검색 조건 : start -->
 <form method="get" action="{% url 'order_comp_list' %}">
     <tr>
     <td>발주처: <input type="text" value="{{filter_1}}" name="filter_1"/></td>
@@ -21,15 +21,19 @@
     <!-- page가 바뀌어도 selected 유지하기 위해 if 문 사용함 -->
     <td>order_by:
       <select name="orderby" value="{{orderby}}" >
-        <option value="order_comp_name" {% if orderby == 'order_comp_name' %} selected {% endif %} >발주처</option>
-        <option value="indus_cd" {% if orderby == 'indus_cd' %} selected {% endif %} >업종</option>
+        <option value="order_comp_name" {% if orderby == 'order_comp_name' %} selected {% endif %} >발주처(오름차순)</option>
+        <option value="-order_comp_name" {% if orderby == '-order_comp_name' %} selected {% endif %} >발주처(내림차순)</option>
+        <option value="indus_cd" {% if orderby == 'indus_cd' %} selected {% endif %} >업종(오름차순)</option>
+        <option value="-indus_cd" {% if orderby == '-indus_cd' %} selected {% endif %} >업종(내림차순)</option>
+        <option value="update_dt" {% if orderby == 'update_dt' %} selected {% endif %} >수정일시(오름차순)</option>
+        <option value="-update_dt" {% if orderby == '-update_dt' %} selected {% endif %} >수정일시(내림차순)</option>
       </select>
     </td>
 
     <td><input class="btn btn btn-info" type="submit" name="submit" value="검색"/></td>
     </tr>
 </form>
-  <!-- 검색 조건 : end -->
+<!-- 검색 조건 : end -->
 
   <br>
   <input class="btn btn btn-info" type="button" value="신규입력" onClick="location.href='{% url 'order_comp_create'%}'">
