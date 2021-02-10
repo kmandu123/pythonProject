@@ -805,6 +805,7 @@ class Pjt_popup(generic.ListView):
         context['filter_1'] = self.request.GET.get('filter_1', '')
         context['filter_2'] = self.request.GET.get('filter_2', '')
         context['orderby'] = self.request.GET.get('orderby', 'pjt_name') #정렬대상 컬럼명(초기값)
+        context['inputId'] = self.request.GET.get('inputId') #팝업 호출버튼 클릭 시 버튼을 클릭한 input type의 id 전달 : 팝업 선택 결과 return시 해당 input에 data 전달하기 위함.
         return context
 
 

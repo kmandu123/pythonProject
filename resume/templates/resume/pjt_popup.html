@@ -64,10 +64,10 @@
 
 
   <br>
-  <h2 class="tit">프로젝트 List</h2>
+  <h2 class="tit">프로젝트 Popup</h2>
 
 <!-- 부모창으로 부터 받은 id값 확인 테스트 -->
-전달받은 Data<input type="text" value="aaa" id="childText">
+전달받은 Data<input type="hidden" value="{{inputId}}" id="inputId">
 
   <!-- 검색 조건 : start -->
 <form method="get" action="{% url 'pjt_popup' %}">
@@ -127,8 +127,8 @@
     <span class="step-links">
         <!--조회 조건 page뒤에 붙임 : 조회 조건 결과 paging 유지하기 위해서 : &filter_1={{filter_1}}&filter_2={{filter_2}}&orderby={{orderby}} -->
         {% if page_obj.has_previous %}
-            <a href="?page=1&filter_1={{filter_1}}&filter_2={{filter_2}}&orderby={{orderby}}">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}&filter_1={{filter_1}}&filter_2={{filter_2}}&orderby={{orderby}}">previous</a>
+            <a href="?page=1&filter_1={{filter_1}}&filter_2={{filter_2}}&orderby={{orderby}}&inputId={{inputId}}">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}&filter_1={{filter_1}}&filter_2={{filter_2}}&orderby={{orderby}}&inputId={{inputId}}">previous</a>
         {% endif %}
 
         <span class="current">
@@ -136,8 +136,8 @@
         </span>
 
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}&filter_1={{filter_1}}&filter_2={{filter_2}}&orderby={{orderby}}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}&filter_1={{filter_1}}&filter_2={{filter_2}}&orderby={{orderby}}">last &raquo;</a>
+            <a href="?page={{ page_obj.next_page_number }}&filter_1={{filter_1}}&filter_2={{filter_2}}&orderby={{orderby}}&inputId={{inputId}}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}&filter_1={{filter_1}}&filter_2={{filter_2}}&orderby={{orderby}}&inputId={{inputId}}">last &raquo;</a>
         {% endif %}
     </span>
 </div>
