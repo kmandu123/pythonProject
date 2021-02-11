@@ -43,3 +43,6 @@ urlpatterns += [
 ]
 
 
+urlpatterns += [
+    path('download_emp/', views.DownloadEmp, name='download_emp'),
+]

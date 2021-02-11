@@ -568,28 +568,20 @@ $('#add_more_prj').click(function() {
 });
 
 
-
-
-
 // 팝업창 호출하기 위한 함수:start
 var openWin;
 function showPopup(pId) {
-//	openWin = window.open("{% url 'pjt_popup' %}", "popup", "width=500, height=700, left=700, top=218");
-
-
+    // post 방식으로 팝업창에 data 전달함.
     var pop_title = "popup";
 
     window.open("", pop_title, "width=500, height=700, left=700, top=218");
 
     var frmData = document.frmData;
     frmData.target = pop_title;
-    frmData.inputId.value = pId;
+    frmData.inputId.value = "id_" + pId;
     frmData.action = "{% url 'pjt_popup' %}";
 
     frmData.submit();
-
-
-
 }
 // 팝업창 호출하기 위한 함수:end
 

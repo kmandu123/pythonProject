@@ -66,14 +66,15 @@
   <br>
   <h2 class="tit">프로젝트 Popup</h2>
 
-<!-- 부모창으로 부터 받은 id값 확인 테스트 -->
-전달받은 Data<input type="hidden" value="{{inputId}}" id="inputId">
 
   <!-- 검색 조건 : start -->
 <form method="get" action="{% url 'pjt_popup' %}">
     <tr>
     <td>프로젝트: <input type="text" value="{{filter_1}}" name="filter_1"/></td>
     <td>발주처: <input type="text" value="{{filter_2}}" name="filter_2"/></td>
+
+    <!-- 부모창으로 부터 data 전달 받음 : 팝업클릭한 input 엘리먼트의 id 확인용 -->
+    <td><input type="hidden" value="{{inputId}}" id="inputId" name="inputId"/></td>
 
     <!-- page가 바뀌어도 selected 유지하기 위해 if 문 사용함 -->
     <br>
@@ -109,7 +110,7 @@
     {% for r in pjt_popup %}
       <tr>
           <!-- 검색 결과 click시 본문에 선택값 전송하기 위해 onclick 자바스크립 함수 호출 함 -->
-          <td><a onclick="setParentText('{{ r.pjt_id }}')">{{ r.pjt_name }}{{ r.pjt_id }}</a></td>
+          <td><a onclick="setParentText('{{ inputId }}', '{{ r.pjt_id }}')">{{ r.pjt_name }}</a></td>
           <td>{{ r.order_comp_id }}</td>
           <td>{{ r.pjt_start_date | date:'Y-m-d' }}</td>
           <td>{{ r.pjt_end_date | date:'Y-m-d' }}</td>
@@ -144,8 +145,6 @@
 <!-- paging 처리:end -->
 
 
-
-
 <!-- 검색 조건 및 검색 결과 본문 : end -->
 {% endblock %}
 
@@ -153,8 +152,8 @@
 
 <script>
 <!-- 발주처 popup 처리: 조회결과 list 클릭 시 호출한 main page로 data 전송 :start -->
-function setParentText(pjt_id) {
-      $("#id_fk_pjt_his1-0-pjt_id", opener.document).val(pjt_id).prop("selected", true);
+function setParentText(inputId, pjt_id) {
+      $("#" + inputId, opener.document).val(pjt_id).prop("selected", true);
 }
 <!-- 발주처 popup 처리:end -->
 </script>

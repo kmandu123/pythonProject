@@ -1,0 +1,57 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+
+<style>
+  .table_emp_list { border-collapse : collapse }
+  .emp_list {border-bottom: 1px solid red; width:100px;}
+</style>
+
+<br>
+
+<h2 class="tit">사원정보 엑셀파일 Download</h2>
+<br>
+<!-- 사원 인원수 출력 : start -->
+<h4>다운로드 대상 count : {{vw_emp_cnt}} </h4>
+<!-- 사원 인원수 출력 : end -->
+<br>
+
+<!-- 사원 list 출력 : start -->
+<table class="table_emp_list">
+  <caption>사원 list</caption>
+  <thead>
+    <tr>
+      <th class="emp_list">직위</th><th class="emp_list">이름</th><th class="emp_list">기술등급</th>
+    </tr>
+  </thead>
+
+  <tbody>
+   {% for r in vw_emp_list %}
+    <tr>
+      <td class="emp_list">{{ r.POSITION_NAME }}</td><td class="emp_list">{{ r.EMP_NAME }}</td><td class="emp_list">{{ r.SKILL_GRADE }}</td>
+    </tr>
+   {% endfor %}
+  </tbody>
+</table>
+<!-- 사원 list 출력 : end -->
+
+<br><br>
+<!-- 엑셀파일 생성 요청 : start -->
+<form method="post" action="{% url 'download_emp' %}">
+  {% csrf_token %}
+  <table>
+    <tr>
+    <td>엑셀 파일 생성 요청</td>
+    <td><input type="submit" name="submit" value="확인"/></td>
+    </tr>
+  </table>
+</form>
+<!-- 엑셀파일 생성 요청 : end -->
+
+<br>
+{{ conf_message }}
+<br><br>
+
+
+{% endblock %}

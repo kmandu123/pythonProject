@@ -1,22 +1,25 @@
 from django.shortcuts import render
 
 # Create your views here.
-from resume.models import Comm_div, Comm_code, Employee, School_his, Education, Order_comp, Pjt
+from resume.models import Comm_div, Comm_code, Employee, School_his, Education, Order_comp, Pjt, Vw_emp
 
+from django.db.models import Count
 def index(request):
     """View function for home page of site."""
 
-    # Generate counts of some of the main objects
-    num_divs = Comm_div.objects.all().count()
+    # 전체 인원수
+    emp_cnt = Employee.objects.all().count()
 
-    # 공통코드 중 '학습Item'인 건수
+    # 직급별 인원수
+    position_cnt = list(Employee.objects.values('emp_position_cd__comm_code_name').annotate(Count('emp_id')).order_by('emp_position_cd'))
 
-    # The 'all()' is implied by default.
-    num_comm_codes = Comm_code.objects.count()
+    # 기술등급별 인원수
+    skill_cnt = list(Employee.objects.values('skill_grade_cd__comm_code_name').annotate(Count('emp_id')).order_by('skill_grade_cd'))
 
     context = {
-        'num_divs': num_divs,
-        'num_comm_codes': num_comm_codes,
+        'emp_cnt': emp_cnt,
+        'position_cnt': position_cnt,
+        'skill_cnt': skill_cnt,
     }
 
     # Render the HTML template index.html with the data in the context variable
@@ -807,6 +810,84 @@ class Pjt_popup(generic.ListView):
         context['orderby'] = self.request.GET.get('orderby', 'pjt_name') #정렬대상 컬럼명(초기값)
         context['inputId'] = self.request.GET.get('inputId') #팝업 호출버튼 클릭 시 버튼을 클릭한 input type의 id 전달 : 팝업 선택 결과 return시 해당 input에 data 전달하기 위함.
         return context
+
+
+
+
+# 엑셀 파일 생성 & 파일 download
+from django.shortcuts import render
+import pandas as pd
+
+
+from django.http import HttpResponse, Http404
+import os
+
+
+def DownloadEmp(request):
+    vw_emp_cnt = Vw_emp.objects.all().count()
+    vw_emp_list = list(Vw_emp.objects.all().values('POSITION_NAME', 'EMP_NAME', 'SKILL_GRADE'))
+
+    school_his_list = list(School_his.objects.all().values('emp_id__emp_position_cd__comm_code_name', 'emp_id__emp_name', 'school_name', 'school_subject',
+                                                           'graduate_date', 'evidence_status_cd__comm_code_name', 'summary'))
+
+
+#    vw_emp_cnt = Vw_emp.objects.all().count()
+#    print(Vw_emp.objects.all())
+#    print(list(Vw_emp.objects.all().values()))
+
+##### 엑셀 한개 sheet
+#    df = pd.DataFrame(list(Vw_emp.objects.all().values()))  # 리스트에 기록
+#    df = pd.DataFrame(list(Vw_emp.objects.all().values('POSITION_NAME', 'EMP_NAME')))  # 리스트에 기록 : 특정 필드선택가능
+#    df.to_excel(excel_writer='emp.xlsx', sheet_name='01.인원', index=False) #to 엑셀파일, 열명 제외(index)
+
+    ##### 엑셀 여러개 sheet
+    df1 = pd.DataFrame(list(Vw_emp.objects.all().values()))  # 리스트에 기록
+    df1.columns = ['사번','직위','사원명','등급','가동상태','투입 가능시점','성별','생년월일','연령(만)','주민번호','최종학력',
+                   '주소','입사일자','퇴사일자','경력기간','타사경력 존재여부','전체 경력 기간','경력 증빙 점검 방법',
+                   '정보처리 기사','기타 자격증','위탁교육','기타교육','비고'] #header명 변경
+
+    df2 = pd.DataFrame(list(School_his.objects.all().values('emp_id__emp_position_cd__comm_code_name', 'emp_id__emp_name', 'school_name', 'school_subject',
+                                                           'graduate_date', 'evidence_status_cd__comm_code_name', 'summary')))  # 리스트에 기록 : 특정 필드선택가능
+    df2.columns = ['직급','사원명','학교','학과','졸업일자','증빙 점검','비고'] #header명 변경
+    df2.columns = pd.MultiIndex.from_tuples(zip(['개인정보', '개인정보', '경력', '경력','경력','경력','경력'], df2.columns)) #header 맨위 1줄 더 추가
+
+
+    if request.method == "POST":
+        # 엑셀 파일 생성 : start
+        xlxs_dir = 'emp.xlsx'  # 경로 및 파일명 설정
+        with pd.ExcelWriter(xlxs_dir) as writer:
+            df1.to_excel(writer, sheet_name='01.인원', index=False)  # 첫번째 시트에 저장
+            df2.to_excel(writer, sheet_name='02.학력', index=True)  # 두번째 시트에 저장
+        # 엑셀 파일 생성 : end
+
+
+        # 파일 download : start
+        # Django project base directory
+        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        file_path = BASE_DIR + '\emp.xlsx'
+        print('파일디렉토리:', file_path)
+
+        if os.path.exists(file_path):
+            with open(file_path, 'rb') as fh:
+                response = HttpResponse(fh.read(), content_type="application/force_download")
+                response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                return response
+            # If file is not exists
+        raise Http404
+        # 파일 download : end
+
+
+    context = {
+        'vw_emp_cnt' : vw_emp_cnt, 'vw_emp_list': vw_emp_list, 'school_his_list': school_his_list,
+    }
+
+
+    return render(request, 'resume/download_emp.html', context=context)
+
+
+
+
+
 
 
 

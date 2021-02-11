@@ -293,3 +293,31 @@ class Pjt_his(models.Model):
         return str(self.pjt_his_id)
 
 
+class Vw_emp(models.Model):
+    EMP_ID = models.IntegerField(primary_key=True, verbose_name='사번')
+    POSITION_NAME = models.CharField(max_length=200, verbose_name='직위')
+    EMP_NAME = models.CharField(max_length=200, verbose_name='사원명')
+    SKILL_GRADE = models.CharField(max_length=200, verbose_name='등급')
+    AVAIL_STATE = models.CharField(max_length=200, verbose_name='가동상태')
+    AVAIL_MONTH = models.CharField(max_length=200, verbose_name='투입가능 시점')
+    GENDER = models.CharField(max_length=200, verbose_name='성별')
+    BIRTHDATE = models.DateField(verbose_name='생년월일')
+    AGE = models.CharField(max_length=200, verbose_name='연령(만)')
+    JUMIN = models.CharField(max_length=200, verbose_name='주민번호')
+    LAST_SCHOOL = models.CharField(max_length=200, verbose_name='최종학력')
+    ADDR = models.CharField(max_length=200, verbose_name='주소')
+    INDATE = models.DateField(verbose_name='입사일자')
+    OUTDATE = models.DateField(verbose_name='퇴사일자')
+    INDATE_PERIOD = models.CharField(max_length=200, verbose_name='입사일 기준 경력 기간')
+    OTHER_COMP_YN = models.CharField(max_length=200, verbose_name='타사경력 존재여부')
+    TOTAL_PERIOD = models.CharField(max_length=200, verbose_name='전체 경력 기간')
+    EVIDENCE_METHOD = models.CharField(max_length=200, verbose_name='경력 증빙 점검 방법')
+    INFO_LICENSE_YN = models.CharField(max_length=200, verbose_name='정보처리기사')
+    OTHER_LICENSE = models.CharField(max_length=1000, verbose_name='기타 자격증')
+    REQUEST_YN_YN = models.CharField(max_length=200, verbose_name='위탁교육')
+    OTHER_EDU = models.CharField(max_length=1000, verbose_name='기타교육')
+    SUMMARY = models.CharField(max_length=2000, verbose_name='비고')
+
+    class Meta:
+        managed = False
+        db_table = "VW_EMP"
