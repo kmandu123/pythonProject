@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
 @login_required
+@permission_required('resume.public_open')
 def index(request):
     """View function for home page of site."""
 
@@ -40,7 +41,8 @@ from django.views import generic
 
 
 # 공통구분 list
-class  Comm_divList(LoginRequiredMixin, generic.ListView):
+class  Comm_divList(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
+    permission_required = 'resume.public_open'
     model = Comm_div
     paginate_by = 15
 
@@ -77,8 +79,8 @@ from .forms import Comm_divForm, Comm_codeFormset, EmployeeForm, School_hisForms
 from django.forms import inlineformset_factory
 from django import forms
 
-
-@permission_required('plans.can_mark_returned')
+@login_required
+@permission_required('resume.public_open')
 def Comm_divUpdate(request, pk):
 
     if pk:
@@ -129,6 +131,8 @@ def Comm_divUpdate(request, pk):
 
 
 
+@login_required
+@permission_required('resume.public_open')
 def Comm_divCreate(request):
 
     # master model 빈 instance 생성
@@ -171,7 +175,8 @@ def Comm_divCreate(request):
     return render(request, 'resume/comm_div_update.html', context)
 
 
-
+@login_required
+@permission_required('resume.public_open')
 #Comm_div를 delete하기 위한 function view
 def Comm_divDelete(request, pk):
     # 파라미터pk로 받은 data가 존재한다면 가져온다
@@ -181,7 +186,8 @@ def Comm_divDelete(request, pk):
 
 
 # 발주처 list
-class Order_compList(LoginRequiredMixin, generic.ListView):
+class Order_compList(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
+    permission_required = 'resume.public_open'
     model = Order_comp
     paginate_by = 15
 
@@ -205,7 +211,9 @@ class Order_compList(LoginRequiredMixin, generic.ListView):
         context['orderby'] = self.request.GET.get('orderby', 'order_comp_name') #정렬대상 컬럼명(초기값)
         return context
 
+
 @login_required
+@permission_required('resume.public_open')
 def Order_compUpdate(request, pk):
 
     if pk:
@@ -254,7 +262,8 @@ def Order_compUpdate(request, pk):
     # template를 호출한다. context도 같이 넘긴다.
     return render(request, 'resume/order_comp_update.html', context)
 
-
+@login_required
+@permission_required('resume.public_open')
 def Order_compCreate(request):
 
     # master model 빈 instance 생성
@@ -298,7 +307,8 @@ def Order_compCreate(request):
     return render(request, 'resume/order_comp_update.html', context)
 
 
-
+@login_required
+@permission_required('resume.public_open')
 def Order_compDelete(request, pk):
     # 파라미터pk로 받은 data가 존재한다면 가져온다
     order_comp = get_object_or_404(Order_comp, pk=pk)
@@ -308,7 +318,8 @@ def Order_compDelete(request, pk):
 
 
 # 프로젝트 list
-class PjtList(LoginRequiredMixin, generic.ListView):
+class PjtList(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
+    permission_required = 'resume.public_open'
     model = Pjt
     paginate_by = 15
 
@@ -333,7 +344,8 @@ class PjtList(LoginRequiredMixin, generic.ListView):
         return context
 
 
-from django.contrib import messages
+@login_required
+@permission_required('resume.public_open')
 def PjtUpdate(request, pk):
 
     if pk:
@@ -384,6 +396,8 @@ def PjtUpdate(request, pk):
 
 
 
+@login_required
+@permission_required('resume.public_open')
 def PjtCreate(request):
 
     # master model 빈 instance 생성
@@ -427,6 +441,8 @@ def PjtCreate(request):
 
 
 
+@login_required
+@permission_required('resume.public_open')
 def PjtDelete(request, pk):
     # 파라미터pk로 받은 data가 존재한다면 가져온다
     pjt = get_object_or_404(Pjt, pk=pk)
@@ -436,7 +452,8 @@ def PjtDelete(request, pk):
 
 
 # 발주처 popup용 list
-class Order_comp_popup(LoginRequiredMixin, generic.ListView):
+class Order_comp_popup(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
+    permission_required = 'resume.public_open'
     model = Order_comp
     paginate_by = 10
     context_object_name = 'order_comp_popup'
@@ -464,14 +481,9 @@ class Order_comp_popup(LoginRequiredMixin, generic.ListView):
 
 
 
-
-
-
-
-
 # 교육 list
-class EducationList(PermissionRequiredMixin, generic.ListView):
-    permission_required = 'mycompany.Can change education'
+class EducationList(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
+    permission_required = 'resume.public_open'
 
     model = Education
     paginate_by = 15
@@ -500,6 +512,8 @@ class EducationList(PermissionRequiredMixin, generic.ListView):
 
 
 
+@login_required
+@permission_required('resume.public_open')
 def EducationUpdate(request, pk):
 
     if pk:
@@ -553,6 +567,8 @@ def EducationUpdate(request, pk):
 # 수정1 : 함수명 변경 및 파라미터 pk 삭제
 # 수정2 : if pk 지우고 master model 빈 instance 생성으로 변경
 # 수정3 : 2번째 if pk 삭제
+@login_required
+@permission_required('resume.public_open')
 def EducationCreate(request):
     # master model 빈 instance 생성
     education = Education()
@@ -595,6 +611,8 @@ def EducationCreate(request):
 
 
 
+@login_required
+@permission_required('resume.public_open')
 def EducationDelete(request, pk):
     # 파라미터pk로 받은 data가 존재한다면 가져온다
     education = get_object_or_404(Education, pk=pk)
@@ -605,7 +623,8 @@ def EducationDelete(request, pk):
 
 
 # 사원 list
-class EmployeeList(LoginRequiredMixin, generic.ListView):
+class EmployeeList(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
+    permission_required = 'resume.public_open'
     model = Employee
     paginate_by = 15
 
@@ -631,6 +650,8 @@ class EmployeeList(LoginRequiredMixin, generic.ListView):
 
 
 
+@login_required
+@permission_required('resume.public_open')
 def EmployeeUpdate(request, pk):
 
     if pk:
@@ -721,6 +742,8 @@ def EmployeeUpdate(request, pk):
 # 수정1 : 함수명 변경 및 파라미터 pk 삭제
 # 수정2 : if pk 지우고 master model 빈 instance 생성으로 변경
 # 수정3 : 2번째 if pk 삭제
+@login_required
+@permission_required('resume.public_open')
 def EmployeeCreate(request):
     # master model 빈 instance 생성
     employee = Employee()
@@ -787,6 +810,8 @@ def EmployeeCreate(request):
     return render(request, 'resume/employee_update.html', context)
 
 
+@login_required
+@permission_required('resume.public_open')
 def EmployeeDelete(request, pk):
     # 파라미터pk로 받은 data가 존재한다면 가져온다
     employee = get_object_or_404(Employee, pk=pk)
@@ -796,7 +821,8 @@ def EmployeeDelete(request, pk):
 
 
 # 프로젝트 popup용 list
-class Pjt_popup(LoginRequiredMixin, generic.ListView):
+class Pjt_popup(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
+    permission_required = 'resume.public_open'
     model = Pjt
     paginate_by = 10
     context_object_name = 'pjt_popup'
@@ -834,7 +860,8 @@ import pandas as pd
 from django.http import HttpResponse, Http404
 import os
 
-@login_required
+#@login_required
+@permission_required('resume.public_closed')
 def DownloadEmp(request):
     vw_emp_cnt = Vw_emp.objects.all().count()
     vw_emp_list = list(Vw_emp.objects.all().values('POSITION_NAME', 'EMP_NAME', 'SKILL_GRADE'))
@@ -904,11 +931,12 @@ def DownloadEmp(request):
 
 
 
-
 from urllib.request import urlopen
 from urllib.parse import urlencode, quote_plus
 import urllib
 
+@login_required
+@permission_required('resume.public_closed')
 def Postno_Popup(request, pk):
 
     url = 'http://openapi.epost.go.kr/postal/retrieveNewAdressAreaCdSearchAllService/retrieveNewAdressAreaCdSearchAllService/getNewAddressListAreaCdSearchAll'

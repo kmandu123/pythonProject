@@ -88,15 +88,42 @@ $(function() {
       {% block sidebar %}
         <ul class="sidebar-nav">
           <br><br><br>
-          <li class="tit2"><a href="{% url 'index' %}">Home</a></li>
-          <br>
-          <li class="tit2"><a href="{% url 'comm_div_list' %}">공통구분코드</a></li>
-          <li class="tit2"><a href="{% url 'order_comp_list' %}">발주처 정보</a></li>
-          <li class="tit2"><a href="{% url 'pjt_list' %}">프로젝트 정보</a></li>
-          <li class="tit2"><a href="{% url 'education_list' %}">교육 정보</a></li>
-          <li class="tit2"><a href="{% url 'employee_list' %}">사원정보</a></li>
-          <br>
-          <li class="tit2"><a href="{% url 'download_emp' %}">엑셀 다운로드</a></li>
+
+<span id="faq-title"><a href="{% url 'index' %}">Home</a></span>
+<div class="faq-content">
+  <button class="question" id="que-1"><span id="que-1-toggle">+</span><span>프로젝트 이력관리</span></button>
+  <div class="answer" id="ans-1">
+      <a href="{% url 'comm_div_list' %}">공통구분코드</a><br>
+      <a href="{% url 'order_comp_list' %}">발주처 정보</a><br>
+      <a href="{% url 'pjt_list' %}">프로젝트 정보</a><br>
+      <a href="{% url 'education_list' %}">교육 정보</a><br>
+      <a href="{% url 'employee_list' %}">사원정보</a><br>
+      <a href="{% url 'download_emp' %}">엑셀 다운로드</a>
+  </div>
+</div>
+<div class="faq-content">
+  <button class="question" id="que-2"><span id="que-2-toggle">+</span><span>Making web by Django</span></button>
+  <div class="answer" id="ans-2">
+      Django 설치<br>
+      기본구조 생성<br>
+      Model생성<br>
+      View생성
+  </div>
+</div>
+<div class="faq-content">
+  <button class="question" id="que-3"><span id="que-3-toggle">+</span><span>My plan</span></button>
+  <div class="answer" id="ans-3">
+      Study English<br>
+      Do exercise<br>
+      Read Book
+  </div>
+</div>
+
+
+<br>
+
+
+
 
          {% if user.is_authenticated %}
           <li>User: {{ user.get_username }}</li>
@@ -112,5 +139,62 @@ $(function() {
       <div class="col-sm-10 ">{% block content %}{% endblock %}</div>
     </div>
   </div>
+
+
+
+
+
+<style>
+  .answer {
+    display: none;
+    padding-bottom: 30px;
+  }
+  #faq-title {
+    font-size: 25px;
+  }
+  .faq-content {
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .question {
+    font-size: 19px;
+    padding: 30px 0;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+  }
+  .question:hover {
+    color: #2962ff;
+  }
+  [id$="-toggle"] {
+    margin-right: 15px;
+  }
+</style>
+
+
+
+<script>
+  const items = document.querySelectorAll('.question');
+
+  function openCloseAnswer() {
+    const answerId = this.id.replace('que', 'ans');
+
+    if(document.getElementById(answerId).style.display === 'block') {
+      document.getElementById(answerId).style.display = 'none';
+      document.getElementById(this.id + '-toggle').textContent = '+';
+    } else {
+      document.getElementById(answerId).style.display = 'block';
+      document.getElementById(this.id + '-toggle').textContent = '-';
+    }
+  }
+
+  items.forEach(item => item.addEventListener('click', openCloseAnswer));
+</script>
+
+
+
+
 </body>
 </html>

@@ -15,6 +15,9 @@ class Comm_div(models.Model):
     create_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='생성자id')
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
+    class Meta:
+        managed = False
+
     def __str__(self):
         """String for representing the Model object."""
         return self.comm_div_name
@@ -30,6 +33,7 @@ class Comm_code(models.Model):
     ref_field = models.CharField(max_length=200, null=True, blank=True, verbose_name='참조필드')
     display_order = models.IntegerField(null=True, blank=True, verbose_name='표시 순서')
 
+
     USE_YN_DIV = (
         ('Y', 'Y'),
         ('N', 'N'),
@@ -41,6 +45,9 @@ class Comm_code(models.Model):
     update_dt = models.DateTimeField(auto_now=True, verbose_name='수정일시', null=True, blank=True)
     create_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='생성자id')
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
+
+    class Meta:
+        managed = False
 
     def __str__(self):
         """String for representing the Model object."""
@@ -93,6 +100,9 @@ class Employee(models.Model):
     create_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='생성자id')
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
+    class Meta:
+        managed = False
+
     def __str__(self):
         """String for representing the Model object."""
         return self.emp_name
@@ -138,6 +148,9 @@ class School_his(models.Model):
     create_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='비고')
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='비고')
 
+    class Meta:
+        managed = False
+
     def __str__(self):
         """String for representing the Model object."""
         return self.school_name
@@ -154,6 +167,9 @@ class License_his(models.Model):
     update_dt = models.DateTimeField(auto_now=True, verbose_name='수정일시', null=True, blank=True)
     create_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='생성자id')
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
+
+    class Meta:
+        managed = False
 
     def __str__(self):
         """String for representing the Model object."""
@@ -174,6 +190,9 @@ class Work_his(models.Model):
     update_dt = models.DateTimeField(auto_now=True, verbose_name='수정일시', null=True, blank=True)
     create_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='생성자id')
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
+
+    class Meta:
+        managed = False
 
     def __str__(self):
         """String for representing the Model object."""
@@ -199,6 +218,13 @@ class Education(models.Model):
     create_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='생성자id')
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
+    class Meta:
+        managed = True
+        # Resume app 사용자에게 부여할 권한 생성(Resume app의 model중에 하나의 model에 선언하면 공용으로 사용할 수 있음
+        permissions = [
+            ('private_closed', 'Private closed'), ('private_open', 'Private open'), ('public_closed', 'Public closed'), ('public_open', 'Public open')
+        ]
+
     def __str__(self):
         """String for representing the Model object."""
         return self.edu_name
@@ -219,6 +245,9 @@ class Edu_his(models.Model):
     create_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='생성자id')
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
+    class Meta:
+        managed = False
+
     def __str__(self):
         """String for representing the Model object."""
         return str(self.edu_his_id)
@@ -233,6 +262,9 @@ class Order_comp(models.Model):
     update_dt = models.DateTimeField(auto_now=True, verbose_name='수정일시', null=True, blank=True)
     create_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='생성자id')
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
+
+    class Meta:
+        managed = False
 
     def __str__(self):
         """String for representing the Model object."""
@@ -261,6 +293,9 @@ class Pjt(models.Model):
     create_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='생성자id')
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
+    class Meta:
+        managed = False
+
     def __str__(self):
         """String for representing the Model object."""
         return self.pjt_name
@@ -286,6 +321,9 @@ class Pjt_his(models.Model):
     update_dt = models.DateTimeField(auto_now=True, verbose_name='수정일시', null=True, blank=True)
     create_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='생성자id')
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
+
+    class Meta:
+        managed = False
 
     def __str__(self):
         """String for representing the Model object."""
