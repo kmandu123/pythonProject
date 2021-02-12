@@ -4,6 +4,16 @@ from django.shortcuts import render
 from resume.models import Comm_div, Comm_code, Employee, School_his, Education, Order_comp, Pjt, Vw_emp
 
 from django.db.models import Count
+
+# 함수 로그인 권한 제어
+from django.contrib.auth.decorators import login_required
+# 클래스 로그인 권한 제어
+from django.contrib.auth.mixins import LoginRequiredMixin
+# 권한 CHECK
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
+
+@login_required
 def index(request):
     """View function for home page of site."""
 
@@ -30,7 +40,7 @@ from django.views import generic
 
 
 # 공통구분 list
-class  Comm_divList(generic.ListView):
+class  Comm_divList(LoginRequiredMixin, generic.ListView):
     model = Comm_div
     paginate_by = 15
 
@@ -171,7 +181,7 @@ def Comm_divDelete(request, pk):
 
 
 # 발주처 list
-class Order_compList(generic.ListView):
+class Order_compList(LoginRequiredMixin, generic.ListView):
     model = Order_comp
     paginate_by = 15
 
@@ -195,7 +205,7 @@ class Order_compList(generic.ListView):
         context['orderby'] = self.request.GET.get('orderby', 'order_comp_name') #정렬대상 컬럼명(초기값)
         return context
 
-
+@login_required
 def Order_compUpdate(request, pk):
 
     if pk:
@@ -298,7 +308,7 @@ def Order_compDelete(request, pk):
 
 
 # 프로젝트 list
-class PjtList(generic.ListView):
+class PjtList(LoginRequiredMixin, generic.ListView):
     model = Pjt
     paginate_by = 15
 
@@ -426,7 +436,7 @@ def PjtDelete(request, pk):
 
 
 # 발주처 popup용 list
-class Order_comp_popup(generic.ListView):
+class Order_comp_popup(LoginRequiredMixin, generic.ListView):
     model = Order_comp
     paginate_by = 10
     context_object_name = 'order_comp_popup'
@@ -460,7 +470,9 @@ class Order_comp_popup(generic.ListView):
 
 
 # 교육 list
-class EducationList(generic.ListView):
+class EducationList(PermissionRequiredMixin, generic.ListView):
+    permission_required = 'mycompany.Can change education'
+
     model = Education
     paginate_by = 15
 
@@ -593,7 +605,7 @@ def EducationDelete(request, pk):
 
 
 # 사원 list
-class EmployeeList(generic.ListView):
+class EmployeeList(LoginRequiredMixin, generic.ListView):
     model = Employee
     paginate_by = 15
 
@@ -784,7 +796,7 @@ def EmployeeDelete(request, pk):
 
 
 # 프로젝트 popup용 list
-class Pjt_popup(generic.ListView):
+class Pjt_popup(LoginRequiredMixin, generic.ListView):
     model = Pjt
     paginate_by = 10
     context_object_name = 'pjt_popup'
@@ -822,7 +834,7 @@ import pandas as pd
 from django.http import HttpResponse, Http404
 import os
 
-
+@login_required
 def DownloadEmp(request):
     vw_emp_cnt = Vw_emp.objects.all().count()
     vw_emp_list = list(Vw_emp.objects.all().values('POSITION_NAME', 'EMP_NAME', 'SKILL_GRADE'))

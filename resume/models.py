@@ -208,7 +208,6 @@ class Education(models.Model):
         return reverse('education_update', args=[str(self.edu_id)])
 
 
-
 class Edu_his(models.Model):
     edu_his_id = models.AutoField(primary_key=True, verbose_name='교육이력ID')
     emp_id = models.ForeignKey('Employee', related_name='fk_edu_his1', on_delete=models.SET_NULL, null=True, db_column='emp_id', verbose_name='사원')
