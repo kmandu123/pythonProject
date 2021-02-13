@@ -4,6 +4,7 @@ from resume import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('resume_home', views.resume_index, name='resume_index'),
     path('comm_div_list/', views.Comm_divList.as_view(), name='comm_div_list'),
     path('comm_div_list/<int:pk>/update/', views.Comm_divUpdate, name='comm_div_update'),
     path('comm_div_list/create/', views.Comm_divCreate, name='comm_div_create'),

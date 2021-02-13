@@ -13,6 +13,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
+#orm not filtering
+from django.db.models import Q
+
 @login_required
 @permission_required('resume.public_open')
 def index(request):
@@ -35,6 +38,31 @@ def index(request):
 
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
+
+
+@login_required
+@permission_required('resume.public_open')
+def resume_index(request):
+    """View function for home page of site."""
+
+    # 전체 인원수
+    emp_cnt = Employee.objects.all().count()
+
+    # 직급별 인원수
+    position_cnt = list(Employee.objects.values('emp_position_cd__comm_code_name').annotate(Count('emp_id')).order_by('emp_position_cd'))
+
+    # 기술등급별 인원수
+    skill_cnt = list(Employee.objects.values('skill_grade_cd__comm_code_name').annotate(Count('emp_id')).order_by('skill_grade_cd'))
+
+    context = {
+        'emp_cnt': emp_cnt,
+        'position_cnt': position_cnt,
+        'skill_cnt': skill_cnt,
+    }
+
+    # Render the HTML template index.html with the data in the context variable
+    return render(request, 'resume_index.html', context=context)
+
 
 
 from django.views import generic
@@ -634,10 +662,18 @@ class EmployeeList(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView
         filter_val_2 = self.request.GET.get('filter_2', '')
         order = self.request.GET.get('orderby', 'emp_name') #정렬대상 컬럼명(초기값)
 
-        new_context = Employee.objects.filter(
-            emp_name__icontains=filter_val_1,
-            emp_position_cd__comm_code_name__icontains=filter_val_2,
-        ).order_by(order)  #sort컬럼 2개이상도 가능 ","로 구분하여 입력하면됨.
+        # 일부 data list에서 제외 처리함.
+        if str(self.request.user) == 'soladmin':
+            new_context = Employee.objects.filter(
+                emp_name__icontains=filter_val_1,
+                emp_position_cd__comm_code_name__icontains=filter_val_2,
+            ).order_by(order)  #sort컬럼 2개이상도 가능 ","로 구분하여 입력하면됨.
+        else:
+            new_context = Employee.objects.filter(
+                emp_name__icontains=filter_val_1,
+                emp_position_cd__comm_code_name__icontains=filter_val_2,
+            ).exclude(emp_id=2).order_by(order)  #sort컬럼 2개이상도 가능 ","로 구분하여 입력하면됨.
+
         return new_context
 
     #검색 조건 (초기값)

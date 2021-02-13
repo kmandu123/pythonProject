@@ -16,7 +16,7 @@ class Comm_div(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
     class Meta:
-        managed = False
+        managed = True
 
     def __str__(self):
         """String for representing the Model object."""
@@ -47,7 +47,7 @@ class Comm_code(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
     class Meta:
-        managed = False
+        managed = True
 
     def __str__(self):
         """String for representing the Model object."""
@@ -101,7 +101,7 @@ class Employee(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
     class Meta:
-        managed = False
+        managed = True
 
     def __str__(self):
         """String for representing the Model object."""
@@ -149,7 +149,7 @@ class School_his(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='비고')
 
     class Meta:
-        managed = False
+        managed = True
 
     def __str__(self):
         """String for representing the Model object."""
@@ -169,7 +169,7 @@ class License_his(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
     class Meta:
-        managed = False
+        managed = True
 
     def __str__(self):
         """String for representing the Model object."""
@@ -192,7 +192,7 @@ class Work_his(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
     class Meta:
-        managed = False
+        managed = True
 
     def __str__(self):
         """String for representing the Model object."""
@@ -246,7 +246,7 @@ class Edu_his(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
     class Meta:
-        managed = False
+        managed = True
 
     def __str__(self):
         """String for representing the Model object."""
@@ -264,7 +264,7 @@ class Order_comp(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
     class Meta:
-        managed = False
+        managed = True
 
     def __str__(self):
         """String for representing the Model object."""
@@ -294,7 +294,7 @@ class Pjt(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
     class Meta:
-        managed = False
+        managed = True
 
     def __str__(self):
         """String for representing the Model object."""
@@ -323,7 +323,7 @@ class Pjt_his(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
     class Meta:
-        managed = False
+        managed = True
 
     def __str__(self):
         """String for representing the Model object."""
@@ -356,5 +356,5 @@ class Vw_emp(models.Model):
     SUMMARY = models.CharField(max_length=2000, verbose_name='비고')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = "VW_EMP"

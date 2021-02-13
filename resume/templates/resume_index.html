@@ -1,0 +1,55 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<style>
+  .table_emp_list { border-collapse : collapse }
+  .emp_list {border-bottom: 1px solid red; width:100px;}
+</style>
+
+<h1>업무 Portal</h1>
+<p>업무 포털에 오신것을 환영합니다, <br>이 사이트는 <em>솔트로닉스에서 마지막 근무할 때 만들었습니다. 그동안 직원들 모두 수고했습니다! Good by! my Soltronix </em>!</p>
+<h3>직원 통계 현황</h3>
+
+<div><strong>전체 직원 수:</strong> {{ emp_cnt }}</div>
+
+<!-- 사원 직위별 list 출력 : start -->
+<table class="table_emp_list">
+  <caption>직위별 인원수</caption>
+  <thead>
+    <tr>
+      <th class="emp_list">직위</th><th class="emp_list">인원수</th>
+    </tr>
+  </thead>
+
+  <tbody>
+   {% for r in position_cnt %}
+    <tr>
+      <td class="emp_list">{{ r.emp_position_cd__comm_code_name }}</td><td class="emp_list">{{ r.emp_id__count }}</td>
+    </tr>
+   {% endfor %}
+  </tbody>
+</table>
+<!-- 사원 직위별 list 출력 : end -->
+
+<br>
+<!-- 사원 기술등급별 list 출력 : start -->
+<table class="table_emp_list">
+  <caption>기술등급별 인원수</caption>
+  <thead>
+    <tr>
+      <th class="emp_list">기술등급</th><th class="emp_list">인원수</th>
+    </tr>
+  </thead>
+
+  <tbody>
+   {% for r in skill_cnt %}
+    <tr>
+      <td class="emp_list">{{ r.skill_grade_cd__comm_code_name }}</td><td class="emp_list">{{ r.emp_id__count }}</td>
+    </tr>
+   {% endfor %}
+  </tbody>
+</table>
+<!-- 사원 기술등급별 list 출력 : end -->
+
+{% endblock %}

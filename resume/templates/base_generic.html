@@ -78,6 +78,35 @@ $(function() {
         letter-spacing: -0.05em;
     }
 
+    /* side menu style:start */
+    .answer {
+      display: none;
+      padding-bottom: 30px;
+    }
+    #faq-title {
+      font-size: 25px;
+    }
+    .faq-content {
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .question {
+      font-size: 19px;
+      padding: 30px 0;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+    .question:hover {
+      color: #2962ff;
+    }
+    [id$="-toggle"] {
+      margin-right: 15px;
+    }
+    /* side menu style:end */
+
 </style>
 
 </head>
@@ -91,8 +120,9 @@ $(function() {
 
 <span id="faq-title"><a href="{% url 'index' %}">Home</a></span>
 <div class="faq-content">
-  <button class="question" id="que-1"><span id="que-1-toggle">+</span><span>프로젝트 이력관리</span></button>
+  <button class="question" id="que-1" onclick="doDisplay('ans-1')"><span id="que-1-toggle">+</span><span>이력관리</span></button>
   <div class="answer" id="ans-1">
+      <a href="{% url 'resume_index' %}">이력관리 home</a><br>
       <a href="{% url 'comm_div_list' %}">공통구분코드</a><br>
       <a href="{% url 'order_comp_list' %}">발주처 정보</a><br>
       <a href="{% url 'pjt_list' %}">프로젝트 정보</a><br>
@@ -102,16 +132,16 @@ $(function() {
   </div>
 </div>
 <div class="faq-content">
-  <button class="question" id="que-2"><span id="que-2-toggle">+</span><span>Making web by Django</span></button>
+  <button class="question" id="que-2" onclick="doDisplay('ans-2')"><span id="que-2-toggle">+</span><span>Making web by Django</span></button>
   <div class="answer" id="ans-2">
-      Django 설치<br>
+      <a href="https://jongsigk.gitbook.io/python/">Python & Django</a><br>
       기본구조 생성<br>
       Model생성<br>
       View생성
   </div>
 </div>
 <div class="faq-content">
-  <button class="question" id="que-3"><span id="que-3-toggle">+</span><span>My plan</span></button>
+  <button class="question" id="que-3" onclick="doDisplay('ans-3')"><span id="que-3-toggle">+</span><span>My plan</span></button>
   <div class="answer" id="ans-3">
       Study English<br>
       Do exercise<br>
@@ -141,57 +171,22 @@ $(function() {
   </div>
 
 
-
-
-
-<style>
-  .answer {
-    display: none;
-    padding-bottom: 30px;
-  }
-  #faq-title {
-    font-size: 25px;
-  }
-  .faq-content {
-    border-bottom: 1px solid #e0e0e0;
-  }
-  .question {
-    font-size: 19px;
-    padding: 30px 0;
-    cursor: pointer;
-    border: none;
-    outline: none;
-    background: none;
-    width: 100%;
-    text-align: left;
-  }
-  .question:hover {
-    color: #2962ff;
-  }
-  [id$="-toggle"] {
-    margin-right: 15px;
-  }
-</style>
-
-
-
+<!-- side menu 접다 펴기 : start -->
 <script>
-  const items = document.querySelectorAll('.question');
 
-  function openCloseAnswer() {
-    const answerId = this.id.replace('que', 'ans');
+  function doDisplay(id) {
+    var con = document.getElementById(id);
 
-    if(document.getElementById(answerId).style.display === 'block') {
-      document.getElementById(answerId).style.display = 'none';
-      document.getElementById(this.id + '-toggle').textContent = '+';
+    if(con.style.display=='none'){
+        con.style.display = 'block';
     } else {
-      document.getElementById(answerId).style.display = 'block';
-      document.getElementById(this.id + '-toggle').textContent = '-';
+        con.style.display = 'none';
     }
-  }
 
-  items.forEach(item => item.addEventListener('click', openCloseAnswer));
+
+  }
 </script>
+<!-- side menu 접다 펴기 : end -->
 
 
 

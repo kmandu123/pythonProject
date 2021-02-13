@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib import admin
 from django.urls import path
+from resume import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,6 +34,7 @@ from django.views.generic import RedirectView
 
 urlpatterns += [
     path('', RedirectView.as_view(url='/resume/', permanent=True)),
+#    path('', views.index, name='index'),
 ]
 
 
