@@ -356,5 +356,5 @@ class Vw_emp(models.Model):
     SUMMARY = models.CharField(max_length=2000, verbose_name='비고')
 
     class Meta:
-        managed = True
+        managed = False
         db_table = "VW_EMP"

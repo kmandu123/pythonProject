@@ -76,12 +76,15 @@ WSGI_APPLICATION = 'mycompany.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'localhost:1521/XEPDB1',
-        'USER': 'MNG_MYCOMPANY',
-        'PASSWORD': 'mng_mycompany',
+        'ENGINE': 'django.db.backends.mysql',
+		'NAME' : 'mycompanydb',
+		'USER' : 'MNG_MYCOMPANY',
+		'PASSWORD' : 'mng_mycompany',
+		'HOST' : 'localhost',
+		'PORT' : '3306',
     }
 }
+
 
 
 
