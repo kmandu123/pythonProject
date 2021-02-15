@@ -663,7 +663,7 @@ class EmployeeList(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView
         order = self.request.GET.get('orderby', 'emp_name') #정렬대상 컬럼명(초기값)
 
         # 일부 data list에서 제외 처리함.
-        if str(self.request.user) == 'soladmin':
+        if str(self.request.user) == 'kmandu':
             new_context = Employee.objects.filter(
                 emp_name__icontains=filter_val_1,
                 emp_position_cd__comm_code_name__icontains=filter_val_2,
@@ -916,13 +916,23 @@ def DownloadEmp(request):
 #    df.to_excel(excel_writer='emp.xlsx', sheet_name='01.인원', index=False) #to 엑셀파일, 열명 제외(index)
 
     ##### 엑셀 여러개 sheet
-    df1 = pd.DataFrame(list(Vw_emp.objects.all().values()))  # 리스트에 기록
+    if str(request.user) == 'kmandu':
+        df1 = pd.DataFrame(list(Vw_emp.objects.all().values()))  # 리스트에 기록
+    else:
+        df1 = pd.DataFrame(list(Vw_emp.objects.all().values().exclude(EMP_ID=2)))  # 리스트에 기록
+
+
     df1.columns = ['사번','직위','사원명','등급','가동상태','투입 가능시점','성별','생년월일','연령(만)','주민번호','최종학력',
                    '주소','입사일자','퇴사일자','경력기간','타사경력 존재여부','전체 경력 기간','경력 증빙 점검 방법',
                    '정보처리 기사','기타 자격증','위탁교육','기타교육','비고'] #header명 변경
 
-    df2 = pd.DataFrame(list(School_his.objects.all().values('emp_id__emp_position_cd__comm_code_name', 'emp_id__emp_name', 'school_name', 'school_subject',
-                                                           'graduate_date', 'evidence_status_cd__comm_code_name', 'summary')))  # 리스트에 기록 : 특정 필드선택가능
+    if str(request.user) == 'kmandu':
+        df2 = pd.DataFrame(list(School_his.objects.all().values('emp_id__emp_position_cd__comm_code_name', 'emp_id__emp_name', 'school_name', 'school_subject',
+                                                               'graduate_date', 'evidence_status_cd__comm_code_name', 'summary')))  # 리스트에 기록 : 특정 필드선택가능
+    else:
+        df2 = pd.DataFrame(list(School_his.objects.all().values('emp_id__emp_position_cd__comm_code_name', 'emp_id__emp_name', 'school_name', 'school_subject',
+                                                               'graduate_date', 'evidence_status_cd__comm_code_name', 'summary').exclude(emp_id=2)))  # 리스트에 기록 : 특정 필드선택가능
+
     df2.columns = ['직급','사원명','학교','학과','졸업일자','증빙 점검','비고'] #header명 변경
     df2.columns = pd.MultiIndex.from_tuples(zip(['개인정보', '개인정보', '경력', '경력','경력','경력','경력'], df2.columns)) #header 맨위 1줄 더 추가
 

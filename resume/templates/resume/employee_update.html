@@ -457,7 +457,7 @@
             {% for form in pjt_hisformset2 %}
                 <tr>
                     <td>{{ form.pjt_his_id }}</td>
-                    <td>{{ form.pjt_id }}{{ form.pjt_id.html_name }}<input type="button" value="선택" onClick="showPopup('{{ form.pjt_id.html_name }}');"></td>
+                    <td>{{ form.pjt_id }}<input type="button" value="선택" onClick="showPopup('{{ form.pjt_id.html_name }}');"></td>
                     <td>{{ form.company_name }}</td>
                     <td>{{ form.join_start_date }}</td>
                     <td>{{ form.join_end_date }}</td>
