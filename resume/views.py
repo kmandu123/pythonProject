@@ -949,7 +949,11 @@ def DownloadEmp(request):
         # 파일 download : start
         # Django project base directory
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        file_path = BASE_DIR + '\emp.xlsx'
+        if BASE_DIR.find('home'):  # linux이면
+            file_path = BASE_DIR + '/emp.xlsx'
+        else:  #window이면
+            file_path = BASE_DIR + '\emp.xlsx'
+
         print('파일디렉토리:', file_path)
 
         if os.path.exists(file_path):
