@@ -357,4 +357,4 @@ class Vw_emp(models.Model):
 
     class Meta:
         managed = False
-        db_table = "VW_EMP"
+        db_table = "vw_emp"
