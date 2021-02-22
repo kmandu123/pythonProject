@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'resume.apps.ResumeConfig',
+    'books.apps.BooksConfig',
 ]
 
 MIDDLEWARE = [
