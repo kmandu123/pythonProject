@@ -4,8 +4,8 @@ from django.db import models
 class Author(models.Model):
     author_id = models.AutoField(primary_key=True, verbose_name='작가 ID')
     author_name = models.CharField(max_length=200, verbose_name='작가 이름')
-    birth_date = models.DateField(verbose_name='생년월일', null=True, blank=True)
-    death_date = models.DateField(verbose_name='사망일자', null=True, blank=True)
+    birth_year = models.CharField(max_length=4, verbose_name='탄생년도', null=True, blank=True)
+    death_year = models.CharField(max_length=4, verbose_name='사망년도', null=True, blank=True)
     nation_cd = models.ForeignKey('resume.Comm_code', related_name='fk_author1', on_delete=models.SET_NULL, null=True, db_column='nation_cd',  verbose_name='국적')
     summary = models.CharField(max_length=4000, null=True, blank=True, verbose_name='약력')
 

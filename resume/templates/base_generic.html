@@ -132,12 +132,10 @@ $(function() {
   </div>
 </div>
 <div class="faq-content">
-  <button class="question" id="que-2" onclick="doDisplay('ans-2')"><span id="que-2-toggle">+</span><span>Making web by Django</span></button>
+  <button class="question" id="que-2" onclick="doDisplay('ans-2')"><span id="que-2-toggle">+</span><span>Book info</span></button>
   <div class="answer" id="ans-2">
-      <a href="https://jongsigk.gitbook.io/python/">Python & Django</a><br>
-      기본구조 생성<br>
-      Model생성<br>
-      View생성
+      <a href="{% url 'author_list' %}">작가 정보</a><br>
+      <a href="">책 정보</a><br>
   </div>
 </div>
 <div class="faq-content">

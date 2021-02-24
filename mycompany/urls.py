@@ -27,6 +27,7 @@ urlpatterns = [
 from django.conf.urls import include
 urlpatterns += [
     path('resume/', include('resume.urls')),
+    path('books/', include('books.urls')),
 ]
 
 #Add URL maps to redirect the base URL to our application
