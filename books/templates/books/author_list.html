@@ -44,7 +44,7 @@ $(function() {
 
 
 <style>
-    body{font-family: 'Malgun Gothic', '맑은 고딕', Dotum, '돋움', sans-serif;}
+    body{font-family: 'Malgun Gothic', '맑은 고딕', Dotum, '돋움', sans-serif; margin: 20;}
 
     .table{border-top:2px solid;}
     .table{border-bottom:2px solid;}
@@ -115,26 +115,23 @@ $(function() {
 
 {% block content %}
 
-<style>
 
-</style>
-<span id="faq-title"><a href="{% url 'index' %}">Home</a></span>
+&nbsp;<span id="faq-title"><a href="{% url 'index' %}">Home</a></span>
   <br>
-  <h2 class="tit">작가 List</h2>
-
+&nbsp;&nbsp;   <h2 class="tit">작가 List</h2>
 <!-- 검색 조건 : start -->
-<form method="get" action="{% url 'author_list' %}">
+<form method="get" action="{% url 'author_list' %}" >
     <tr>
-    <td>작가: <input type="text" value="{{filter_1}}" name="filter_1"/></td><br>
+&nbsp;    <td>작가: <input type="text" value="{{filter_1}}" name="filter_1"/></td><br>
     </tr>
     <tr>
-    <td>국가: <input type="text" value="{{filter_2}}" name="filter_2"/></td><br>
+&nbsp;    <td>국가: <input type="text" value="{{filter_2}}" name="filter_2"/></td><br>
     </tr>
     <tr>
     <!--td>order_by: <input type="text" value={{orderby}} name="orderby"/></td-->
 
     <!-- page가 바뀌어도 selected 유지하기 위해 if 문 사용함 -->
-    <td>order_by:
+&nbsp;    <td>order_by:
       <select name="orderby" value="{{orderby}}" >
         <option value="author_name" {% if orderby == 'author_name' %} selected {% endif %} >작가(오름차순)</option>
         <option value="-author_name" {% if orderby == '-author_name' %} selected {% endif %} >작가(내림차순)</option>
@@ -145,13 +142,14 @@ $(function() {
       </select>
     </td>
 
-    <td><input class="btn btn btn-info" type="submit" name="submit" value="검색"/></td>
+&nbsp;    <td><input class="btn btn btn-info" type="submit" name="submit" value="검색"/></td>
     </tr>
 </form>
 <!-- 검색 조건 : end -->
 
   <br>
-  <input class="btn btn btn-info" type="button" value="신규입력" onClick="location.href='{% url 'order_comp_create'%}'">
+&nbsp;  <input class="btn btn btn-info" type="button" value="신규입력" onClick="location.href='{% url 'order_comp_create'%}'">
+
 
   <br><br>
   {% if author_list %}
