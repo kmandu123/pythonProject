@@ -19,7 +19,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 class AuthorList(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
     permission_required = 'resume.public_open'
     model = Author
-    paginate_by = 15
+    paginate_by = 10
 
     #검색 결과 (초기값)
     def get_queryset(self):
