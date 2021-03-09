@@ -1,0 +1,17 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<style>
+  .table_emp_list { border-collapse : collapse }
+  .emp_list {border-bottom: 1px solid red; width:100px;}
+</style>
+
+<h1>Kim's Portal</h1>
+<p>Kim's 포털에 오신것을 환영합니다, <br>이 사이트는 <em>지식을 공유하기 위해서 만들었습니다 </em>!</p>
+
+<div><strong>전체 직원 수:</strong> {{ emp_cnt }}</div>
+
+
+
+{% endblock %}

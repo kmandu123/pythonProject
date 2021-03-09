@@ -16,7 +16,7 @@ from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
 # 발주처 list
-class AuthorList(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
+class AuthorList(generic.ListView):
     permission_required = 'resume.public_open'
     model = Author
     paginate_by = 10

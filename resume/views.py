@@ -16,8 +16,8 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 #orm not filtering
 from django.db.models import Q
 
-@login_required
-@permission_required('resume.public_open')
+#@login_required
+#@permission_required('resume.public_open')
 def index(request):
     """View function for home page of site."""
 

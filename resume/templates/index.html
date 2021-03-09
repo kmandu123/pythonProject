@@ -1,17 +1,192 @@
-{% extends "base_generic.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% block title %}<title>Soltronix</title>{% endblock %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-{% block content %}
+<!-- Index 좌,우 구분 Jquery:Start -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Index 좌,우 구분 Jquery:End -->
+
+
+<!-- Add additional CSS in static file -->
+
+
+
+
+<!-- 달력 : DatePicker:Start -->
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+
+<script>
+
+$(function() {
+    $( ".cal" ).datepicker({
+    changeYear: true,
+    changeMonth: true,
+    minDate: '-100y',
+    currentText: '오늘 날짜',
+    dateFormat: 'yy-mm-dd',
+    });
+});
+
+</script>
+<!-- 달력 : DatePicker:End -->
+
 
 <style>
-  .table_emp_list { border-collapse : collapse }
-  .emp_list {border-bottom: 1px solid red; width:100px;}
+    body{font-family: 'Malgun Gothic', '맑은 고딕', Dotum, '돋움', sans-serif;}
+
+    .table{border-top:2px solid;}
+    .table{border-bottom:2px solid;}
+    .tit {
+        margin: 0;
+        padding: 0 0 30px 0;
+        color: #333;
+        font-size: 1.7143em;
+        line-height: 1.1;
+        font-weight: 700;
+        letter-spacing: -0.05em;
+    }
+
+    .tit2 {
+        margin: 0;
+        padding: 0 0 30px 0;
+        color: #333;
+        font-size: 1.2143em;
+        line-height: 1.1;
+        font-weight: 700;
+        letter-spacing: -0.05em;
+    }
+
+    .tit_m {
+        margin: 0;
+        padding: 0 0 30px 0;
+        color: #333;
+        font-size: 1.4em;
+        line-height: 1.1;
+        font-weight: 700;
+        letter-spacing: -0.05em;
+    }
+
+    /* side menu style:start */
+    .answer {
+      display: none;
+      padding-bottom: 30px;
+    }
+    #faq-title {
+      font-size: 25px;
+    }
+    .faq-content {
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .question {
+      font-size: 19px;
+      padding: 30px 0;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+    .question:hover {
+      color: #2962ff;
+    }
+    [id$="-toggle"] {
+      margin-right: 15px;
+    }
+    /* side menu style:end */
+
 </style>
+
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-2">
+      {% block sidebar %}
+        <ul class="sidebar-nav">
+          <br><br><br>
 
 <h1>Kim's Portal</h1>
 <p>Kim's 포털에 오신것을 환영합니다, <br>이 사이트는 <em>지식을 공유하기 위해서 만들었습니다 </em>!</p>
 
-<div><strong>전체 직원 수:</strong> {{ emp_cnt }}</div>
+<div class="faq-content">
+  <button class="question" id="que-3" onclick="doDisplay('ans-3')"><span id="que-3-toggle">+</span><span>정보 공유</span></button>
+  <div class="answer" id="ans-3">
+      <a href="https://youneedawiki.com/app/page/1J6qUMTrBXgWNMdFlSO0A9S9qQLtboit6?p=1J6qUMTrBXgWNMdFlSO0A9S9qQLtboit6">Python</a><br>
+      <a href="https://youneedawiki.com/app/page/1-kCGFm88tbzLuyQ1tnyGVvYwMiivJGWb?p=1-kCGFm88tbzLuyQ1tnyGVvYwMiivJGWb">Django</a><br>
+      <a href="https://youneedawiki.com/app/page/1bzFKFEGkKoO5wmP4tP9gWfdVu2niBF8P?p=1bzFKFEGkKoO5wmP4tP9gWfdVu2niBF8P">빅데이터</a><br>
+      <a href="https://youneedawiki.com/app/page/1K5MmR68jtqo9i2Vak0QVTS88UH4Vv3Ej?p=1K5MmR68jtqo9i2Vak0QVTS88UH4Vv3Ej">MySql</a><br>
+      <a href="https://youneedawiki.com/app/page/17z67txKMje6pF7oPn-UPy2iIiTEx3kBz?p=17z67txKMje6pF7oPn-UPy2iIiTEx3kBz">Oracle</a><br>
+      <a href="https://youneedawiki.com/app/page/1JnVNsG0l8DPFw_cPzVwGgay87xh3Dhvk?p=1JnVNsG0l8DPFw_cPzVwGgay87xh3Dhvk">Others</a><br>
+  </div>
+</div>
+
+<div class="faq-content">
+  <button class="question" id="que-2" onclick="doDisplay('ans-2')"><span id="que-2-toggle">+</span><span>Book info</span></button>
+  <div class="answer" id="ans-2">
+      <a href="{% url 'author_list' %}">작가 정보</a><br>
+      <a href="">책 정보(준비중)</a><br>
+  </div>
+</div>
+
+<div class="faq-content">
+  <button class="question" id="que-1" onclick="doDisplay('ans-1')"><span id="que-1-toggle">+</span><span>이력관리(PC전용)</span></button>
+  <div class="answer" id="ans-1">
+      <a href="{% url 'resume_index' %}">이력관리 home</a><br>
+      <a href="{% url 'comm_div_list' %}">공통구분코드</a><br>
+      <a href="{% url 'order_comp_list' %}">발주처 정보</a><br>
+      <a href="{% url 'pjt_list' %}">프로젝트 정보</a><br>
+      <a href="{% url 'education_list' %}">교육 정보</a><br>
+      <a href="{% url 'employee_list' %}">사원정보</a><br>
+      <a href="{% url 'download_emp' %}">엑셀 다운로드</a>
+  </div>
+</div>
+
+<br>
 
 
 
-{% endblock %}
+
+         {% if user.is_authenticated %}
+          <li>User: {{ user.get_username }}</li>
+          <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+         {% else %}
+          <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
+         {% endif %}
+
+        </ul>
+
+     {% endblock %}
+      </div>
+      <div class="col-sm-10 ">{% block content %}{% endblock %}</div>
+    </div>
+  </div>
+
+
+<!-- side menu 접다 펴기 : start -->
+<script>
+
+  function doDisplay(id) {
+    var con = document.getElementById(id);
+
+    if(con.style.display=='none'){
+        con.style.display = 'block';
+    } else {
+        con.style.display = 'none';
+    }
+
+
+  }
+</script>
+<!-- side menu 접다 펴기 : end -->
+
+
+
+
+</body>
+</html>
