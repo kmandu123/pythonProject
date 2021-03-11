@@ -122,10 +122,10 @@ $(function() {
 <!-- 검색 조건 : start -->
 <form method="get" action="{% url 'author_list' %}" >
     <tr>
-&nbsp;&nbsp;&nbsp;    <td>작가: <input type="text" value="{{filter_1}}" name="filter_1"/></td><br>
+&nbsp;&nbsp;&nbsp;    <td>작가명: <input type="text" value="{{filter_1}}" name="filter_1"/></td><br>
     </tr>
     <tr>
-&nbsp;&nbsp;&nbsp;    <td>국가: <input type="text" value="{{filter_2}}" name="filter_2"/></td><br>
+&nbsp;&nbsp;&nbsp;    <td>추천인: <input type="text" value="{{filter_2}}" name="filter_2"/></td><br>
     </tr>
     <tr>
     <!--td>order_by: <input type="text" value={{orderby}} name="orderby"/></td-->
@@ -135,8 +135,8 @@ $(function() {
       <select name="orderby" value="{{orderby}}" >
         <option value="author_name" {% if orderby == 'author_name' %} selected {% endif %} >작가(오름차순)</option>
         <option value="-author_name" {% if orderby == '-author_name' %} selected {% endif %} >작가(내림차순)</option>
-        <option value="nation_cd" {% if orderby == 'nation_cd' %} selected {% endif %} >국가(오름차순)</option>
-        <option value="-nation_cd" {% if orderby == '-nation_cd' %} selected {% endif %} >국가(내림차순)</option>
+        <option value="input_name" {% if orderby == 'input_name' %} selected {% endif %} >추천인(오름차순)</option>
+        <option value="-input_name" {% if orderby == '-input_name' %} selected {% endif %} >추천인(내림차순)</option>
         <option value="update_dt" {% if orderby == 'update_dt' %} selected {% endif %} >수정일시(오름차순)</option>
         <option value="-update_dt" {% if orderby == '-update_dt' %} selected {% endif %} >수정일시(내림차순)</option>
       </select>
@@ -148,7 +148,7 @@ $(function() {
 <!-- 검색 조건 : end -->
 
   <br>
-&nbsp;&nbsp;&nbsp;  <input class="btn btn btn-info" type="button" value="신규입력" onClick="location.href='{% url 'order_comp_create'%}'">
+&nbsp;&nbsp;&nbsp;  <input class="btn btn btn-info" type="button" value="신규입력" onClick="location.href='{% url 'author_create'%}'">
 
 
   <br><br>
@@ -156,20 +156,20 @@ $(function() {
   <table class="table">
       <tr bgcolor="#F7F7F7">
           <td><strong>작가</strong></td>
-          <td><strong>출생</strong></td>
-          <td><strong>국가</strong></td>
+          <td><strong>추천여부</strong></td>
+          <td><strong>추천인</strong></td>
       </tr>
 
     {% for r in author_list %}
       <tr>
           <td><a href="{{ r.get_absolute_url }}">{{ r.author_name }}</a></td>
-          <td>{{ r.birth_year }} ~ {{ r.death_year }}</td>
-          <td>{{ r.nation_cd }}</td>
+          <td>{{ r.recommend_yn }}</td>
+          <td>{{ r.input_name }}</td>
       </tr>
     {% endfor %}
   </table>
   {% else %}
-    <p>발주처 정보가 없습니다..</p>
+    <p>작가 정보가 없습니다..</p>
   {% endif %}
 
 

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% block title %}<title>Soltronix</title>{% endblock %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Index 좌,우 구분 Jquery:Start -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Index 좌,우 구분 Jquery:End -->
+
+
+<!-- Add additional CSS in static file -->
+
+<!-- 부트스트랩:Start -->
+<!-- 합쳐지고 최소화된 최신 CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<!-- 부가적인 테마 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<!-- 부트스트랩:End -->
+
+<style>
+    body{font-family: 'Malgun Gothic', '맑은 고딕', Dotum, '돋움', sans-serif; margin: 20;}
+
+    .table{border-top:2px solid;}
+    .table{border-bottom:2px solid;}
+    .tit {
+        margin: 0;
+        padding: 0 0 30px 0;
+        color: #333;
+        font-size: 1.7143em;
+        line-height: 1.1;
+        font-weight: 700;
+        letter-spacing: -0.05em;
+    }
+
+    .tit2 {
+        margin: 0;
+        padding: 0 0 30px 0;
+        color: #333;
+        font-size: 1.2143em;
+        line-height: 1.1;
+        font-weight: 700;
+        letter-spacing: -0.05em;
+    }
+
+    .tit_m {
+        margin: 0;
+        padding: 0 0 30px 0;
+        color: #333;
+        font-size: 1.4em;
+        line-height: 1.1;
+        font-weight: 700;
+        letter-spacing: -0.05em;
+    }
+
+    /* side menu style:start */
+    .answer {
+      display: none;
+      padding-bottom: 30px;
+    }
+    #faq-title {
+      font-size: 25px;
+    }
+    .faq-content {
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .question {
+      font-size: 19px;
+      padding: 30px 0;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+    .question:hover {
+      color: #2962ff;
+    }
+    [id$="-toggle"] {
+      margin-right: 15px;
+    }
+    /* side menu style:end */
+
+</style>
+
+</head>
+
+<body>
+
+
+&nbsp;&nbsp;&nbsp;<td><span id="faq-title"><a href="{% url 'index' %}">Home</a></span></td><br>
+
+{% block content %}
+
+<!-- 마스터 table 영역에 대한 스타일:Start -->
+<style>
+.main_table {
+  border-collapse: separate;
+  border-spacing: 0 5px;
+}
+</style>
+<!-- 마스터 table 영역에 대한 스타일:End -->
+
+
+
+<br>
+<form action="" method="post" >
+    {% csrf_token %}
+    <table >
+
+    <!-- 수정/입력경우에 따라(pk값이 존재하는지 여부에 따라) title변경:start -->
+    {% if author.author_id %}
+    <h2 class="tit">저자 수정</h2>
+    {% else %}
+    <h2 class="tit">저자 입력</h2>
+    {% endif %}
+    <!-- 수정/입력경우에 따라(pk값이 존재하는지 여부에 따라) title변경:end -->
+
+
+    </table>
+
+
+
+    <!-- Main 입력 영역:Start -->
+    <table class="main_table">
+
+    <!-- Master error 메시지처리:start -->
+    {% if authorform.errors %}
+	<div id="errors">
+			<ul>
+                <font size="2em" color="red">{{ authorform.errors }}</font>
+			</ul>
+	</div>
+    {% endif %}
+    <!-- Master error 메시지처리:end -->
+
+        <tr>
+            <td class="td_pad_right" align="right"><strong>{{ authorform.author_name.label }}</strong></td><td>{{ authorform.author_name }}</td>
+        </tr>
+        <tr>
+            <td class="td_pad_right" align="right"><strong>{{ authorform.recommend_yn.label }}</strong></td><td>{{ authorform.recommend_yn }}</td>
+        </tr>
+        <tr>
+            <td class="td_pad_right" align="right"><strong>{{ authorform.input_name.label }}</strong></td><td>{{ authorform.input_name }}</td>
+        </tr>
+    </table>
+
+    <button type="submit" class="btn btn btn-info">저   장</button>
+    <input class="btn btn btn-info" type="button" value="취소" onClick="location.href='{% url 'author_list'%}'">
+
+    <!-- 수정일 때만(pk값이 존재할 때) 삭제 버튼 활성화:start -->
+    {% if author.author_id %}
+    <input class="btn btn btn-warning" type="button" value="삭제" onClick="location.href='{% url 'author_delete' author.author_id %}'">
+    {% endif %}
+    <!-- Main 입력 영역:End -->
+</form>
+
+
+
+{% endblock %}
+
+</body>
+</html>

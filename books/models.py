@@ -1,20 +1,18 @@
 from django.db import models
+from django.urls import reverse # Used to generate URLs by reversing the URL patterns
 
 # Create your models here.
 class Author(models.Model):
     author_id = models.AutoField(primary_key=True, verbose_name='작가 ID')
-    author_name = models.CharField(max_length=200, verbose_name='작가 이름')
-    birth_year = models.CharField(max_length=4, verbose_name='탄생년도', null=True, blank=True)
-    death_year = models.CharField(max_length=4, verbose_name='사망년도', null=True, blank=True)
-    nation_cd = models.ForeignKey('resume.Comm_code', related_name='fk_author1', on_delete=models.SET_NULL, null=True, db_column='nation_cd',  verbose_name='국적')
-    summary = models.CharField(max_length=4000, null=True, blank=True, verbose_name='약력')
+    author_name = models.CharField(max_length=200, verbose_name='작가')
 
     USE_YN_DIV = (
         ('Y', 'Y'),
         ('N', 'N'),
     )
 
-    book_find_yn = models.CharField(max_length=1, choices=USE_YN_DIV, default='Y', verbose_name='책 자동 찾기 여부')
+    recommend_yn = models.CharField(max_length=1, choices=USE_YN_DIV, default='Y', verbose_name='추천 여부')
+    input_name = models.CharField(max_length=200, verbose_name='추천인', null=True, blank=True)
     create_dt = models.DateTimeField(auto_now_add=True, verbose_name='생성일시', null=True, blank=True)
     update_dt = models.DateTimeField(auto_now=True, verbose_name='수정일시', null=True, blank=True)
     create_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='생성자id')
@@ -27,25 +25,26 @@ class Author(models.Model):
         """String for representing the Model object."""
         return self.author_name
 
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this book."""
+        return reverse('author_update', args=[str(self.author_id)])
+
 class Book(models.Model):
     book_id = models.AutoField(primary_key=True, verbose_name='책 ID')
-    isbn = models.CharField(max_length=20, verbose_name='ISBN', null=True, blank=True)
-    book_name = models.CharField(max_length=200, verbose_name='책 이름')
-    author_id = models.ForeignKey('Author', related_name='fk_book1', on_delete=models.SET_NULL, null=True,
-                                  db_column='author_id', verbose_name='저자')
+    book_name = models.CharField(max_length=200, verbose_name='도서명')
+    author_name = models.CharField(max_length=200, verbose_name='작가')
     genre_cd = models.ForeignKey('resume.Comm_code', related_name='fk_book2', on_delete=models.SET_NULL, null=True, db_column='genre_cd',  verbose_name='장르')
-    publisher_name = models.CharField(max_length=200, verbose_name='출판사', null=True, blank=True)
-
-    publish_date = models.DateField(verbose_name='출판일자', null=True, blank=True)
     summary = models.CharField(max_length=4000, null=True, blank=True, verbose_name='책소개')
-    book_url = models.CharField(max_length=400, verbose_name='관련URL', null=True, blank=True)
 
     USE_YN_DIV = (
         ('Y', 'Y'),
         ('N', 'N'),
     )
 
-    auto_update_yn = models.CharField(max_length=1, choices=USE_YN_DIV, default='N',  verbose_name='자동 update 완료 여부')
+    recommend_yn = models.CharField(max_length=1, choices=USE_YN_DIV, default='Y',  verbose_name='추천 여부')
+    input_name = models.CharField(max_length=200, verbose_name='추천인', null=True, blank=True)
+    read_date = models.DateField(verbose_name='완독일자', null=True)
+
     create_dt = models.DateTimeField(auto_now_add=True, verbose_name='생성일시', null=True, blank=True)
     update_dt = models.DateTimeField(auto_now=True, verbose_name='수정일시', null=True, blank=True)
     create_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='생성자id')
