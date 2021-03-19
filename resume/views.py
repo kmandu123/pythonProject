@@ -13,6 +13,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
+from books.views import write_log
+
 #orm not filtering
 from django.db.models import Q
 
@@ -20,6 +22,8 @@ from django.db.models import Q
 #@permission_required('resume.public_open')
 def index(request):
     """View function for home page of site."""
+    # log 기록
+    write_log(request.META['REMOTE_ADDR'], request, 'index')
 
     # 전체 인원수
     emp_cnt = Employee.objects.all().count()
@@ -44,6 +48,8 @@ def index(request):
 @permission_required('resume.public_open')
 def resume_index(request):
     """View function for home page of site."""
+    # log 기록
+    write_log(request.META['REMOTE_ADDR'], request, 'resume_index')
 
     # 전체 인원수
     emp_cnt = Employee.objects.all().count()
@@ -76,6 +82,9 @@ class  Comm_divList(LoginRequiredMixin, PermissionRequiredMixin, generic.ListVie
 
     #검색 결과 (초기값)
     def get_queryset(self):
+        # log 기록
+        write_log(self.request.META['REMOTE_ADDR'], self.request, '공통구분 list')
+
         filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
         order = self.request.GET.get('orderby', 'comm_div_name') #정렬대상 컬럼명(초기값)
 
@@ -221,6 +230,9 @@ class Order_compList(LoginRequiredMixin, PermissionRequiredMixin, generic.ListVi
 
     #검색 결과 (초기값)
     def get_queryset(self):
+        # log 기록
+        write_log(self.request.META['REMOTE_ADDR'], self.request, '발주처list')
+
         filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
         filter_val_2 = self.request.GET.get('filter_2', '')
         order = self.request.GET.get('orderby', 'order_comp_name') #정렬대상 컬럼명(초기값)
@@ -353,6 +365,9 @@ class PjtList(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
 
     #검색 결과 (초기값)
     def get_queryset(self):
+        # log 기록
+        write_log(self.request.META['REMOTE_ADDR'], self.request, '프로젝트 list')
+
         filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
         filter_val_2 = self.request.GET.get('filter_2', '')
         order = self.request.GET.get('orderby', 'pjt_name') #정렬대상 컬럼명(초기값)
@@ -518,6 +533,9 @@ class EducationList(LoginRequiredMixin, PermissionRequiredMixin, generic.ListVie
 
     #검색 결과 (초기값)
     def get_queryset(self):
+        # log 기록
+        write_log(self.request.META['REMOTE_ADDR'], self.request, '교육 list')
+
         filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
         filter_val_2 = self.request.GET.get('filter_2', '')
         order = self.request.GET.get('orderby', 'edu_name') #정렬대상 컬럼명(초기값)
@@ -658,6 +676,9 @@ class EmployeeList(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView
 
     #검색 결과 (초기값)
     def get_queryset(self):
+        # log 기록
+        write_log(self.request.META['REMOTE_ADDR'], self.request, '사원 list')
+
         filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
         filter_val_2 = self.request.GET.get('filter_2', '')
         order = self.request.GET.get('orderby', 'emp_name') #정렬대상 컬럼명(초기값)
@@ -899,6 +920,9 @@ import os
 #@login_required
 @permission_required('resume.public_closed')
 def DownloadEmp(request):
+    # log 기록
+    write_log(request.META['REMOTE_ADDR'], request, '엑셀 download')
+
     vw_emp_cnt = Vw_emp.objects.all().count()
     vw_emp_list = list(Vw_emp.objects.all().values('POSITION_NAME', 'EMP_NAME', 'SKILL_GRADE'))
 
@@ -976,9 +1000,10 @@ def DownloadEmp(request):
 
 
 
-
-
-
+def SkillGuide(request):
+    # log 기록
+    write_log(request.META['REMOTE_ADDR'], request, 'IT 기술 습득 Guide')
+    return render(request, 'resume/skill_guide.html')
 
 
 from urllib.request import urlopen

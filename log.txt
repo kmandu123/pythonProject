@@ -1,0 +1,39 @@
+{'log_dt': '2021-03-20 06:42:21', 'ip': '127.0.0.1', 'log_gb': 'index', 'request': <WSGIRequest: GET '/books/'>}
+{'log_dt': '2021-03-20 06:42:25', 'ip': '127.0.0.1', 'log_gb': '작가조회', 'request': <WSGIRequest: GET '/books/author_list/'>}
+{'log_dt': '2021-03-20 06:42:30', 'ip': '127.0.0.1', 'log_gb': 'index', 'request': <WSGIRequest: GET '/books/'>}
+{'log_dt': '2021-03-20 06:44:10', 'ip': '127.0.0.1', 'log_gb': '작가조회', 'request': <WSGIRequest: GET '/books/author_list/'>}
+{'log_dt': '2021-03-20 06:44:20', 'ip': '127.0.0.1', 'log_gb': 'index', 'request': <WSGIRequest: GET '/books/'>}
+{'log_dt': '2021-03-20 06:45:48', 'ip': '127.0.0.1', 'log_gb': 'index', 'request': <WSGIRequest: GET '/books/'>}
+{'log_dt': '2021-03-20 06:57:38', 'ip': '127.0.0.1', 'log_gb': 'index', 'request': <WSGIRequest: GET '/books/'>}
+{'log_dt': '2021-03-20 06:57:46', 'ip': '127.0.0.1', 'log_gb': '엑셀 download', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 06:59:55', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 07:04:12', 'ip': '127.0.0.1', 'log_gb': 'index', 'request': <WSGIRequest: GET '/books/'>}
+{'log_dt': '2021-03-20 07:04:15', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 07:06:14', 'ip': '127.0.0.1', 'log_gb': 'resume_index', 'request': <WSGIRequest: GET '/resume/resume_home'>}
+{'log_dt': '2021-03-20 07:06:54', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 07:15:21', 'ip': '127.0.0.1', 'log_gb': 'index', 'request': <WSGIRequest: GET '/books/'>}
+{'log_dt': '2021-03-20 07:15:25', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 07:15:57', 'ip': '127.0.0.1', 'log_gb': 'index', 'request': <WSGIRequest: GET '/books/'>}
+{'log_dt': '2021-03-20 07:17:11', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 07:22:35', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 07:22:56', 'ip': '127.0.0.1', 'log_gb': 'index', 'request': <WSGIRequest: GET '/books/'>}
+{'log_dt': '2021-03-20 07:23:53', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 07:25:19', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 07:28:15', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 07:33:03', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 07:40:03', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 07:41:18', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 08:07:29', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 08:13:04', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 08:13:06', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 08:14:32', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 08:14:33', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 08:14:35', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 08:15:10', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 08:16:02', 'ip': '127.0.0.1', 'log_gb': 'index', 'request': <WSGIRequest: GET '/resume/'>}
+{'log_dt': '2021-03-20 08:18:19', 'ip': '127.0.0.1', 'log_gb': 'index', 'request': <WSGIRequest: GET '/resume/'>}
+{'log_dt': '2021-03-20 08:18:32', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 08:18:35', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 08:19:48', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 08:20:37', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}
+{'log_dt': '2021-03-20 08:20:38', 'ip': '127.0.0.1', 'log_gb': 'IT 기술 습득 Guide', 'request': <WSGIRequest: GET '/resume/youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ%3Fp%3D1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS'>}

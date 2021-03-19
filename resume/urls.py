@@ -48,3 +48,6 @@ urlpatterns += [
     path('download_emp/', views.DownloadEmp, name='download_emp'),
 ]
 
+urlpatterns += [
+    path('youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ?p=1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS', views.SkillGuide, name='skill_guide'),
+]

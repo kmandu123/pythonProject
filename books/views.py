@@ -8,6 +8,8 @@ from django.views import generic
 from books.models import Author, Book
 from .forms import AuthorForm
 from django.shortcuts import get_object_or_404
+import os
+import datetime
 
 from django.db.models import Count
 
@@ -19,7 +21,29 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
-# 발주처 list
+
+# 페이지 접속 log기록
+def write_log(client_ip,request,log_gb):
+    now = datetime.datetime.now()
+    nowDatetime = now.strftime('%Y-%m-%d %H:%M:%S')
+
+    log_context = {'log_dt': nowDatetime, 'ip': client_ip, 'log_gb': log_gb, 'request': request}
+
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    if BASE_DIR.find('home'):  # linux이면
+        file_path = BASE_DIR + '/log.txt'
+    else:  # window이면
+        file_path = BASE_DIR + '\log.txt'
+
+    f = open(file_path, 'a', encoding='utf8')
+    f.write(log_context.__str__() + '\n')
+    f.close()
+
+    print(log_context)
+
+
+# 작가 list
 class AuthorList(generic.ListView):
     model = Author
     paginate_by = 10
@@ -32,8 +56,8 @@ class AuthorList(generic.ListView):
         filter_val_2 = self.request.GET.get('filter_2', '')
         order = self.request.GET.get('orderby', 'author_name') #정렬대상 컬럼명(초기값)
 
-        client_ip = self.request.META['REMOTE_ADDR']
-        print('접속ip:', client_ip, self.request)
+        #log 기록
+        write_log(self.request.META['REMOTE_ADDR'], self.request, '작가조회')
 
         new_context = Author.objects.filter(
             author_name__icontains=filter_val_1,
@@ -52,6 +76,8 @@ class AuthorList(generic.ListView):
 
 
 def AuthorUpdate(request, pk):
+    # log 기록
+    write_log(request.META['REMOTE_ADDR'], request, '작가수정')
 
     if pk:
         #master model instance 생성
@@ -88,6 +114,8 @@ def AuthorUpdate(request, pk):
 
 
 def AuthorCreate(request):
+    # log 기록
+    write_log(request.META['REMOTE_ADDR'], request, '작가생성')
 
     # author model 빈 instance 생성
     author = Author()
@@ -117,6 +145,9 @@ def AuthorCreate(request):
 
 
 def AuthorDelete(request, pk):
+    # log 기록
+    write_log(request.META['REMOTE_ADDR'], request, '작가삭제')
+
     # 파라미터pk로 받은 data가 존재한다면 가져온다
     author = get_object_or_404(Author, pk=pk)
     author.delete()

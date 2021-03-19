@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% block title %}<title>kim's portal</title>{% endblock %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+<!-- 부가적인 테마 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+<style>
+    body{font-family: 'Malgun Gothic', '맑은 고딕', Dotum, '돋움', sans-serif; margin: 20;}
+
+    .table{border-top:2px solid;}
+    .table{border-bottom:2px solid;}
+    .tit {
+        margin: 0;
+        padding: 0 0 30px 0;
+        color: #333;
+        font-size: 1.7143em;
+        line-height: 1.1;
+        font-weight: 700;
+        letter-spacing: -0.05em;
+    }
+
+    .tit2 {
+        margin: 0;
+        padding: 0 0 30px 0;
+        color: #333;
+        font-size: 1.2143em;
+        line-height: 1.1;
+        font-weight: 700;
+        letter-spacing: -0.05em;
+    }
+
+    .tit_m {
+        margin: 0;
+        padding: 0 0 30px 0;
+        color: #333;
+        font-size: 1.4em;
+        line-height: 1.1;
+        font-weight: 700;
+        letter-spacing: -0.05em;
+    }
+
+    /* side menu style:start */
+    .answer {
+      display: none;
+      padding-bottom: 30px;
+    }
+    #faq-title {
+      font-size: 25px;
+    }
+    .faq-content {
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .question {
+      font-size: 19px;
+      padding: 30px 0;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+    .question:hover {
+      color: #2962ff;
+    }
+    [id$="-toggle"] {
+      margin-right: 15px;
+    }
+    /* side menu style:end */
+
+</style>
+
+</head>
+
+<body>
+
+{% block content %}
+
+
+<td><span id="faq-title"><a href="{% url 'index' %}">Home</a></span></td><br>
+<td><h3 class="tit">IT 정보 공유</h3></td>
+
+<p>
+세상 참 빠르게 변하죠..! <br>
+IT 기술 또한 빠르게 그 트랜드가 변하고 있는 것 같습니다. <br>
+최근 제가 관심을 가지고있는 파이썬과 빅데이터 관련 내용들을 정리하고 있습니다! <br>
+혹시라도 관심이 있다면 도움이 되었으면 합니다.<br>
+<b>(혹시 공유하고 싶은 정보가 있으면 말씀해 주세요..! <br>
+    여기에서 같이 공유하는 것도 좋을듯^^)</b>
+</p>
+
+<br>
+<div>
+    <a href="https://youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ?p=1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS">IT 기술 습득 Guide</a><br><br>
+
+    <a href="https://youneedawiki.com/app/page/1J6qUMTrBXgWNMdFlSO0A9S9qQLtboit6?p=1J6qUMTrBXgWNMdFlSO0A9S9qQLtboit6">Python</a><br>
+    <a href="https://youneedawiki.com/app/page/1-kCGFm88tbzLuyQ1tnyGVvYwMiivJGWb?p=1-kCGFm88tbzLuyQ1tnyGVvYwMiivJGWb">Django</a><br>
+    <a href="https://youneedawiki.com/app/page/1bzFKFEGkKoO5wmP4tP9gWfdVu2niBF8P?p=1bzFKFEGkKoO5wmP4tP9gWfdVu2niBF8P">빅데이터</a><br>
+    <a href="https://youneedawiki.com/app/page/1K5MmR68jtqo9i2Vak0QVTS88UH4Vv3Ej?p=1K5MmR68jtqo9i2Vak0QVTS88UH4Vv3Ej">MySql</a><br>
+    <a href="https://youneedawiki.com/app/page/17z67txKMje6pF7oPn-UPy2iIiTEx3kBz?p=17z67txKMje6pF7oPn-UPy2iIiTEx3kBz">Oracle</a><br>
+    <a href="https://youneedawiki.com/app/page/1JnVNsG0l8DPFw_cPzVwGgay87xh3Dhvk?p=1JnVNsG0l8DPFw_cPzVwGgay87xh3Dhvk">Others</a><br>
+</div>
+
+{% endblock %}
+
+</body>
+</html>
