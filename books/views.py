@@ -24,11 +24,16 @@ class AuthorList(generic.ListView):
     model = Author
     paginate_by = 10
 
+
+
     #검색 결과 (초기값)
     def get_queryset(self):
         filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
         filter_val_2 = self.request.GET.get('filter_2', '')
         order = self.request.GET.get('orderby', 'author_name') #정렬대상 컬럼명(초기값)
+
+        client_ip = self.request.META['REMOTE_ADDR']
+        print('접속ip:', client_ip, self.request)
 
         new_context = Author.objects.filter(
             author_name__icontains=filter_val_1,
