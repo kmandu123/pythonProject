@@ -49,5 +49,6 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-    path('youneedawiki.com/app/page/1ZILKVaUWSAeu5FTFePVrhdJurLffWlLjKG8njngloPQ?p=1wcp4QBuCAXaS1I_EwOnhiUNEe0yP8zlS', views.SkillGuide, name='skill_guide'),
+    path('skill_guide/', views.SkillGuide, name='skill_guide'),
+    path('admin_page/', views.AdminPage, name='admin_page'),
 ]

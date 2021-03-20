@@ -121,6 +121,10 @@ $(function() {
 
 <br>
 <div>
+{% if user.get_username == 'kmandu' %}
+    <a href="{% url 'admin_page' %}">관리자 메뉴</a><br><br>
+{% endif %}
+
     <a href="{% url 'skill_guide' %}">IT 기술 습득 Guide</a><br>
 </div>
 

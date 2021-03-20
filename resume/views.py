@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from resume.models import Comm_div, Comm_code, Employee, School_his, Education, Order_comp, Pjt, Vw_emp
-
+from books.models import Log
 from django.db.models import Count
 
 # 함수 로그인 권한 제어
@@ -1003,7 +1003,22 @@ def DownloadEmp(request):
 def SkillGuide(request):
     # log 기록
     write_log(request.META['REMOTE_ADDR'], request, 'IT 기술 습득 Guide', request.user)
+
     return render(request, 'resume/skill_guide.html')
+
+
+def AdminPage(request):
+
+    # log list
+    log_list = Log.objects.all()
+
+    context = {
+        'log_list': log_list,
+    }
+
+    # Render the HTML template index.html with the data in the context variable
+    return render(request, 'resume/admin_page.html', context=context)
+
 
 
 from urllib.request import urlopen

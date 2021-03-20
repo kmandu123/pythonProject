@@ -1,0 +1,33 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+
+<td><span id="faq-title"><a href="{% url 'index' %}">Home</a></span></td><br><br>
+<td><h3 class="tit">Admin Page</h3></td>
+
+<p>
+관리자 page 입니다.! <br>
+</p>
+<table class="table">
+    <tr bgcolor="#F7F7F7">
+      <td><strong>ip</strong></td>
+      <td><strong>구분</strong></td>
+      <td><strong>user</strong></td>
+      <td><strong>주소</strong></td>
+      <td><strong>접속일시</strong></td>
+      </tr>
+{% for r in log_list %}
+    <tr>
+      <td class="log_list">{{ r.client_ip }}</td><td class="log_list">{{ r.log_gb }}</td><td class="log_list">{{ r.user }}</td><td class="log_list">{{ r.addr }}</td><td class="log_list">{{ r.create_dt | date:'Y-m-d H:m:s'}}</td>
+    </tr>
+{% endfor %}
+</table>
+
+<br>
+<div>
+    <a href="">접속 정보 list</a>
+</div>
+
+{% endblock %}
+
