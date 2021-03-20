@@ -2,6 +2,27 @@ from django.db import models
 from django.urls import reverse # Used to generate URLs by reversing the URL patterns
 
 # Create your models here.
+class Log(models.Model):
+    log_id = models.AutoField(primary_key=True, verbose_name='log ID')
+    client_ip = models.CharField(max_length=200, null=True, blank=True, verbose_name='client ip')
+    log_gb = models.CharField(max_length=200, null=True, blank=True, verbose_name='로그 구분')
+    request_info = models.CharField(max_length=2000, null=True, blank=True, verbose_name='request정보')
+    user = models.CharField(max_length=200, null=True, blank=True, verbose_name='user정보')
+    lat = models.CharField(max_length=2000, null=True, blank=True, verbose_name='위도')
+    long = models.CharField(max_length=2000, null=True, blank=True, verbose_name='경도')
+    state = models.CharField(max_length=2000, null=True, blank=True, verbose_name='state')
+    city = models.CharField(max_length=2000, null=True, blank=True, verbose_name='city')
+    addr = models.CharField(max_length=2000, null=True, blank=True, verbose_name='주소')
+    create_dt = models.DateTimeField(auto_now_add=True, verbose_name='생성일시', null=True, blank=True)
+
+    class Meta:
+        managed = True
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return self.client_ip
+
+
 class Author(models.Model):
     author_id = models.AutoField(primary_key=True, verbose_name='작가 ID')
     author_name = models.CharField(max_length=200, verbose_name='작가')

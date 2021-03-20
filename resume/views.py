@@ -23,7 +23,7 @@ from django.db.models import Q
 def index(request):
     """View function for home page of site."""
     # log 기록
-    write_log(request.META['REMOTE_ADDR'], request, 'index')
+    write_log(request.META['REMOTE_ADDR'], request, 'index', request.user)
 
     # 전체 인원수
     emp_cnt = Employee.objects.all().count()
@@ -49,7 +49,7 @@ def index(request):
 def resume_index(request):
     """View function for home page of site."""
     # log 기록
-    write_log(request.META['REMOTE_ADDR'], request, 'resume_index')
+    write_log(request.META['REMOTE_ADDR'], request, 'resume_index', request.user)
 
     # 전체 인원수
     emp_cnt = Employee.objects.all().count()
@@ -83,7 +83,7 @@ class  Comm_divList(LoginRequiredMixin, PermissionRequiredMixin, generic.ListVie
     #검색 결과 (초기값)
     def get_queryset(self):
         # log 기록
-        write_log(self.request.META['REMOTE_ADDR'], self.request, '공통구분 list')
+        write_log(self.request.META['REMOTE_ADDR'], self.request, '공통구분 list', self.request.user)
 
         filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
         order = self.request.GET.get('orderby', 'comm_div_name') #정렬대상 컬럼명(초기값)
@@ -231,7 +231,7 @@ class Order_compList(LoginRequiredMixin, PermissionRequiredMixin, generic.ListVi
     #검색 결과 (초기값)
     def get_queryset(self):
         # log 기록
-        write_log(self.request.META['REMOTE_ADDR'], self.request, '발주처list')
+        write_log(self.request.META['REMOTE_ADDR'], self.request, '발주처list', self.request.user)
 
         filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
         filter_val_2 = self.request.GET.get('filter_2', '')
@@ -366,7 +366,7 @@ class PjtList(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
     #검색 결과 (초기값)
     def get_queryset(self):
         # log 기록
-        write_log(self.request.META['REMOTE_ADDR'], self.request, '프로젝트 list')
+        write_log(self.request.META['REMOTE_ADDR'], self.request, '프로젝트 list', self.request.user)
 
         filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
         filter_val_2 = self.request.GET.get('filter_2', '')
@@ -534,7 +534,7 @@ class EducationList(LoginRequiredMixin, PermissionRequiredMixin, generic.ListVie
     #검색 결과 (초기값)
     def get_queryset(self):
         # log 기록
-        write_log(self.request.META['REMOTE_ADDR'], self.request, '교육 list')
+        write_log(self.request.META['REMOTE_ADDR'], self.request, '교육 list', self.request.user)
 
         filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
         filter_val_2 = self.request.GET.get('filter_2', '')
@@ -677,7 +677,7 @@ class EmployeeList(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView
     #검색 결과 (초기값)
     def get_queryset(self):
         # log 기록
-        write_log(self.request.META['REMOTE_ADDR'], self.request, '사원 list')
+        write_log(self.request.META['REMOTE_ADDR'], self.request, '사원 list', self.request.user)
 
         filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
         filter_val_2 = self.request.GET.get('filter_2', '')
@@ -1002,7 +1002,7 @@ def DownloadEmp(request):
 
 def SkillGuide(request):
     # log 기록
-    write_log(request.META['REMOTE_ADDR'], request, 'IT 기술 습득 Guide')
+    write_log(request.META['REMOTE_ADDR'], request, 'IT 기술 습득 Guide', request.user)
     return render(request, 'resume/skill_guide.html')
 
 

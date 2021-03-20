@@ -5,11 +5,13 @@ from django.urls import reverse
 # Create your views here.
 from resume.models import Comm_div, Comm_code
 from django.views import generic
-from books.models import Author, Book
+from books.models import Author, Book, Log
 from .forms import AuthorForm
 from django.shortcuts import get_object_or_404
 import os
 import datetime
+import json
+from urllib.request import urlopen
 
 from django.db.models import Count
 
@@ -21,13 +23,23 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
+#ip로 주소 찾기
+def get_location(ip):
+    request = "https://geolocation-db.com/json/%s" % (ip)
+
+    with urlopen(request) as url:
+        data = json.loads(url.read().decode())
+        return data["latitude"], data["longitude"], data["city"], data["state"]
+
 
 # 페이지 접속 log기록
-def write_log(client_ip,request,log_gb):
+def write_log(client_ip,request,log_gb,user):
     now = datetime.datetime.now()
     nowDatetime = now.strftime('%Y-%m-%d %H:%M:%S')
 
-    log_context = {'log_dt': nowDatetime, 'ip': client_ip, 'log_gb': log_gb, 'request': request}
+    addr_info = get_location(client_ip)
+
+    log_context = {'log_dt': nowDatetime, 'ip': client_ip, 'log_gb': log_gb, 'request': request, 'user': user, 'lat': addr_info[0], 'long': addr_info[1], 'state': addr_info[2], 'city': addr_info[3]}
 
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -36,9 +48,14 @@ def write_log(client_ip,request,log_gb):
     else:  # window이면
         file_path = BASE_DIR + '\log.txt'
 
+    #파일에 저장
     f = open(file_path, 'a', encoding='utf8')
     f.write(log_context.__str__() + '\n')
     f.close()
+
+    #db에 저장
+    log = Log(client_ip=client_ip, log_gb=log_gb, request_info=request, create_dt=nowDatetime, user=user, lat=addr_info[0], long=addr_info[1], state=addr_info[2], city=addr_info[3])
+    log.save()
 
     print(log_context)
 
@@ -57,7 +74,7 @@ class AuthorList(generic.ListView):
         order = self.request.GET.get('orderby', 'author_name') #정렬대상 컬럼명(초기값)
 
         #log 기록
-        write_log(self.request.META['REMOTE_ADDR'], self.request, '작가조회')
+        write_log(self.request.META['REMOTE_ADDR'], self.request, '작가조회',self.request.user)
 
         new_context = Author.objects.filter(
             author_name__icontains=filter_val_1,
@@ -77,7 +94,7 @@ class AuthorList(generic.ListView):
 
 def AuthorUpdate(request, pk):
     # log 기록
-    write_log(request.META['REMOTE_ADDR'], request, '작가수정')
+    write_log(request.META['REMOTE_ADDR'], request, '작가수정', request.user)
 
     if pk:
         #master model instance 생성
@@ -115,7 +132,7 @@ def AuthorUpdate(request, pk):
 
 def AuthorCreate(request):
     # log 기록
-    write_log(request.META['REMOTE_ADDR'], request, '작가생성')
+    write_log(request.META['REMOTE_ADDR'], request, '작가생성', request.user)
 
     # author model 빈 instance 생성
     author = Author()
@@ -146,7 +163,7 @@ def AuthorCreate(request):
 
 def AuthorDelete(request, pk):
     # log 기록
-    write_log(request.META['REMOTE_ADDR'], request, '작가삭제')
+    write_log(request.META['REMOTE_ADDR'], request, '작가삭제', request.user)
 
     # 파라미터pk로 받은 data가 존재한다면 가져온다
     author = get_object_or_404(Author, pk=pk)
