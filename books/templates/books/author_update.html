@@ -1,100 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  {% block title %}<title>Soltronix</title>{% endblock %}
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<!-- Index 좌,우 구분 Jquery:Start -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<!-- Index 좌,우 구분 Jquery:End -->
-
-
-<!-- Add additional CSS in static file -->
-
-<!-- 부트스트랩:Start -->
-<!-- 합쳐지고 최소화된 최신 CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<!-- 부가적인 테마 -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-<!-- 부트스트랩:End -->
-
-<style>
-    body{font-family: 'Malgun Gothic', '맑은 고딕', Dotum, '돋움', sans-serif; margin: 20;}
-
-    .table{border-top:2px solid;}
-    .table{border-bottom:2px solid;}
-    .tit {
-        margin: 0;
-        padding: 0 0 30px 0;
-        color: #333;
-        font-size: 1.7143em;
-        line-height: 1.1;
-        font-weight: 700;
-        letter-spacing: -0.05em;
-    }
-
-    .tit2 {
-        margin: 0;
-        padding: 0 0 30px 0;
-        color: #333;
-        font-size: 1.2143em;
-        line-height: 1.1;
-        font-weight: 700;
-        letter-spacing: -0.05em;
-    }
-
-    .tit_m {
-        margin: 0;
-        padding: 0 0 30px 0;
-        color: #333;
-        font-size: 1.4em;
-        line-height: 1.1;
-        font-weight: 700;
-        letter-spacing: -0.05em;
-    }
-
-    /* side menu style:start */
-    .answer {
-      display: none;
-      padding-bottom: 30px;
-    }
-    #faq-title {
-      font-size: 25px;
-    }
-    .faq-content {
-      border-bottom: 1px solid #e0e0e0;
-    }
-    .question {
-      font-size: 19px;
-      padding: 30px 0;
-      cursor: pointer;
-      border: none;
-      outline: none;
-      background: none;
-      width: 100%;
-      text-align: left;
-    }
-    .question:hover {
-      color: #2962ff;
-    }
-    [id$="-toggle"] {
-      margin-right: 15px;
-    }
-    /* side menu style:end */
-
-</style>
-
-</head>
-
-<body>
-
-
-&nbsp;&nbsp;&nbsp;<td><span id="faq-title"><a href="{% url 'index' %}">Home</a></span></td><br>
+{% extends "base_generic.html" %}
 
 {% block content %}
+<td><span id="faq-title"><a href="{% url 'index' %}">Home</a></span></td><br>
 
 <!-- 마스터 table 영역에 대한 스타일:Start -->
 <style>
@@ -163,5 +70,3 @@
 
 {% endblock %}
 
-</body>
-</html>

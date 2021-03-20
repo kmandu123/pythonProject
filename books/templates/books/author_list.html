@@ -1,137 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  {% block title %}<title>Soltronix</title>{% endblock %}
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<!-- Index 좌,우 구분 Jquery:Start -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<!-- Index 좌,우 구분 Jquery:End -->
-
-
-<!-- Add additional CSS in static file -->
-
-<!-- 부트스트랩:Start -->
-<!-- 합쳐지고 최소화된 최신 CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<!-- 부가적인 테마 -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-<!-- 부트스트랩:End -->
-
-
-<!-- 달력 : DatePicker:Start -->
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
-
-<script>
-
-$(function() {
-    $( ".cal" ).datepicker({
-    changeYear: true,
-    changeMonth: true,
-    minDate: '-100y',
-    currentText: '오늘 날짜',
-    dateFormat: 'yy-mm-dd',
-    });
-});
-
-</script>
-<!-- 달력 : DatePicker:End -->
-
-
-<style>
-    body{font-family: 'Malgun Gothic', '맑은 고딕', Dotum, '돋움', sans-serif; margin: 20;}
-
-    .table{border-top:2px solid;}
-    .table{border-bottom:2px solid;}
-    .tit {
-        margin: 0;
-        padding: 0 0 30px 0;
-        color: #333;
-        font-size: 1.7143em;
-        line-height: 1.1;
-        font-weight: 700;
-        letter-spacing: -0.05em;
-    }
-
-    .tit2 {
-        margin: 0;
-        padding: 0 0 30px 0;
-        color: #333;
-        font-size: 1.2143em;
-        line-height: 1.1;
-        font-weight: 700;
-        letter-spacing: -0.05em;
-    }
-
-    .tit_m {
-        margin: 0;
-        padding: 0 0 30px 0;
-        color: #333;
-        font-size: 1.4em;
-        line-height: 1.1;
-        font-weight: 700;
-        letter-spacing: -0.05em;
-    }
-
-    /* side menu style:start */
-    .answer {
-      display: none;
-      padding-bottom: 30px;
-    }
-    #faq-title {
-      font-size: 25px;
-    }
-    .faq-content {
-      border-bottom: 1px solid #e0e0e0;
-    }
-    .question {
-      font-size: 19px;
-      padding: 30px 0;
-      cursor: pointer;
-      border: none;
-      outline: none;
-      background: none;
-      width: 100%;
-      text-align: left;
-    }
-    .question:hover {
-      color: #2962ff;
-    }
-    [id$="-toggle"] {
-      margin-right: 15px;
-    }
-    /* side menu style:end */
-
-</style>
-
-</head>
-
-<body>
+{% extends "base_generic.html" %}
 
 {% block content %}
 
 
-&nbsp;&nbsp;&nbsp;<td><span id="faq-title"><a href="{% url 'index' %}">Home</a></span></td><br>
+<td><span id="faq-title"><a href="{% url 'index' %}">Home</a></span></td><br>
 
-&nbsp;&nbsp;&nbsp;   <td><h3 class="tit">작가 List</h3></td>
+<td><h3 class="tit">작가 List</h3></td>
 <!-- 검색 조건 : start -->
 <form method="get" action="{% url 'author_list' %}" >
     <tr>
-&nbsp;&nbsp;&nbsp;    <td>작가명: <input type="text" value="{{filter_1}}" name="filter_1"/></td><br>
+        <td>작가명: <input type="text" value="{{filter_1}}" name="filter_1"/></td><br>
     </tr>
     <tr>
-&nbsp;&nbsp;&nbsp;    <td>추천인: <input type="text" value="{{filter_2}}" name="filter_2"/></td><br>
+        <td>추천인: <input type="text" value="{{filter_2}}" name="filter_2"/></td><br>
     </tr>
     <tr>
     <!--td>order_by: <input type="text" value={{orderby}} name="orderby"/></td-->
 
     <!-- page가 바뀌어도 selected 유지하기 위해 if 문 사용함 -->
-&nbsp;&nbsp;&nbsp;    <td>order_by:
+        <td>order_by:
       <select name="orderby" value="{{orderby}}" >
         <option value="author_name" {% if orderby == 'author_name' %} selected {% endif %} >작가(오름차순)</option>
         <option value="-author_name" {% if orderby == '-author_name' %} selected {% endif %} >작가(내림차순)</option>
@@ -141,14 +28,13 @@ $(function() {
         <option value="-update_dt" {% if orderby == '-update_dt' %} selected {% endif %} >수정일시(내림차순)</option>
       </select>
     </td>
-
-&nbsp;&nbsp;&nbsp;    <td><input class="btn btn btn-info" type="submit" name="submit" value="검색"/></td>
+        <td><input class="btn btn btn-info" type="submit" name="submit" value="검색"/></td>
     </tr>
 </form>
 <!-- 검색 조건 : end -->
 
   <br>
-&nbsp;&nbsp;&nbsp;  <input class="btn btn btn-info" type="button" value="신규입력" onClick="location.href='{% url 'author_create'%}'">
+<input class="btn btn btn-info" type="button" value="신규입력" onClick="location.href='{% url 'author_create'%}'">
 
 
   <br><br>
@@ -198,5 +84,3 @@ $(function() {
 
 {% endblock %}
 
-</body>
-</html>

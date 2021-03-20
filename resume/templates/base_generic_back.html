@@ -5,6 +5,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<!-- Index 좌,우 구분 Jquery:Start -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Index 좌,우 구분 Jquery:End -->
+
+
+<!-- Add additional CSS in static file -->
+
 <!-- 부트스트랩:Start -->
 <!-- 합쳐지고 최소화된 최신 CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
@@ -104,7 +111,62 @@ $(function() {
 
 </head>
 <body>
-    <div class="col-sm-10 ">{% block content %}{% endblock %}</div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-2">
+      {% block sidebar %}
+        <ul class="sidebar-nav">
+          <br><br><br>
+
+<span id="faq-title"><a href="{% url 'index' %}">Home</a></span>
+<div class="faq-content">
+  <button class="question" id="que-1" onclick="doDisplay('ans-1')"><span id="que-1-toggle">+</span><span>이력관리</span></button>
+  <div class="answer" id="ans-1">
+      <a href="{% url 'resume_index' %}">이력관리 home</a><br>
+      <a href="{% url 'comm_div_list' %}">공통구분코드</a><br>
+      <a href="{% url 'order_comp_list' %}">발주처 정보</a><br>
+      <a href="{% url 'pjt_list' %}">프로젝트 정보</a><br>
+      <a href="{% url 'education_list' %}">교육 정보</a><br>
+      <a href="{% url 'employee_list' %}">사원정보</a><br>
+      <a href="{% url 'download_emp' %}">엑셀 다운로드</a>
+  </div>
+</div>
+<div class="faq-content">
+  <button class="question" id="que-2" onclick="doDisplay('ans-2')"><span id="que-2-toggle">+</span><span>Book info</span></button>
+  <div class="answer" id="ans-2">
+      <a href="{% url 'author_list' %}">작가 정보</a><br>
+      <a href="">책 정보</a><br>
+  </div>
+</div>
+<div class="faq-content">
+  <button class="question" id="que-3" onclick="doDisplay('ans-3')"><span id="que-3-toggle">+</span><span>My plan</span></button>
+  <div class="answer" id="ans-3">
+      Study English<br>
+      Do exercise<br>
+      Read Book
+  </div>
+</div>
+
+
+<br>
+
+
+
+
+         {% if user.is_authenticated %}
+          <li>User: {{ user.get_username }}</li>
+          <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+         {% else %}
+          <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
+         {% endif %}
+
+        </ul>
+
+     {% endblock %}
+      </div>
+      <div class="col-sm-10 ">{% block content %}{% endblock %}</div>
+    </div>
+  </div>
 
 
 <!-- side menu 접다 펴기 : start -->
