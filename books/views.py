@@ -39,7 +39,7 @@ def write_log(client_ip,request,log_gb,user):
 
     addr_info = get_location(client_ip)
 
-    log_context = {'log_dt': nowDatetime, 'ip': client_ip, 'log_gb': log_gb, 'request': request, 'user': user, 'lat': addr_info[0], 'long': addr_info[1], 'state': addr_info[2], 'city': addr_info[3]}
+    log_context = {'log_dt': nowDatetime, 'ip': client_ip, 'log_gb': log_gb, 'request': request, 'user': user, 'lat': addr_info[0], 'long': addr_info[1], 'state': addr_info[3], 'city': addr_info[2]}
 
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -54,7 +54,7 @@ def write_log(client_ip,request,log_gb,user):
     f.close()
 
     #db에 저장
-    log = Log(client_ip=client_ip, log_gb=log_gb, request_info=request, create_dt=nowDatetime, user=user, lat=addr_info[0], long=addr_info[1], state=addr_info[2], city=addr_info[3])
+    log = Log(client_ip=client_ip, log_gb=log_gb, request_info=request, create_dt=nowDatetime, user=user, lat=addr_info[0], long=addr_info[1], state=addr_info[3], city=addr_info[2])
     log.save()
 
     print(log_context)
