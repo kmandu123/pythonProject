@@ -12,7 +12,7 @@ import os
 import datetime
 import json
 from urllib.request import urlopen
-
+import googlemaps
 from django.db.models import Count
 
 # 함수 로그인 권한 제어
@@ -39,7 +39,14 @@ def write_log(client_ip,request,log_gb,user):
 
     addr_info = get_location(client_ip)
 
-    log_context = {'log_dt': nowDatetime, 'ip': client_ip, 'log_gb': log_gb, 'request': request, 'user': user, 'lat': addr_info[0], 'long': addr_info[1], 'state': addr_info[3], 'city': addr_info[2]}
+    # 구글서비스를 이용하여 위도/경도로 주소찾기
+    addr = ''
+    if addr_info[0] != 'Not found':
+        gmaps = googlemaps.Client(key='AIzaSyCPbwbrbnKTrKAq_2qJ9qfhzmf0FL5P3J0')
+        reverse_geocode_result = gmaps.reverse_geocode((addr_info[0], addr_info[1]), language='ko')
+        addr = reverse_geocode_result[0].get('formatted_address')
+
+    log_context = {'log_dt': nowDatetime, 'ip': client_ip, 'log_gb': log_gb, 'request': request, 'user': user, 'lat': addr_info[0], 'long': addr_info[1], 'state': addr_info[3], 'city': addr_info[2], 'addr': addr}
 
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -54,7 +61,7 @@ def write_log(client_ip,request,log_gb,user):
     f.close()
 
     #db에 저장
-    log = Log(client_ip=client_ip, log_gb=log_gb, request_info=request, create_dt=nowDatetime, user=user, lat=addr_info[0], long=addr_info[1], state=addr_info[3], city=addr_info[2])
+    log = Log(client_ip=client_ip, log_gb=log_gb, request_info=request, create_dt=nowDatetime, user=user, lat=addr_info[0], long=addr_info[1], state=addr_info[3], city=addr_info[2], addr=addr)
     log.save()
 
     print(log_context)
