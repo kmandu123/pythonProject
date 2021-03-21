@@ -14,8 +14,8 @@ class BookForm(forms.ModelForm):
 
         # 속성별로 재정의 할때
         widgets = {
-            'book_name': forms.TextInput(attrs={'autocomplete': 'off', 'size': '20'}),
-            'summary': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '20', 'rows': '3'}),
+            'book_name': forms.TextInput(attrs={'autocomplete': 'off', 'size': '30'}),
+            'summary': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '30', 'rows': '3'}),
             'read_date': forms.TextInput(attrs={'class': 'cal', 'autocomplete': 'off', 'size': '10'}),
         }
 
