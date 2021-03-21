@@ -1008,16 +1008,47 @@ def SkillGuide(request):
 
 
 def AdminPage(request):
-
-    # log list
-    log_list = Log.objects.all()
-
-    context = {
-        'log_list': log_list,
-    }
-
     # Render the HTML template index.html with the data in the context variable
-    return render(request, 'resume/admin_page.html', context=context)
+    return render(request, 'resume/admin_page.html')
+
+
+
+# Log list
+class LogList(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
+    permission_required = 'resume.private_closed'
+    model = Log
+    paginate_by = 10
+    template_name = 'resume/log_list.html'
+
+    #검색 결과 (초기값)
+    def get_queryset(self):
+        filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
+        filter_val_2 = self.request.GET.get('filter_2', '')
+        filter_val_3 = self.request.GET.get('filter_3', '')
+        filter_val_4 = self.request.GET.get('filter_4', '')
+        filter_val_5 = self.request.GET.get('filter_5', '')
+        order = self.request.GET.get('orderby', '-create_dt') #정렬대상 컬럼명(초기값)
+
+        new_context = Log.objects.filter(
+            client_ip__icontains=filter_val_1,
+            log_gb__icontains=filter_val_2,
+            user__icontains=filter_val_3,
+            addr__icontains=filter_val_4,
+            create_dt__icontains=filter_val_5,
+        ).order_by(order)  #sort컬럼 2개이상도 가능 ","로 구분하여 입력하면됨.
+        return new_context
+
+    #검색 조건 (초기값)
+    def get_context_data(self, **kwargs):
+        context = super(LogList, self).get_context_data(**kwargs)
+        context['filter_1'] = self.request.GET.get('filter_1', '')
+        context['filter_2'] = self.request.GET.get('filter_2', '')
+        context['filter_3'] = self.request.GET.get('filter_3', '')
+        context['filter_4'] = self.request.GET.get('filter_4', '')
+        context['filter_5'] = self.request.GET.get('filter_5', '')
+        context['orderby'] = self.request.GET.get('orderby', '-create_dt') #정렬대상 컬럼명(초기값)
+        return context
+
 
 
 

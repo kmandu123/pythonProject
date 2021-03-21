@@ -51,4 +51,5 @@ urlpatterns += [
 urlpatterns += [
     path('skill_guide/', views.SkillGuide, name='skill_guide'),
     path('admin_page/', views.AdminPage, name='admin_page'),
+    path('admin_page/log_list/', views.LogList.as_view(), name='log_list'),
 ]

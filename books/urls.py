@@ -11,3 +11,9 @@ urlpatterns = [
     path('author_list/<int:pk>/delete/', views.AuthorDelete, name='author_delete'),
 ]
 
+urlpatterns += [
+    path('book_list/', views.BookList.as_view(), name='book_list'),
+    path('book_list/<int:pk>/update/', views.BookUpdate, name='book_update'),
+    path('book_list/create/', views.BookCreate, name='book_create'),
+    path('book_list/<int:pk>/delete/', views.BookDelete, name='book_delete'),
+]

@@ -77,3 +77,7 @@ class Book(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return self.book_name
+
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this book."""
+        return reverse('book_update', args=[str(self.book_id)])

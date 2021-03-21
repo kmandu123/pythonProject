@@ -1,0 +1,97 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+
+<td><span id="faq-title"><a href="{% url 'index' %}">Home</a></span></td><br>
+
+<td><h3 class="tit">추천 도서 List</h3></td>
+<!-- 검색 조건 : start -->
+<form method="get" action="{% url 'book_list' %}" >
+    <tr>
+        <td>작가명: <input type="text" value="{{filter_1}}" name="filter_1"/></td><br>
+    </tr>
+    <tr>
+        <td>추천인: <input type="text" value="{{filter_2}}" name="filter_2"/></td><br>
+    </tr>
+    <tr>
+        <td>장&nbsp&nbsp르: <input type="text" value="{{filter_3}}" name="filter_3"/></td><br>
+    </tr>
+    <tr>
+    <!--td>order_by: <input type="text" value={{orderby}} name="orderby"/></td-->
+
+    <!-- page가 바뀌어도 selected 유지하기 위해 if 문 사용함 -->
+        <td>order_by:
+      <select name="orderby" value="{{orderby}}" >
+        <option value="author_name" {% if orderby == 'author_name' %} selected {% endif %} >작가(오름차순)</option>
+        <option value="-author_name" {% if orderby == '-author_name' %} selected {% endif %} >작가(내림차순)</option>
+        <option value="input_name" {% if orderby == 'input_name' %} selected {% endif %} >추천인(오름차순)</option>
+        <option value="-input_name" {% if orderby == '-input_name' %} selected {% endif %} >추천인(내림차순)</option>
+        <option value="update_dt" {% if orderby == 'update_dt' %} selected {% endif %} >수정일시(오름차순)</option>
+        <option value="-update_dt" {% if orderby == '-update_dt' %} selected {% endif %} >수정일시(내림차순)</option>
+        <option value="genre_cd" {% if orderby == 'genre_cd' %} selected {% endif %} >장르(오름차순)</option>
+        <option value="-genre_cd" {% if orderby == '-genre_cd' %} selected {% endif %} >장르(내림차순)</option>
+      </select>
+    </td>
+        <td><input class="btn btn btn-info" type="submit" name="submit" value="검색"/></td>
+    </tr>
+</form>
+<!-- 검색 조건 : end -->
+
+  <br>
+<input class="btn btn btn-info" type="button" value="신규입력" onClick="location.href='{% url 'book_create'%}'">
+
+
+  <br><br>
+  {% if book_list %}
+  <table class="table">
+      <tr bgcolor="#F7F7F7">
+          <td><strong>도서명</strong></td>
+          <td><strong>작가</strong></td>
+          <td><strong>장르</strong></td>
+          <td><strong>추천여부</strong></td>
+          <td><strong>책소개</strong></td>
+          <td><strong>추천인</strong></td>
+      </tr>
+
+    {% for r in book_list %}
+      <tr>
+          <td><a href="{{ r.get_absolute_url }}">{{ r.book_name }}</td>
+          <td>{{ r.author_name }}</a></td>
+          <td>{{ r.genre_cd }}</td>
+          <td>{{ r.recommend_yn }}</td>
+          <td>{{ r.summary }}</td>
+          <td>{{ r.input_name }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+    <p>추천 도서 정보가 없습니다..</p>
+  {% endif %}
+
+
+<!-- paging 처리:start -->
+
+<div class="pagination" >
+    <span class="step-links">
+        <!--조회 조건 page뒤에 붙임 : 조회 조건 결과 paging 유지하기 위해서 : &filter_1={{filter_1}}&filter_2={{filter_2}}&orderby={{orderby}} -->
+        {% if page_obj.has_previous %}
+            <a href="?page=1&filter_1={{filter_1}}&filter_2={{filter_2}}&filter_3={{filter_3}}&orderby={{orderby}}">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}&filter_1={{filter_1}}&filter_2={{filter_2}}&filter_3={{filter_3}}&orderby={{orderby}}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}&filter_1={{filter_1}}&filter_2={{filter_2}}&filter_3={{filter_3}}&orderby={{orderby}}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}&filter_1={{filter_1}}&filter_2={{filter_2}}&filter_3={{filter_3}}&orderby={{orderby}}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+<!-- paging 처리:end -->
+
+
+{% endblock %}
+

@@ -6,7 +6,7 @@ from django.urls import reverse
 from resume.models import Comm_div, Comm_code
 from django.views import generic
 from books.models import Author, Book, Log
-from .forms import AuthorForm
+from .forms import AuthorForm, BookForm
 from django.shortcuts import get_object_or_404
 import os
 import datetime
@@ -178,3 +178,111 @@ def AuthorDelete(request, pk):
     return HttpResponseRedirect(reverse('author_list'))
 
 
+# Book list
+class BookList(generic.ListView):
+    model = Book
+    paginate_by = 10
+
+    #검색 결과 (초기값)
+    def get_queryset(self):
+        #log 기록
+        write_log(self.request.META['REMOTE_ADDR'], self.request, '추천도서조회',self.request.user)
+
+        filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
+        filter_val_2 = self.request.GET.get('filter_2', '')
+        filter_val_3 = self.request.GET.get('filter_3', '')
+        order = self.request.GET.get('orderby', 'author_name') #정렬대상 컬럼명(초기값)
+
+        new_context = Book.objects.filter(
+            author_name__icontains=filter_val_1,
+            input_name__icontains=filter_val_2,
+            genre_cd__comm_code_name__icontains=filter_val_3,
+        ).order_by(order)
+        return new_context
+
+
+    #검색 조건 (초기값)
+    def get_context_data(self, **kwargs):
+        context = super(BookList, self).get_context_data(**kwargs)
+        context['filter_1'] = self.request.GET.get('filter_1', '')
+        context['filter_2'] = self.request.GET.get('filter_2', '')
+        context['filter_3'] = self.request.GET.get('filter_3', '')
+        context['orderby'] = self.request.GET.get('orderby', 'author_name') #정렬대상 컬럼명(초기값)
+        return context
+
+
+def BookCreate(request):
+    # log 기록
+    write_log(request.META['REMOTE_ADDR'], request, '추천도서 생성', request.user)
+
+    # book model 빈 instance 생성
+    book = Book()
+
+    # author form 빈 instance 생성 : 마스터 form 객체는 forms.py에 존재함. : 최초 user화면에 보여주는 빈 instance
+    bookform =BookForm(instance=book)
+
+    if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
+        # master form instance 생성 : Post요청 data로 생성
+        bookform = BookForm(request.POST)
+
+        if bookform.is_valid():
+            bookform.save()
+            return HttpResponseRedirect(reverse('book_list'))
+        else:
+            print("author valid error발생")
+
+
+    # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
+    context = {
+        'bookform': bookform,
+        'book': book,
+    }
+
+    # template를 호출한다. context도 같이 넘긴다.
+    return render(request, 'books/book_update.html', context)
+
+
+def BookUpdate(request, pk):
+    # log 기록
+    write_log(request.META['REMOTE_ADDR'], request, '추천도서 수정', request.user)
+
+    if pk:
+        #master model instance 생성
+        book = Book.objects.get(book_id=pk)
+    else:
+        book = Book()
+
+    # master form instance 생성 : 마스터 form 객체는 forms.py에 존재함. : 최초 user화면에 보여주는 수정대상 instance
+    bookform = BookForm(instance=book)
+
+    if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
+        # master form instance 생성 : Post요청 data로 생성
+        bookform = BookForm(request.POST)
+
+        if pk:
+            # master form instance 생성 : Post요청 data와 pk에 해당하는 마스터 모델 instance연계
+            bookform = BookForm(request.POST, instance=book)
+
+
+        if bookform.is_valid():
+            bookform.save()
+            return HttpResponseRedirect(reverse('book_list'))
+
+    # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
+    context = {
+        'bookform': bookform,
+        'book': book,
+    }
+
+    # template를 호출한다. context도 같이 넘긴다.
+    return render(request, 'books/book_update.html', context)
+
+
+def BookDelete(request, pk):
+    # log 기록
+    write_log(request.META['REMOTE_ADDR'], request, '추천도서 삭제', request.user)
+
+    # 파라미터pk로 받은 data가 존재한다면 가져온다
+    book = get_object_or_404(Book, pk=pk)
+    book.delete()
+    return HttpResponseRedirect(reverse('book_list'))
