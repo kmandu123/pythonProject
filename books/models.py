@@ -81,3 +81,22 @@ class Book(models.Model):
     def get_absolute_url(self):
         """Returns the url to access a detail record for this book."""
         return reverse('book_update', args=[str(self.book_id)])
+
+
+class Author_book(models.Model):
+    Author_book_id = models.AutoField(primary_key=True, verbose_name='작가 도서 ID')
+    author_name = models.CharField(max_length=200, null=True, blank=True, verbose_name='작가')
+    book_name = models.CharField(max_length=200, null=True, blank=True, verbose_name='도서명')
+    pub_date = models.CharField(max_length=20, null=True, blank=True, verbose_name='출판일')
+    image_url = models.CharField(max_length=500, null=True, blank=True, verbose_name='이미지URL')
+    create_dt = models.DateTimeField(auto_now_add=True, verbose_name='생성일시', null=True, blank=True)
+    update_dt = models.DateTimeField(auto_now=True, verbose_name='수정일시', null=True, blank=True)
+    create_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='생성자id')
+    update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
+
+    class Meta:
+        managed = True
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return self.book_name
