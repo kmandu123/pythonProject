@@ -64,7 +64,7 @@ def write_log(client_ip,request,log_gb,user):
     log = Log(client_ip=client_ip, log_gb=log_gb, request_info=request, create_dt=nowDatetime, user=user, lat=addr_info[0], long=addr_info[1], state=addr_info[3], city=addr_info[2], addr=addr)
     log.save()
 
-    print(log_context)
+#    print(log_context)
 
 
 # 작가 list

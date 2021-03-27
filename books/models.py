@@ -85,6 +85,7 @@ class Book(models.Model):
 
 class Author_book(models.Model):
     Author_book_id = models.AutoField(primary_key=True, verbose_name='작가 도서 ID')
+    author_id = models.IntegerField(null=True, blank=True, verbose_name='작가 ID')
     author_name = models.CharField(max_length=200, null=True, blank=True, verbose_name='작가')
     book_name = models.CharField(max_length=200, null=True, blank=True, verbose_name='도서명')
     pub_date = models.CharField(max_length=20, null=True, blank=True, verbose_name='출판일')

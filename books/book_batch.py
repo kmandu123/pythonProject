@@ -5,7 +5,7 @@ import pandas as pd
 import time
 import pymysql
 
-conn = pymysql.connect( host='localhost', user='root', password='Mysql801!', db='mycompanydb', charset='utf8')
+conn = pymysql.connect( host='210.114.22.108', user='root', password='Mysql801!', db='mycompanydb', charset='utf8')
 curs = conn.cursor(pymysql.cursors.DictCursor)
 curs.execute("select * from books_author;")
 result = curs.fetchall()
@@ -25,7 +25,7 @@ for r in result:
     options.add_argument('window-size=1920x1080')
     options.add_argument("disable-gpu")
 
-    driver = webdriver.Chrome('/root/chromedriver', chrome_options=options)
+    driver = webdriver.Chrome('C:/Users/kmandu/chromedriver_win32/chromedriver.exe', chrome_options=options)
     
     
     
