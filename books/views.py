@@ -275,7 +275,7 @@ def BookUpdate(request, pk):
     # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
     search = urllib.parse.quote_plus(book.book_name + ' ' + book.author_name)
     book_link_kyobo = 'https://search.kyobobook.co.kr/mobile/search?keyword=' + search
-    book_link_aladin = 'https://www.aladin.co.kr/search/wsearchresult.aspx?SearchTarget=All&SearchWord=' + search
+    book_link_aladin = 'https://www.aladin.co.kr/m/msearch.aspx?SearchTarget=all&SearchWord=' + search
     context = {
         'bookform': bookform,
         'book': book,
