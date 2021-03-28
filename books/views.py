@@ -14,6 +14,7 @@ import json
 from urllib.request import urlopen
 import googlemaps
 from django.db.models import Count
+import urllib.parse
 
 # 함수 로그인 권한 제어
 from django.contrib.auth.decorators import login_required
@@ -272,10 +273,15 @@ def BookUpdate(request, pk):
             return HttpResponseRedirect(reverse('book_list'))
 
     # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
+    book_link_kyobo = 'https://search.kyobobook.co.kr/mobile/search?keyword=' + urllib.parse.quote_plus(book.book_name) + ' ' + urllib.parse.quote_plus(book.author_name)
+    book_link_aladin = 'https://www.aladin.co.kr/search/wsearchresult.aspx?SearchTarget=All&SearchWord=' + urllib.parse.quote_plus(book.book_name) + ' ' + urllib.parse.quote_plus(book.author_name)
     context = {
         'bookform': bookform,
         'book': book,
+        'book_link_kyobo': book_link_kyobo,
+        'book_link_aladin': book_link_aladin,
     }
+
 
     # template를 호출한다. context도 같이 넘긴다.
     return render(request, 'books/book_update.html', context)
