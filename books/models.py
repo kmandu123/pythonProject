@@ -90,6 +90,7 @@ class Author_book(models.Model):
     book_name = models.CharField(max_length=200, null=True, blank=True, verbose_name='도서명')
     pub_date = models.CharField(max_length=20, null=True, blank=True, verbose_name='출판일')
     image_url = models.CharField(max_length=500, null=True, blank=True, verbose_name='이미지URL')
+    book_link_info = models.CharField(max_length=500, null=True, blank=True, verbose_name='도서링크정보')
     create_dt = models.DateTimeField(auto_now_add=True, verbose_name='생성일시', null=True, blank=True)
     update_dt = models.DateTimeField(auto_now=True, verbose_name='수정일시', null=True, blank=True)
     create_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='생성자id')

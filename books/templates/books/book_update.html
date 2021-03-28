@@ -12,8 +12,6 @@
 </style>
 <!-- 마스터 table 영역에 대한 스타일:End -->
 
-
-
 <br>
 <form action="" method="post" >
     {% csrf_token %}
@@ -76,6 +74,7 @@
     <input class="btn btn btn-warning" type="button" value="삭제" onClick="location.href='{% url 'book_delete' book.book_id %}'">
     {% endif %}
     <!-- Main 입력 영역:End -->
+
 </form>
 
 

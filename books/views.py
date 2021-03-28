@@ -5,7 +5,7 @@ from django.urls import reverse
 # Create your views here.
 from resume.models import Comm_div, Comm_code
 from django.views import generic
-from books.models import Author, Book, Log
+from books.models import Author, Book, Log, Author_book
 from .forms import AuthorForm, BookForm
 from django.shortcuts import get_object_or_404
 import os
@@ -106,8 +106,10 @@ def AuthorUpdate(request, pk):
     if pk:
         #master model instance 생성
         author = Author.objects.get(author_id=pk)
+        author_book = Author_book.objects.filter(author_id=pk)
     else:
         author = Author()
+        author_book = Author_book()
 
     # master form instance 생성 : 마스터 form 객체는 forms.py에 존재함. : 최초 user화면에 보여주는 수정대상 instance
     authorform = AuthorForm(instance=author)
@@ -129,6 +131,7 @@ def AuthorUpdate(request, pk):
     context = {
         'authorform': authorform,
         'author': author,
+        'author_book': author_book,
     }
 
     # template를 호출한다. context도 같이 넘긴다.

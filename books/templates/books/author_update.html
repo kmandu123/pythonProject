@@ -66,6 +66,22 @@
     <!-- Main 입력 영역:End -->
 </form>
 
+<br>
+
+  <table class="table">
+      <tr bgcolor="#F7F7F7">
+          <td><strong>책이미지</strong></td>
+          <td><strong>도서명</strong></td>
+      </tr>
+
+{% for r in author_book  %}
+      <tr>
+          <td><a href="{{ r.book_link_info }}"> {% autoescape off %} {{ r.image_url }} {% endautoescape %}</a></td>
+          <td>{{ r.book_name }}<br>({{ r.pub_date }})</td>
+      </tr>
+{% endfor %}
+  </table>
+
 
 
 {% endblock %}
