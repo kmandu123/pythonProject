@@ -1,0 +1,33 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+
+<td><span id="faq-title"><a href="{% url 'index' %}">Home</a></span></td><br>
+
+<td><h3 class="tit">Best book List</h3></td>
+
+  <br><br>
+  {% if best_book_list %}
+  <table class="table">
+      <tr bgcolor="#F7F7F7">
+          <td><strong>이미지</strong></td>
+          <td><strong>도서명</strong></td>
+          <td><strong>책소개</strong></td>
+      </tr>
+
+    {% for r in best_book_list %}
+      <tr>
+          <td><a href="{{ r.book_url }}"><img src="{{ r.image_url }}"></a></td>
+          <td>{{ r.book_name }}<br>({{ r.author_name }})</td>
+          <td>{{ r.book_info }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+    <p>작가 정보가 없습니다..</p>
+  {% endif %}
+
+
+{% endblock %}
+

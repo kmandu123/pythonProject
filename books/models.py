@@ -102,3 +102,24 @@ class Author_book(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return self.book_name
+
+
+class Best_book(models.Model):
+    best_book_id = models.AutoField(primary_key=True, verbose_name='베스트북 ID')
+    site = models.CharField(max_length=200, null=True, blank=True, verbose_name='작가')
+    genre = models.CharField(max_length=200, null=True, blank=True, verbose_name='장르')
+    rank = models.IntegerField(null=True, blank=True, verbose_name='순위')
+    book_name = models.CharField(max_length=200, null=True, blank=True, verbose_name='도서명')
+    author_name = models.CharField(max_length=200, null=True, blank=True, verbose_name='작가')
+    publisher = models.CharField(max_length=200, null=True, blank=True, verbose_name='출판사')
+    book_url = models.CharField(max_length=400, null=True, blank=True, verbose_name='도서URL')
+    book_info = models.CharField(max_length=4000, null=True, blank=True, verbose_name='도서정보')
+    image_url = models.CharField(max_length=500, null=True, blank=True, verbose_name='이미지URL')
+    create_dt = models.DateTimeField(auto_now_add=True, verbose_name='생성일시', null=True, blank=True)
+
+    class Meta:
+        managed = True
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return self.book_name

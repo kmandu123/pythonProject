@@ -17,3 +17,7 @@ urlpatterns += [
     path('book_list/create/', views.BookCreate, name='book_create'),
     path('book_list/<int:pk>/delete/', views.BookDelete, name='book_delete'),
 ]
+
+urlpatterns += [
+    path('best_book_list/', views.Best_bookList.as_view(), name='best_book_list'),
+]

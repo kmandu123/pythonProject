@@ -5,7 +5,7 @@ from django.urls import reverse
 # Create your views here.
 from resume.models import Comm_div, Comm_code
 from django.views import generic
-from books.models import Author, Book, Log, Author_book
+from books.models import Author, Book, Log, Author_book, Best_book
 from .forms import AuthorForm, BookForm
 from django.shortcuts import get_object_or_404
 import os
@@ -296,3 +296,9 @@ def BookDelete(request, pk):
     book = get_object_or_404(Book, pk=pk)
     book.delete()
     return HttpResponseRedirect(reverse('book_list'))
+
+
+# best book list
+class Best_bookList(generic.ListView):
+    model = Best_book
+
