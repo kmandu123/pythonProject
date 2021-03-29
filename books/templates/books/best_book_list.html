@@ -13,14 +13,12 @@
       <tr bgcolor="#F7F7F7">
           <td><strong>이미지</strong></td>
           <td><strong>도서명</strong></td>
-          <td><strong>책소개</strong></td>
       </tr>
 
     {% for r in best_book_list %}
       <tr>
           <td><a href="{{ r.book_url }}"><img src="{{ r.image_url }}"></a></td>
           <td>{{ r.book_name }}<br>({{ r.author_name }})</td>
-          <td>{{ r.book_info }}</td>
       </tr>
     {% endfor %}
   </table>
