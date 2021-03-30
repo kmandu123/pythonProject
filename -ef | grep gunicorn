@@ -1,0 +1,17 @@
+● gunicorn.service - gunicorn daemon
+     Loaded: loaded (/etc/systemd/system/gunicorn.service; disabled; vendor preset: enabled)
+     Active: inactive (dead) since Tue 2021-03-30 16:23:19 KST; 26s ago
+TriggeredBy: ● gunicorn.socket
+    Process: 25481 ExecStart=/home/hduser/env/bin/gunicorn --access-logfile - --workers 3 --bind unix:/run/gunicorn.sock mycompany.wsgi:application (code=exited, status=0/SUCCESS)
+   Main PID: 25481 (code=exited, status=0/SUCCESS)
+
+Mar 30 16:23:18 kmandu123.cafe24.com gunicorn[25493]: [2021-03-30 16:23:18 +0900] [25493] [INFO] Worker exiting (pid: 25493)
+Mar 30 16:23:18 kmandu123.cafe24.com gunicorn[25491]: [2021-03-30 16:23:18 +0900] [25491] [INFO] Worker exiting (pid: 25491)
+Mar 30 16:23:18 kmandu123.cafe24.com gunicorn[25492]: [2021-03-30 16:23:18 +0900] [25492] [INFO] Worker exiting (pid: 25492)
+Mar 30 16:23:18 kmandu123.cafe24.com gunicorn[25481]: [2021-03-30 16:23:18 +0900] [25481] [INFO] Handling signal: term
+Mar 30 16:23:18 kmandu123.cafe24.com gunicorn[25481]: [2021-03-30 16:23:18 +0900] [25481] [WARNING] Worker with pid 25492 was terminated due to signal 15
+Mar 30 16:23:18 kmandu123.cafe24.com gunicorn[25481]: [2021-03-30 16:23:18 +0900] [25481] [WARNING] Worker with pid 25491 was terminated due to signal 15
+Mar 30 16:23:18 kmandu123.cafe24.com gunicorn[25481]: [2021-03-30 16:23:18 +0900] [25481] [WARNING] Worker with pid 25493 was terminated due to signal 15
+Mar 30 16:23:19 kmandu123.cafe24.com gunicorn[25481]: [2021-03-30 16:23:19 +0900] [25481] [INFO] Shutting down: Master
+Mar 30 16:23:19 kmandu123.cafe24.com systemd[1]: gunicorn.service: Succeeded.
+Mar 30 16:23:19 kmandu123.cafe24.com systemd[1]: Stopped gunicorn daemon.

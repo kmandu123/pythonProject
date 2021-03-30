@@ -1,3 +1,6 @@
 books/migrations/
 resume/migrations/
 log.txt
+mycompany/__pycache__/
+books/__pycache__/
+resume/__pycache__/
