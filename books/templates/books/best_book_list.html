@@ -8,6 +8,7 @@
 <td><h3 class="tit">Best book List</h3></td>
 
   <br><br>
+  <p>이미지를 클릭하면 상세 정보를 볼 수 있습니다.</p>
   {% if best_book_list %}
   <table class="table">
       <tr bgcolor="#F7F7F7">
@@ -18,7 +19,7 @@
     {% for r in best_book_list %}
       <tr>
           <td><a href="{{ r.book_url }}"><img src="{{ r.image_url }}"></a></td>
-          <td>{{ r.book_name }}<br>({{ r.author_name }})</td>
+          <td>{{ r.book_name }}<br>({{ r.author_name }})<br>update일시:{{ r.create_dt | date:'Y-m-d H:m:s' }}</td>
       </tr>
     {% endfor %}
   </table>
