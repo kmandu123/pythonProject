@@ -84,6 +84,7 @@ class AuthorList(generic.ListView):
         #log 기록
         write_log(self.request.META['REMOTE_ADDR'], self.request, '작가조회',self.request.user)
 
+
         new_context = Author.objects.filter(
             author_name__icontains=filter_val_1,
         #    nation_cd__comm_code_name__icontains=filter_val_2,
