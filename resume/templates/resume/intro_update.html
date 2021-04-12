@@ -1,0 +1,74 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<td><span id="faq-title"><a href="{% url 'index' %}">Home</a></span></td><br>
+
+<!-- 마스터 table 영역에 대한 스타일:Start -->
+<style>
+.main_table {
+  border-collapse: separate;
+  border-spacing: 0 5px;
+}
+</style>
+<!-- 마스터 table 영역에 대한 스타일:End -->
+
+<br>
+<form action="" method="post" >
+    {% csrf_token %}
+    <table >
+
+    <!-- 수정/입력경우에 따라(pk값이 존재하는지 여부에 따라) title변경:start -->
+    {% if intro.intro_id %}
+    <h2 class="tit">Intro 수정</h2>
+    {% else %}
+    <h2 class="tit">Intro 입력</h2>
+    {% endif %}
+    <!-- 수정/입력경우에 따라(pk값이 존재하는지 여부에 따라) title변경:end -->
+
+
+    </table>
+
+
+
+    <!-- Main 입력 영역:Start -->
+    <table class="main_table">
+
+    <!-- Master error 메시지처리:start -->
+    {% if introform.errors %}
+	<div id="errors">
+			<ul>
+                <font size="2em" color="red">{{ introform.errors }}</font>
+			</ul>
+	</div>
+    {% endif %}
+    <!-- Master error 메시지처리:end -->
+
+        <tr>
+            <td class="td_pad_right" align="right"><strong>{{ introform.intro.label }}</strong></td><td>{{ introform.intro }}</td>
+        </tr>
+        <tr>
+            <td class="td_pad_right" align="right"><strong>{{ introform.display_yn.label }}</strong></td><td>{{ introform.display_yn }}</td>
+        </tr>
+        <tr>
+            <td class="td_pad_right" align="right"><strong>{{ introform.create_dt.label }}</strong></td><td>{{ introform.create_dt }}</td>
+        </tr>
+        <tr>
+            <td class="td_pad_right" align="right"><strong>{{ introform.update_dt.label }}</strong></td><td>{{ introform.update_dt }}</td>
+        </tr>
+    </table>
+
+    <button type="submit" class="btn btn btn-info">저   장</button>
+    <input class="btn btn btn-info" type="button" value="취소" onClick="location.href='{% url 'intro_list'%}'">
+
+    <!-- 수정일 때만(pk값이 존재할 때) 삭제 버튼 활성화:start -->
+    {% if intro.intro_id %}
+    <input class="btn btn btn-warning" type="button" value="삭제" onClick="location.href='{% url 'book_delete' book.book_id %}'">
+    {% endif %}
+    <!-- Main 입력 영역:End -->
+
+</form>
+
+
+
+{% endblock %}
+

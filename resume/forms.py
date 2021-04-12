@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comm_div, Comm_code, Employee, School_his, License_his, Work_his, Education, Edu_his, Order_comp, Pjt, Pjt_his
+from .models import Comm_div, Comm_code, Employee, School_his, License_his, Work_his, Education, Edu_his, Order_comp, Pjt, Pjt_his, Intro
 from django.forms import inlineformset_factory
 from django.core.exceptions import ValidationError
 
@@ -312,3 +312,13 @@ Pjt_hisFormset2 = inlineformset_factory(Employee, Pjt_his, form=Pjt_hisForm,
                     },
                     extra=1, can_delete=True)
 
+# intro form 객체 생성
+class IntroForm(forms.ModelForm):
+    class Meta:
+        model = Intro
+        fields = '__all__'
+
+        widgets = {
+            'display_yn': forms.TextInput(attrs={'autocomplete': 'off', 'size': '1'}),
+            'intro': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '63', 'rows': '5'}),
+        }

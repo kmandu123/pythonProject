@@ -53,3 +53,10 @@ urlpatterns += [
     path('admin_page/', views.AdminPage, name='admin_page'),
     path('admin_page/log_list/', views.LogList.as_view(), name='log_list'),
 ]
+
+urlpatterns += [
+    path('intro_list/', views.IntroList.as_view(), name='intro_list'),
+#    path('intro_list/<int:pk>/update/', views.IntroUpdate, name='intro_update'),
+    path('intro_list/create/', views.IntroCreate, name='intro_create'),
+#    path('intro_list/<int:pk>/delete/', views.IntroDelete, name='intro_delete'),
+]

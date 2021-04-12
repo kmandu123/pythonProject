@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
-from resume.models import Comm_div, Comm_code, Employee, School_his, Education, Order_comp, Pjt, Vw_emp
+from resume.models import Comm_div, Comm_code, Employee, School_his, Education, Order_comp, Pjt, Vw_emp, Intro
 from books.models import Log
 from django.db.models import Count
 
@@ -111,7 +111,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from .forms import Comm_divForm, Comm_codeFormset, EmployeeForm, School_hisFormset, License_hisFormset, Work_hisFormset, EducationForm, Edu_hisFormset, Edu_hisFormset2, Order_compForm, PjtForm, PjtFormset, Pjt_hisFormset, Pjt_hisFormset2
+from .forms import Comm_divForm, Comm_codeFormset, EmployeeForm, School_hisFormset, License_hisFormset, Work_hisFormset, EducationForm, Edu_hisFormset, Edu_hisFormset2, Order_compForm, PjtForm, PjtFormset, Pjt_hisFormset, Pjt_hisFormset2, IntroForm
 #inline Formsets 사용
 from django.forms import inlineformset_factory
 from django import forms
@@ -1070,4 +1070,64 @@ def Postno_Popup(request, pk):
 
     print(post_rst)
 
+
+
+# Intro list
+class  IntroList(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
+    permission_required = 'resume.private_closed'
+    model = Intro
+    paginate_by = 5
+
+    #검색 결과 (초기값)
+    def get_queryset(self):
+        # log 기록
+        write_log(self.request.META['REMOTE_ADDR'], self.request, 'Intro list', self.request.user)
+
+        filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
+        order = self.request.GET.get('orderby', 'update_dt') #정렬대상 컬럼명(초기값)
+
+        new_context = Intro.objects.filter(
+            intro__icontains=filter_val_1,
+        ).order_by(order)
+        return new_context
+
+    #검색 조건 (초기값)
+    def get_context_data(self, **kwargs):
+        context = super(IntroList, self).get_context_data(**kwargs)
+        context['filter_1'] = self.request.GET.get('filter_1', '')
+        context['orderby'] = self.request.GET.get('orderby', 'update_dt') #정렬대상 컬럼명(초기값)
+        return context
+
+
+@login_required
+@permission_required('resume.private_closed')
+def IntroCreate(request):
+    # log 기록
+    write_log(request.META['REMOTE_ADDR'], request, 'Intro 생성', request.user)
+
+    # book model 빈 instance 생성
+    intro = Intro()
+
+    # author form 빈 instance 생성 : 마스터 form 객체는 forms.py에 존재함. : 최초 user화면에 보여주는 빈 instance
+    introform =IntroForm(instance=intro)
+
+    if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
+        # master form instance 생성 : Post요청 data로 생성
+        introform = IntroForm(request.POST)
+
+        if introform.is_valid():
+            introform.save()
+            return HttpResponseRedirect(reverse('intro_list'))
+        else:
+            print("intro valid error발생")
+
+
+    # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
+    context = {
+        'introform': introform,
+        'intro': intro,
+    }
+
+    # template를 호출한다. context도 같이 넘긴다.
+    return render(request, 'resume/intro_update.html', context)
 
