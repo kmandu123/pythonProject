@@ -16,7 +16,7 @@ class Comm_div(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
     class Meta:
-        managed = True
+        managed = False
 
     def __str__(self):
         """String for representing the Model object."""
@@ -47,7 +47,7 @@ class Comm_code(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
     class Meta:
-        managed = True
+        managed = False
 
     def __str__(self):
         """String for representing the Model object."""
@@ -101,7 +101,7 @@ class Employee(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
     class Meta:
-        managed = True
+        managed = False
 
     def __str__(self):
         """String for representing the Model object."""
@@ -149,7 +149,7 @@ class School_his(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='비고')
 
     class Meta:
-        managed = True
+        managed = False
 
     def __str__(self):
         """String for representing the Model object."""
@@ -169,7 +169,7 @@ class License_his(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
     class Meta:
-        managed = True
+        managed = False
 
     def __str__(self):
         """String for representing the Model object."""
@@ -192,7 +192,7 @@ class Work_his(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
     class Meta:
-        managed = True
+        managed = False
 
     def __str__(self):
         """String for representing the Model object."""
@@ -219,7 +219,7 @@ class Education(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
     class Meta:
-        managed = True
+        managed = False
         # Resume app 사용자에게 부여할 권한 생성(Resume app의 model중에 하나의 model에 선언하면 공용으로 사용할 수 있음
         permissions = [
             ('private_closed', 'Private closed'), ('private_open', 'Private open'), ('public_closed', 'Public closed'), ('public_open', 'Public open')
@@ -246,7 +246,7 @@ class Edu_his(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
     class Meta:
-        managed = True
+        managed = False
 
     def __str__(self):
         """String for representing the Model object."""
@@ -264,7 +264,7 @@ class Order_comp(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
     class Meta:
-        managed = True
+        managed = False
 
     def __str__(self):
         """String for representing the Model object."""
@@ -294,7 +294,7 @@ class Pjt(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
     class Meta:
-        managed = True
+        managed = False
 
     def __str__(self):
         """String for representing the Model object."""
@@ -323,7 +323,7 @@ class Pjt_his(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
     class Meta:
-        managed = True
+        managed = False
 
     def __str__(self):
         """String for representing the Model object."""
@@ -358,3 +358,19 @@ class Vw_emp(models.Model):
     class Meta:
         managed = False
         db_table = "vw_emp"
+
+class Intro(models.Model):
+    intro_id = models.IntegerField(primary_key=True, verbose_name='introId')
+    intro = models.CharField(max_length=2000, null=True, blank=True, verbose_name='내용')
+    display_yn = models.CharField(max_length=10, verbose_name='표시여부')
+    create_dt = models.DateTimeField(auto_now_add=True, verbose_name='생성일시', null=True, blank=True)
+    update_dt = models.DateTimeField(auto_now=True, verbose_name='수정일시', null=True, blank=True)
+    create_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='생성자id')
+    update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
+
+    class Meta:
+        managed = True
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return str(self.intro_id)
