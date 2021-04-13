@@ -34,10 +34,16 @@ def index(request):
     # 기술등급별 인원수
     skill_cnt = list(Employee.objects.values('skill_grade_cd__comm_code_name').annotate(Count('emp_id')).order_by('skill_grade_cd'))
 
+    #Intro read
+    intro_info = Intro.objects.filter(display_yn='Y')
+
+    print(str(intro_info[0].intro))
+
     context = {
         'emp_cnt': emp_cnt,
         'position_cnt': position_cnt,
         'skill_cnt': skill_cnt,
+        'intro_info': intro_info,
     }
 
     # Render the HTML template index.html with the data in the context variable
@@ -1131,3 +1137,49 @@ def IntroCreate(request):
     # template를 호출한다. context도 같이 넘긴다.
     return render(request, 'resume/intro_update.html', context)
 
+
+@login_required
+@permission_required('resume.private_closed')
+def IntroUpdate(request, pk):
+    # log 기록
+    write_log(request.META['REMOTE_ADDR'], request, 'Intro 수정', request.user)
+
+    if pk:
+        #master model instance 생성
+        intro = Intro.objects.get(intro_id=pk)
+    else:
+        intro = Intro()
+
+    # master form instance 생성 : 마스터 form 객체는 forms.py에 존재함. : 최초 user화면에 보여주는 수정대상 instance
+    introform = IntroForm(instance=intro)
+
+    if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
+        # master form instance 생성 : Post요청 data로 생성
+        introform = IntroForm(request.POST)
+
+        if pk:
+            # master form instance 생성 : Post요청 data와 pk에 해당하는 마스터 모델 instance연계
+            introform = IntroForm(request.POST, instance=intro)
+
+
+        if introform.is_valid():
+            introform.save()
+            return HttpResponseRedirect(reverse('intro_list'))
+
+    context = {
+        'introform': introform,
+        'intro': intro,
+    }
+
+    # template를 호출한다. context도 같이 넘긴다.
+    return render(request, 'resume/intro_update.html', context)
+
+
+def IntroDelete(request, pk):
+    # log 기록
+    write_log(request.META['REMOTE_ADDR'], request, 'Intro 삭제', request.user)
+
+    # 파라미터pk로 받은 data가 존재한다면 가져온다
+    intro = get_object_or_404(Intro, pk=pk)
+    intro.delete()
+    return HttpResponseRedirect(reverse('intro_list'))

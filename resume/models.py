@@ -360,7 +360,7 @@ class Vw_emp(models.Model):
         db_table = "vw_emp"
 
 class Intro(models.Model):
-    intro_id = models.IntegerField(primary_key=True, verbose_name='introId')
+    intro_id = models.AutoField(primary_key=True, verbose_name='introId')
     intro = models.CharField(max_length=2000, null=True, blank=True, verbose_name='내용')
     display_yn = models.CharField(max_length=10, verbose_name='표시여부')
     create_dt = models.DateTimeField(auto_now_add=True, verbose_name='생성일시', null=True, blank=True)
@@ -374,3 +374,7 @@ class Intro(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return str(self.intro_id)
+
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this book."""
+        return reverse('intro_update', args=[str(self.intro_id)])

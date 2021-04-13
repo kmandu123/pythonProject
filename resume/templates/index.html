@@ -112,12 +112,13 @@ $(function() {
           <br><br><br>
 
 <h1>Kim's Portal</h1>
-<p><em>
-길을 잃는 다는 것은<br>
-곧 길을 알게 된다는 것이다.<br>
--동아프리카 속담-
-</em> </p>
-
+{% for r in intro_info %}
+<p>
+<pre>
+{{ r.intro }}
+</pre>
+</p>
+{% endfor %}
 <br>
 <div>
 {% if user.get_username == 'kmandu' %}
@@ -136,7 +137,6 @@ $(function() {
       <a href="{% url 'best_book_list' %}">서점 Best Book</a><br>
   </div>
 </div>
-
 <div class="faq-content">
   <button class="question" id="que-1" onclick="doDisplay('ans-1')"><span id="que-1-toggle">+</span><span>이력관리(PC전용)</span></button>
   <div class="answer" id="ans-1">

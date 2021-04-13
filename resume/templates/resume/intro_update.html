@@ -62,7 +62,7 @@
 
     <!-- 수정일 때만(pk값이 존재할 때) 삭제 버튼 활성화:start -->
     {% if intro.intro_id %}
-    <input class="btn btn btn-warning" type="button" value="삭제" onClick="location.href='{% url 'book_delete' book.book_id %}'">
+    <input class="btn btn btn-warning" type="button" value="삭제" onClick="location.href='{% url 'intro_delete' intro.intro_id %}'">
     {% endif %}
     <!-- Main 입력 영역:End -->
 
