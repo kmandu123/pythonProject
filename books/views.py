@@ -15,6 +15,8 @@ from urllib.request import urlopen
 import googlemaps
 from django.db.models import Count
 import urllib.parse
+import ssl
+context = ssl._create_unverified_context()
 
 # 함수 로그인 권한 제어
 from django.contrib.auth.decorators import login_required
@@ -28,7 +30,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 def get_location(ip):
     request = "https://geolocation-db.com/json/%s" % (ip)
 
-    with urlopen(request) as url:
+    with urlopen(request, context=context) as url:
         data = json.loads(url.read().decode())
         return data["latitude"], data["longitude"], data["city"], data["state"]
 
