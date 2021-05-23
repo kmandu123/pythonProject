@@ -1,0 +1,147 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<!-- 마스터 table 영역에 대한 스타일:Start -->
+<style>
+.main_table {
+  border-collapse: separate;
+  border-spacing: 0 5px;
+}
+</style>
+<!-- 마스터 table 영역에 대한 스타일:End -->
+
+
+<td><span id="faq-title"><a href="{% url 'index' %}">Home</a></span></td><br>
+
+<form action="" method="post" >
+    {% csrf_token %}
+    <table >
+
+    <!-- 수정/입력경우에 따라(pk값이 존재하는지 여부에 따라) title변경:start -->
+    {% if talk_mst.talk_mst_id %}
+    <h2 class="tit">Modify</h2>
+    {% else %}
+    <h2 class="tit">Create</h2>
+    {% endif %}
+    <!-- 수정/입력경우에 따라(pk값이 존재하는지 여부에 따라) title변경:end -->
+
+
+    </table>
+
+
+
+    <!-- Main 입력 영역:Start -->
+    <table class="main_table">
+
+    <!-- Master error 메시지처리:start -->
+    {% if talk_mstform.errors %}
+	<div id="errors">
+			<ul>
+                <font size="2em" color="red">{{ talk_mstform.errors }}</font>
+			</ul>
+	</div>
+    {% endif %}
+    <!-- Master error 메시지처리:end -->
+        <tr>
+            <td class="td_pad_right" align="right"><strong>{{ talk_mstform.talk_class.label }}</strong></td><td>{{ talk_mstform.talk_class }}</td>
+        </tr>
+        <tr>
+            <td class="td_pad_right" align="right"><strong>{{ talk_mstform.talk_subject.label }}</strong></td><td>{{ talk_mstform.talk_subject }}</td>
+        </tr>
+        <tr>
+            <td class="td_pad_right" align="right"><strong>{{ talk_mstform.talk_content.label }}</strong></td><td>{{ talk_mstform.talk_content }}</td>
+        </tr>
+        <tr>
+            <td class="td_pad_right" align="right"><strong>{{ talk_mstform.upload_files.label }}</strong></td><td>{{ talk_mstform.upload_files }}</td>
+        </tr>
+        <tr>
+            <td class="td_pad_right" align="right"><strong>{{ talk_mstform.filename.label }}</strong></td><td>{{ talk_mstform.filename }}</td>
+        </tr>
+        <tr>
+            <td class="td_pad_right" align="right"><strong>{{ talk_mstform.create_id.label }}</strong></td><td>{{ talk_mstform.create_id }}</td>
+        </tr>
+    </table>
+
+
+
+    <!-- Main 입력 영역:End -->
+
+    <br>
+            <!-- Detail 영역 :Start -->
+            <!-- key필드는 display하지는 않지만 반드시 표기할 것 -->
+            <h3 class="tit_m">talk here</h3>
+
+            <table id="form_set_sch"  class="table table-condensed table-hover">
+
+
+                <tr bgcolor="#F7F7F7">
+                    <td><strong>{{ talk_dtlformset.form.talk_dtl_id.label }}</strong></td>
+                    <td><strong>{{ talk_dtlformset.form.dtl_content.label }}</strong></td>
+                    <td><strong>{{ talk_dtlformset.form.create_id.label }}</strong></td>
+                    <td><strong>{{ talk_dtlformset.form.create_dt.label }}</strong></td>
+                    <td><strong>Delete</td>
+                </tr>
+            {{ talk_dtlformset.management_form }}
+            {% for form in talk_dtlformset %}
+                <tr>
+                    <td>{{ form.talk_dtl_id }}</td>
+                    <td>{{ form.dtl_content }}</td>
+                    <td>{{ form.create_id }}</td>
+                    <td>{{ form.create_dt }}</td>
+                    <td>{{ form.DELETE }}</td>
+                </tr>
+
+                <!-- detail error 메시지처리:start -->
+                {% if form.errors %}
+                <tr>
+                    <td colspan="8"><font size="2em" color="red">{{ form.errors }}</font></td>
+                </tr>
+                {% endif %}
+                <!-- detail error 메시지처리:end -->
+
+            {% endfor %}
+
+            </table>
+
+            <table id="empty_form_sch" style="display:none">
+                <tr>
+                    <td>{{ talk_dtlformset.empty_form.talk_dtl_id }}</td>
+                    <td>{{ talk_dtlformset.empty_form.dtl_content }}</td>
+                    <td>{{ talk_dtlformset.empty_form.create_id }}</td>
+                    <td>{{ talk_dtlformset.empty_form.create_dt }}</td>
+                    <td>{{ talk_dtlformset.empty_form.DELETE }}</td>
+                </tr>
+            </table>
+
+            <input type="button" value="add detail" id="add_more" class="btn btn-info">&nbsp&nbsp&nbsp
+            <button type="submit" class="btn btn btn-info">save</button>&nbsp&nbsp&nbsp
+            <input class="btn btn btn-info" type="button" value="cancle" onClick="location.href='{% url 'favorite_location_list'%}'">
+
+            <!-- 수정일 때만(pk값이 존재할 때) 삭제 버튼 활성화:start -->
+            {% if talk_mst.talk_mst_id %}
+            <input class="btn btn btn-warning" type="button" value="delete all" onClick="location.href='{% url 'favorite_location_delete' talk_mst.talk_mst_id %}'">
+            {% endif %}
+            <!-- 수정일 때만(pk값이 존재할 때) 삭제 버튼 활성화:end -->
+
+    <!-- Detail 영역:End -->
+
+</form>
+
+
+<!-- Detail Row 추가:Start -->
+<script>
+$('#add_more').click(function() {
+	var form_idx = $('#id_fk_talk_dtl1-TOTAL_FORMS').val();
+	console.log('idx', form_idx)
+
+	$('#form_set_sch').append($('#empty_form_sch').html().replace(/__prefix__/g, form_idx));
+	$('#id_fk_talk_dtl1-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+});
+
+</script>
+<!-- Detail Row 추가:End -->
+
+
+{% endblock %}
+

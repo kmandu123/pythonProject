@@ -3,6 +3,9 @@ from django.db import models
 from django.urls import reverse # Used to generate URLs by reversing the URL patterns
 from django.core.validators import MinLengthValidator
 
+from uuid import uuid4
+from datetime import datetime
+
 
 # Create your models here.
 
@@ -369,7 +372,7 @@ class Intro(models.Model):
     update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
 
     class Meta:
-        managed = True
+        managed = False
 
     def __str__(self):
         """String for representing the Model object."""
@@ -378,3 +381,50 @@ class Intro(models.Model):
     def get_absolute_url(self):
         """Returns the url to access a detail record for this book."""
         return reverse('intro_update', args=[str(self.intro_id)])
+
+
+#아래 model에 이미지 파일 upload하기 위해 경로 및 파일명 추출 하기 위한 함수 선언함.
+def get_file_path(instance, filename):
+    ymd_path = datetime.now().strftime('%Y/%m/%d')
+    uuid_name = uuid4().hex
+    return '/'.join(['upload_file/', ymd_path, uuid_name])
+
+
+class Talk_mst(models.Model):
+    talk_mst_id = models.AutoField(primary_key=True, verbose_name='talk_master ID')
+    talk_class = models.CharField(max_length=200, verbose_name='talk 분류')
+    talk_subject = models.CharField(max_length=200, verbose_name='talk 주제')
+    talk_content = models.CharField(max_length=2000, null=True, blank=True, verbose_name='talk 내용')
+    upload_files = models.FileField(upload_to=get_file_path, null=True, blank=True, verbose_name='파일')
+    filename = models.CharField(max_length=64, null=True, verbose_name='첨부파일명')
+    create_dt = models.DateTimeField(auto_now_add=True, verbose_name='생성일시', null=True, blank=True)
+    update_dt = models.DateTimeField(auto_now=True, verbose_name='수정일시', null=True, blank=True)
+    create_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='생성자id')
+    update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
+
+    class Meta:
+        managed = True
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return self.talk_subject
+
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this book."""
+        return reverse('favorite_location_update', args=[str(self.talk_mst_id)])
+
+class Talk_dtl(models.Model):
+    talk_dtl_id = models.AutoField(primary_key=True, verbose_name='talk_detail ID')
+    talk_mst_id = models.ForeignKey('Talk_mst', related_name='fk_talk_dtl1', on_delete=models.SET_NULL, db_column='talk_mst_id',  null=True)
+    dtl_content = models.CharField(max_length=2000,  verbose_name='detail 내용')
+    create_dt = models.DateTimeField(auto_now_add=True, verbose_name='생성일시', null=True, blank=True)
+    update_dt = models.DateTimeField(auto_now=True, verbose_name='수정일시', null=True, blank=True)
+    create_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='생성자id')
+    update_id = models.CharField(max_length=200, null=True, blank=True, verbose_name='수정자id')
+
+    class Meta:
+        managed = True
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return self.dtl_content

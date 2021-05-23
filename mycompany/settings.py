@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -134,3 +135,5 @@ LOGIN_REDIRECT_URL = '/'
 #콘솔로 전송 된 모든 이메일이 기록됩니다
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+MEDIA_URL = '/media_img/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media_img')

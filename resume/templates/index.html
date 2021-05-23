@@ -121,6 +121,9 @@ $(function() {
 {% endfor %}
 <br>
 <div>
+
+    <a href="{% url 'favorite_location_list' %}">My favorite location</a><br><br>
+
 {% if user.get_username == 'kmandu' %}
     <a href="{% url 'admin_page' %}">관리자 메뉴</a><br><br>
 {% endif %}

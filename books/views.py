@@ -44,10 +44,10 @@ def write_log(client_ip,request,log_gb,user):
 
     # 구글서비스를 이용하여 위도/경도로 주소찾기
     addr = ''
-    if addr_info[0] != 'Not found':
-        gmaps = googlemaps.Client(key='AIzaSyCPbwbrbnKTrKAq_2qJ9qfhzmf0FL5P3J0')
-        reverse_geocode_result = gmaps.reverse_geocode((addr_info[0], addr_info[1]), language='ko')
-        addr = reverse_geocode_result[0].get('formatted_address')
+#    if addr_info[0] != 'Not found':
+#        gmaps = googlemaps.Client(key='AIzaSyCPbwbrbnKTrKAq_2qJ9qfhzmf0FL5P3J0')
+#        reverse_geocode_result = gmaps.reverse_geocode((addr_info[0], addr_info[1]), language='ko')
+#        addr = reverse_geocode_result[0].get('formatted_address')
 
     log_context = {'log_dt': nowDatetime, 'ip': client_ip, 'log_gb': log_gb, 'request': request, 'user': user, 'lat': addr_info[0], 'long': addr_info[1], 'state': addr_info[3], 'city': addr_info[2], 'addr': addr}
 

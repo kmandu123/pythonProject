@@ -60,3 +60,10 @@ urlpatterns += [
     path('intro_list/create/', views.IntroCreate, name='intro_create'),
     path('intro_list/<int:pk>/delete/', views.IntroDelete, name='intro_delete'),
 ]
+
+urlpatterns += [
+    path('favorite_location_list/', views.Favorite_locationList.as_view(), name='favorite_location_list'),
+    path('favorite_location_list/<int:pk>/update/', views.Favorite_locationUpdate, name='favorite_location_update'),
+    path('favorite_location_list/create/', views.Favorite_locationCreate, name='favorite_location_create'),
+    path('favorite_location_list/<int:pk>/delete/', views.Favorite_locationDelete, name='favorite_location_delete'),
+]

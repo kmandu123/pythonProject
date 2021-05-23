@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
-from resume.models import Comm_div, Comm_code, Employee, School_his, Education, Order_comp, Pjt, Vw_emp, Intro
+from resume.models import Comm_div, Comm_code, Employee, School_his, Education, Order_comp, Pjt, Vw_emp, Intro, Talk_mst
 from books.models import Log
 from django.db.models import Count
 
@@ -119,7 +119,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from .forms import Comm_divForm, Comm_codeFormset, EmployeeForm, School_hisFormset, License_hisFormset, Work_hisFormset, EducationForm, Edu_hisFormset, Edu_hisFormset2, Order_compForm, PjtForm, PjtFormset, Pjt_hisFormset, Pjt_hisFormset2, IntroForm
+from .forms import Comm_divForm, Comm_codeFormset, EmployeeForm, School_hisFormset, License_hisFormset, Work_hisFormset, EducationForm, Edu_hisFormset, Edu_hisFormset2, Order_compForm, PjtForm, PjtFormset, Pjt_hisFormset, Pjt_hisFormset2, IntroForm, Talk_mstForm, Talk_dtlForm, Talk_dtlFormset
 #inline Formsets 사용
 from django.forms import inlineformset_factory
 from django import forms
@@ -1185,3 +1185,133 @@ def IntroDelete(request, pk):
     intro = get_object_or_404(Intro, pk=pk)
     intro.delete()
     return HttpResponseRedirect(reverse('intro_list'))
+
+
+# favorite location list
+class Favorite_locationList(generic.ListView):
+    model = Talk_mst
+    paginate_by = 15
+    context_object_name = 'favorite_location_list'
+    template_name = 'resume/favorite_location_list.html'
+
+    #검색 결과 (초기값)
+    def get_queryset(self):
+        # log 기록
+        write_log(self.request.META['REMOTE_ADDR'], self.request, 'Favorite location list', self.request.user)
+
+        filter_val_1 = self.request.GET.get('filter_1', '')  #filter_1 검색조건 변수명, '' 초기 검색조건값 <- like 검색결과 all 검색을 위해서 ''로 처리함.
+        filter_val_2 = self.request.GET.get('filter_2', '')
+        order = self.request.GET.get('orderby', 'create_dt') #정렬대상 컬럼명(초기값)
+
+        new_context = Talk_mst.objects.filter(
+            talk_subject__icontains=filter_val_1,
+            create_id__icontains=filter_val_2,
+        ).order_by(order)
+        return new_context
+
+    #검색 조건 (초기값)
+    def get_context_data(self, **kwargs):
+        context = super(Favorite_locationList, self).get_context_data(**kwargs)
+        context['filter_1'] = self.request.GET.get('filter_1', '')
+        context['filter_2'] = self.request.GET.get('filter_2', '')
+        context['orderby'] = self.request.GET.get('orderby', 'create_dt') #정렬대상 컬럼명(초기값)
+        return context
+
+
+def Favorite_locationCreate(request):
+
+    # master model 빈 instance 생성
+    talk_mst = Talk_mst()
+
+    # master form instance 생성 : 마스터 form 객체는 forms.py에 존재함. : 최초 user화면에 보여주는 수정대상 instance
+    talk_mstform = Talk_mstForm(instance=talk_mst)
+
+    #detail from instance 생성 : 최초 user화면에 보여주는 수정대상 instance
+    talk_dtlformset = Talk_dtlFormset(instance=talk_mst)
+
+
+    if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
+        # master form instance 생성 : Post요청 data로 생성
+        talk_mstform = Talk_mstForm(request.POST)
+
+        # detail form instance 생성 : Post요청 data로 생성
+        talk_dtlformset = Talk_dtlFormset(request.POST, request.FILES)
+
+        if talk_mstform.is_valid():
+            created_talk_mst = talk_mstform.save(commit=False)
+            talk_dtlformset = Talk_dtlFormset(request.POST, request.FILES, instance=created_talk_mst)
+
+            if talk_dtlformset.is_valid():
+                created_talk_mst.save()
+                talk_dtlformset.save()
+                return HttpResponseRedirect(reverse('favorite_location_list'))
+            else:
+                print("detail valid error발생")
+                print(talk_dtlformset.errors)
+
+
+    # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
+    context = {
+        'talk_mstform': talk_mstform,
+        'talk_dtlformset': talk_dtlformset,
+        'talk_mst': talk_mst,
+    }
+
+    # template를 호출한다. context도 같이 넘긴다.
+    return render(request, 'resume/favorite_location_update.html', context)
+
+
+def Favorite_locationUpdate(request, pk):
+
+    if pk:
+        #master model instance 생성
+        talk_mst = Talk_mst.objects.get(talk_mst_id=pk)
+    else:
+        talk_mst = Talk_mst()
+
+    # master form instance 생성 : 마스터 form 객체는 forms.py에 존재함. : 최초 user화면에 보여주는 수정대상 instance
+    talk_mstform = Talk_mstForm(instance=talk_mst)
+
+    #detail from instance 생성 : 최초 user화면에 보여주는 수정대상 instance
+    talk_dtlformset = Talk_dtlFormset(instance=talk_mst)
+
+    if request.method == "POST":     #user의 수정화면을 통한 instance 수정요청이면 데이터 처리.
+        # master form instance 생성 : Post요청 data로 생성
+        talk_mstform = Talk_mstForm(request.POST)
+
+        if pk:
+            # master form instance 생성 : Post요청 data와 pk에 해당하는 마스터 모델 instance연계
+            talk_mstform = Talk_mstForm(request.POST, instance=talk_mst)
+
+        # detail form instance 생성 : Post요청 data로 생성
+        talk_dtlformset = Talk_dtlFormset(request.POST, request.FILES)
+
+        if talk_mstform.is_valid():
+            created_talk_mst = talk_mstform.save(commit=False)
+            talk_dtlformset = Talk_dtlFormset(request.POST, request.FILES, instance=created_talk_mst)
+
+            if talk_dtlformset.is_valid():
+                created_talk_mst.save()
+                talk_dtlformset.save()
+                return HttpResponseRedirect(reverse('favorite_location_list'))
+            else:
+                print("detail valid error발생")
+                print(talk_dtlformset.errors)
+
+
+    # template의 html에 Form과 data instance를 딕셔너리 자료형태를 생성한다.
+    context = {
+        'talk_mstform': talk_mstform,
+        'talk_dtlformset': talk_dtlformset,
+        'talk_mst': talk_mst,
+    }
+
+    # template를 호출한다. context도 같이 넘긴다.
+    return render(request, 'resume/favorite_location_update.html', context)
+
+
+def Favorite_locationDelete(request, pk):
+    # 파라미터pk로 받은 data가 존재한다면 가져온다
+    talk_mst = get_object_or_404(Talk_mst, pk=pk)
+    talk_mst.delete()
+    return HttpResponseRedirect(reverse('favorite_location_list'))

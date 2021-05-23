@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comm_div, Comm_code, Employee, School_his, License_his, Work_his, Education, Edu_his, Order_comp, Pjt, Pjt_his, Intro
+from .models import Comm_div, Comm_code, Employee, School_his, License_his, Work_his, Education, Edu_his, Order_comp, Pjt, Pjt_his, Intro, Talk_mst, Talk_dtl
 from django.forms import inlineformset_factory
 from django.core.exceptions import ValidationError
 
@@ -322,3 +322,33 @@ class IntroForm(forms.ModelForm):
             'display_yn': forms.TextInput(attrs={'autocomplete': 'off', 'size': '1'}),
             'intro': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '63', 'rows': '5'}),
         }
+
+
+
+class Talk_mstForm(forms.ModelForm):
+    class Meta:
+        model = Talk_mst
+        fields = '__all__'
+
+        # 속성별로 재정의 할때
+        widgets = {
+            'talk_content': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '63', 'rows': '3'}),
+        }
+
+
+
+class Talk_dtlForm(forms.ModelForm):
+    class Meta:
+        model = Talk_dtl
+        fields = '__all__'
+
+        # 속성별로 재정의 할때
+        widgets = {
+            'tdl_content': forms.Textarea(attrs={'autocomplete': 'off', 'cols': '63', 'rows': '3'}),
+        }
+
+
+
+ # detail form 객체 생성
+Talk_dtlFormset = inlineformset_factory(Talk_mst, Talk_dtl, form=Talk_dtlForm,
+                    extra=1, can_delete=True)
